@@ -1,2 +1,13 @@
 # Genetic_Gravity
-The manuscript covering the introduction of genetic gravity within population graph topologies.
+
+The latest build of this entire manuscript is found [here](https://dyerlab.github.io/Genetic_Gravity/).
+
+---
+
+## Summary
+
+> 
+
+## Key Findings
+
+1. 
