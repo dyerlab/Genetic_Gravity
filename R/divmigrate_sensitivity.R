@@ -33,7 +33,7 @@ suppressPackageStartupMessages({
   U / (n1 * n0)
 }
 
-scn <- c("Isotropic", "Flux-conserved", "Rate-conserved")
+scn <- c("Isotropic", "Redistributed", "Obstructed")
 tc <- read.csv("data/divmigrate_timecourse_timecourse.csv", stringsAsFactors = FALSE) |>
   mutate(scenario = factor(scenario, levels = scn))
 
@@ -87,21 +87,21 @@ rv_sens_stab_delta <- sens$generation_delta[which.min(abs(sens$generation_delta 
                      sens$generation == .stab_gen]
   if (length(v) == 0) NA_real_ else v[1]
 }
-rv_auc_grav_flux <- round(.sens_at("auc", "gravity",    "Flux-conserved"), 3)
-rv_auc_divm_flux <- round(.sens_at("auc", "divMigrate", "Flux-conserved"), 3)
-rv_auc_grav_rate <- round(.sens_at("auc", "gravity",    "Rate-conserved"), 3)
-rv_auc_divm_rate <- round(.sens_at("auc", "divMigrate", "Rate-conserved"), 3)
-rv_pow_grav_flux <- round(.sens_at("power", "gravity",    "Flux-conserved"), 2)
-rv_pow_divm_flux <- round(.sens_at("power", "divMigrate", "Flux-conserved"), 2)
-rv_pow_grav_rate <- round(.sens_at("power", "gravity",    "Rate-conserved"), 2)
-rv_pow_divm_rate <- round(.sens_at("power", "divMigrate", "Rate-conserved"), 2)
+rv_auc_grav_redistributed <- round(.sens_at("auc", "gravity",    "Redistributed"), 3)
+rv_auc_divm_redistributed <- round(.sens_at("auc", "divMigrate", "Redistributed"), 3)
+rv_auc_grav_obstructed <- round(.sens_at("auc", "gravity",    "Obstructed"), 3)
+rv_auc_divm_obstructed <- round(.sens_at("auc", "divMigrate", "Obstructed"), 3)
+rv_pow_grav_redistributed <- round(.sens_at("power", "gravity",    "Redistributed"), 2)
+rv_pow_divm_redistributed <- round(.sens_at("power", "divMigrate", "Redistributed"), 2)
+rv_pow_grav_obstructed <- round(.sens_at("power", "gravity",    "Obstructed"), 2)
+rv_pow_divm_obstructed <- round(.sens_at("power", "divMigrate", "Obstructed"), 2)
 
 cat(sprintf("rv_sens_stab_delta (stabilized window, generations after onset) = %s\n\n", rv_sens_stab_delta))
 cat("=== Sensitivity at stabilized window ===\n")
-cat(sprintf("Flux-conserved: gravity AUC=%s power=%s | divMigrate AUC=%s power=%s\n",
-            rv_auc_grav_flux, rv_pow_grav_flux, rv_auc_divm_flux, rv_pow_divm_flux))
-cat(sprintf("Rate-conserved: gravity AUC=%s power=%s | divMigrate AUC=%s power=%s\n",
-            rv_auc_grav_rate, rv_pow_grav_rate, rv_auc_divm_rate, rv_pow_divm_rate))
+cat(sprintf("Redistributed: gravity AUC=%s power=%s | divMigrate AUC=%s power=%s\n",
+            rv_auc_grav_redistributed, rv_pow_grav_redistributed, rv_auc_divm_redistributed, rv_pow_divm_redistributed))
+cat(sprintf("Obstructed: gravity AUC=%s power=%s | divMigrate AUC=%s power=%s\n",
+            rv_auc_grav_obstructed, rv_pow_grav_obstructed, rv_auc_divm_obstructed, rv_pow_divm_obstructed))
 
 ## ---- Tab_SensitivityAUC ---------------------------------------------------
 
@@ -125,10 +125,10 @@ ord_cols <- paste0("+", pick)
     select(Method, all_of(ord_cols))
 }
 
-cat("\n=== Tab_SensitivityAUC (A) Flux-conserved ===\n")
-print(as.data.frame(.panel("Flux-conserved")), row.names = FALSE)
-cat("\n=== Tab_SensitivityAUC (B) Rate-conserved ===\n")
-print(as.data.frame(.panel("Rate-conserved")), row.names = FALSE)
+cat("\n=== Tab_SensitivityAUC (A) Redistributed ===\n")
+print(as.data.frame(.panel("Redistributed")), row.names = FALSE)
+cat("\n=== Tab_SensitivityAUC (B) Obstructed ===\n")
+print(as.data.frame(.panel("Obstructed")), row.names = FALSE)
 
 ## ---- Fig_DivMigrateSensitivity -------------------------------------------
 

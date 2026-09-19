@@ -1,4 +1,4 @@
 "scenario","n_rep","gravity_abs_mean","divm_abs_mean","gravity_signed","divm_signed","median_rho"
 "Isotropic",50,0.0329,0.053,9e-04,-0.0015,0.112
-"Flux-conserved",50,0.1246,NA,0.0584,NA,-0.054
-"Rate-conserved",50,0.0637,NA,-0.0107,NA,0.036
+"Redistributed",50,0.1246,NA,0.0584,NA,-0.054
+"Obstructed",50,0.0637,NA,-0.0107,NA,0.036

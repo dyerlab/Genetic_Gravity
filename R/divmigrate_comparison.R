@@ -27,7 +27,7 @@ suppressPackageStartupMessages({
 
 cmp <- read.csv("data/divmigrate_compare_summary.csv", stringsAsFactors = FALSE)
 
-scn <- c("Isotropic", "Flux-conserved", "Rate-conserved")
+scn <- c("Isotropic", "Redistributed", "Obstructed")
 cmp <- cmp |> mutate(scenario = factor(scenario, levels = scn)) |> arrange(scenario)
 
 tbl_divmigrate <- cmp |>
@@ -40,15 +40,15 @@ cat("=== Tab_GravityVsDivMigrate ===\n")
 print(as.data.frame(tbl_divmigrate), row.names = FALSE)
 
 .dm_get <- function(scn_name, col) cmp[[col]][cmp$scenario == scn_name][1]
-rv_dm_rho_flux   <- .dm_get("Flux-conserved", "median_rho")
-rv_dm_rho_rate   <- .dm_get("Rate-conserved", "median_rho")
+rv_dm_rho_redistributed   <- .dm_get("Redistributed", "median_rho")
+rv_dm_rho_obstructed   <- .dm_get("Obstructed", "median_rho")
 rv_dm_iso_grav   <- .dm_get("Isotropic", "gravity_abs_mean")
 rv_dm_iso_divm   <- .dm_get("Isotropic", "divm_abs_mean")
 rv_dm_spec_ratio <- round(rv_dm_iso_divm / rv_dm_iso_grav, 1)
 
 cat(sprintf(
-  "\nrv_dm_rho_flux   = %s\nrv_dm_rho_rate   = %s\nrv_dm_iso_grav   = %s\nrv_dm_iso_divm   = %s\nrv_dm_spec_ratio = %sx\n",
-  rv_dm_rho_flux, rv_dm_rho_rate, rv_dm_iso_grav, rv_dm_iso_divm, rv_dm_spec_ratio))
+  "\nrv_dm_rho_redistributed   = %s\nrv_dm_rho_obstructed   = %s\nrv_dm_iso_grav   = %s\nrv_dm_iso_divm   = %s\nrv_dm_spec_ratio = %sx\n",
+  rv_dm_rho_redistributed, rv_dm_rho_obstructed, rv_dm_iso_grav, rv_dm_iso_divm, rv_dm_spec_ratio))
 
 ## ---- Fig_DivMigrateTimecourse --------------------------------------------
 

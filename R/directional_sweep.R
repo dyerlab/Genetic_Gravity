@@ -20,7 +20,7 @@ suppressPackageStartupMessages({
 ds_summary      <- read.csv("data/directional_sweep_summary.csv", stringsAsFactors = FALSE)
 ds_per_snapshot <- read.csv("data/directional_sweep_per_snapshot.csv", stringsAsFactors = FALSE)
 
-scn <- c("Isotropic", "Flux-conserved", "Rate-conserved")
+scn <- c("Isotropic", "Redistributed", "Obstructed")
 ds_summary <- ds_summary |> mutate(scenario = factor(scenario, levels = scn)) |> arrange(scenario)
 
 ## ---- Tab_DesignDrivenTest --------------------------------------------------
@@ -39,16 +39,16 @@ print(as.data.frame(tbl_dirsweep), row.names = FALSE)
 
 alpha <- 0.05  # data/_meta.csv: directional_sweep alpha = 0.05
 g <- function(cc) ds_summary[ds_summary$cond == cc, , drop = FALSE]
-iso  <- g(1); flux <- g(2); rate <- g(3)
+iso  <- g(1); redist <- g(2); obstr <- g(3)
 ne <- round(mean(ds_per_snapshot$n_edges, na.rm = TRUE))
 
 cat(sprintf(
   "\nIsotropic: median forward bias = %+.3f, over-rejection = %.0f%% (nominal %.0f%%)\n",
   iso$median_estimate, 100 * iso$frac_sig, 100 * alpha))
 cat(sprintf(
-  "Flux-conserved: median forward bias = %+.3f, detected in %.0f%% of snapshots\n",
-  flux$median_estimate, 100 * flux$frac_sig))
+  "Redistributed: median forward bias = %+.3f, detected in %.0f%% of snapshots\n",
+  redist$median_estimate, 100 * redist$frac_sig))
 cat(sprintf(
-  "Rate-conserved: median forward bias = %+.3f, detected in %.0f%% of snapshots\n",
-  rate$median_estimate, 100 * rate$frac_sig))
+  "Obstructed: median forward bias = %+.3f, detected in %.0f%% of snapshots\n",
+  obstr$median_estimate, 100 * obstr$frac_sig))
 cat(sprintf("Mean edges per graph (ne) = %d\n", ne))

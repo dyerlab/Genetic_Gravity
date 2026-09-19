@@ -19,7 +19,7 @@ suppressPackageStartupMessages({
 edges <- read.csv("data/boundary_summary_edges.csv", stringsAsFactors = FALSE)
 div   <- read.csv("data/boundary_summary_diversity.csv", stringsAsFactors = FALSE)
 
-scn <- c("Isotropic", "Flux-conserved", "Rate-conserved")
+scn <- c("Isotropic", "Redistributed", "Obstructed")
 edges <- edges |> mutate(scenario = factor(scenario, levels = scn))
 div <- div |>
   mutate(scenario = factor(scenario, levels = scn),
@@ -53,8 +53,8 @@ tbl_boundary <- edges |>
 cat("=== Tab_EdgeClassDecomposition ===\n")
 print(as.data.frame(tbl_boundary), row.names = FALSE)
 
-rv_bd_int_flux <- edge_at("Flux-conserved", "interior", "mean_delta")
-rv_bd_int_rate <- edge_at("Rate-conserved", "interior", "mean_delta")
+rv_bd_int_redistributed <- edge_at("Redistributed", "interior", "mean_delta")
+rv_bd_int_obstructed <- edge_at("Obstructed", "interior", "mean_delta")
 rv_bd_int_iso  <- edge_at("Isotropic",      "interior", "mean_delta")
 rv_bd_leaf_abs <- round(mean(vapply(scn, edge_at, numeric(1),
                                      edge_class = "leaf-incident", col = "mean_abs"),
@@ -65,11 +65,11 @@ rv_bd_int_abs  <- round(mean(vapply(scn, edge_at, numeric(1),
 
 # NOTE: Isotropic has zero leaf-incident edges anywhere in the archived data
 # (all 21 sampled generations, all replicates) -- not a windowing artifact.
-# rv_bd_leaf_abs above is therefore the mean of Flux-conserved and
-# Rate-conserved only; see manuscript text for how this is described.
-cat(sprintf("\nrv_bd_int_flux = %s\nrv_bd_int_rate = %s\nrv_bd_int_iso  = %s\n",
-            rv_bd_int_flux, rv_bd_int_rate, rv_bd_int_iso))
-cat(sprintf("rv_bd_leaf_abs = %s (Flux-conserved + Rate-conserved only; Isotropic has no leaf-incident edges)\n",
+# rv_bd_leaf_abs above is therefore the mean of Redistributed and
+# Obstructed only; see manuscript text for how this is described.
+cat(sprintf("\nrv_bd_int_redistributed = %s\nrv_bd_int_obstructed = %s\nrv_bd_int_iso  = %s\n",
+            rv_bd_int_redistributed, rv_bd_int_obstructed, rv_bd_int_iso))
+cat(sprintf("rv_bd_leaf_abs = %s (Redistributed + Obstructed only; Isotropic has no leaf-incident edges)\n",
             rv_bd_leaf_abs))
 cat(sprintf("rv_bd_int_abs  = %s\n", rv_bd_int_abs))
 
@@ -80,10 +80,10 @@ he_at <- function(scenario_name, position_name, gen) {
   d <- div |> filter(scenario == scenario_name, position == position_name, generation == gen)
   if (nrow(d) == 0) NA_real_ else round(mean(d$He, na.rm = TRUE), 3)
 }
-rv_bd_he_term <- he_at("Rate-conserved", "Terminus", last_gen)
-rv_bd_he_int  <- he_at("Rate-conserved", "Interior", last_gen)
-cat(sprintf("\nrv_bd_he_term (Rate-conserved, final generation) = %s\n", rv_bd_he_term))
-cat(sprintf("rv_bd_he_int  (Rate-conserved, final generation) = %s\n", rv_bd_he_int))
+rv_bd_he_term <- he_at("Obstructed", "Terminus", last_gen)
+rv_bd_he_int  <- he_at("Obstructed", "Interior", last_gen)
+cat(sprintf("\nrv_bd_he_term (Obstructed, final generation) = %s\n", rv_bd_he_term))
+cat(sprintf("rv_bd_he_int  (Obstructed, final generation) = %s\n", rv_bd_he_int))
 
 fig_boundary_diversity <- div |>
   group_by(scenario, position, generation) |>

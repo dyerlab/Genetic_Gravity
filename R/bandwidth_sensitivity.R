@@ -3,7 +3,7 @@
 # Reproduces the manuscript's bandwidth-sensitivity table: how well the
 # canonical local bandwidth estimator's edge-level asymmetry sign/rank and
 # graph-mean sign survive four non-local bandwidth alternatives, pooled over
-# the two directional scenarios (Flux-conserved, Rate-conserved; N=100,
+# the two directional scenarios (Redistributed, Obstructed; N=100,
 # generation 2999). Source data (data/bandwidth_sensitivity_per_snapshot.csv)
 # is the per-replicate/per-alternative comparison already computed from the
 # individual-based simulation output by the private research repo's
@@ -23,8 +23,8 @@ per_snapshot <- read.csv("data/bandwidth_sensitivity_per_snapshot.csv", stringsA
 
 alt_levels <- c("global", "scale x0.5", "scale x2", "perplexity")
 
-# Pool the two directional scenarios (cond 2 = Flux-conserved, cond 3 =
-# Rate-conserved), where Delta carries real signal; the isotropic null (cond 1)
+# Pool the two directional scenarios (cond 2 = Redistributed, cond 3 =
+# Obstructed), where Delta carries real signal; the isotropic null (cond 1)
 # is excluded because under symmetric migration the sign of Delta is noise.
 bw_tab <- per_snapshot |>
   filter(cond %in% c(2L, 3L)) |>
@@ -53,13 +53,13 @@ print(as.data.frame(tbl_bandwidth), row.names = FALSE)
 
 sc_lo <- min(bw_tab$sign_concord); sc_hi <- max(bw_tab$sign_concord)
 rs_lo <- min(bw_tab$rho_signed);   rs_hi <- max(bw_tab$rho_signed)
-flux_dbar <- mean(per_snapshot$dbar_pres[per_snapshot$cond == 2L], na.rm = TRUE)
-rate_dbar <- mean(per_snapshot$dbar_pres[per_snapshot$cond == 3L], na.rm = TRUE)
+redistributed_dbar <- mean(per_snapshot$dbar_pres[per_snapshot$cond == 2L], na.rm = TRUE)
+obstructed_dbar <- mean(per_snapshot$dbar_pres[per_snapshot$cond == 3L], na.rm = TRUE)
 
 cat(sprintf(
   "\nsign concordance range: %.0f%%-%.0f%%\n", 100 * sc_lo, 100 * sc_hi))
 cat(sprintf(
   "signed rank rho range: %.2f-%.2f\n", rs_lo, rs_hi))
 cat(sprintf(
-  "Delta-bar sign preserved: %.0f%% flux-conserved, %.0f%% rate-conserved\n",
-  100 * flux_dbar, 100 * rate_dbar))
+  "Delta-bar sign preserved: %.0f%% redistributed, %.0f%% obstructed\n",
+  100 * redistributed_dbar, 100 * obstructed_dbar))
