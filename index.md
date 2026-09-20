@@ -87,20 +87,16 @@ Because that offset comes from the panmixia reference rather than the graph’s 
 
 ## Individual-based simulations
 
-I evaluate the sensitivity and temporal behavior of the asymmetry index with a two-phase, individual-based stochastic simulation following R. Dyer (2007). Each replicate tracks a metapopulation of $K=25$ discrete locales, each with $N=100$ diploid individuals genotyped at $L=20$ independently segregating, codominant, biallelic loci; initial allele frequencies were drawn per locus from ${p}_{\ell }\sim N(0.5,0.1)$, clamped to $[0.01,0.99]$, and shared identically across populations at the outset. Random mating produced non-overlapping generations, and mutation was excluded to isolate drift–migration dynamics, at the cost of slowly eroding diversity over the simulated horizon (revisited in the Discussion). Every replicate begins with a 2,000-generation burn-in of symmetric gene flow on a one-dimensional stepping-stone topology (${m}_{i\rightarrow i+1}={m}_{i+1\rightarrow i}=0.025$; total emigration $m=0.05$ at interior nodes, $0.025$ at the two ends), bringing each population to drift–migration equilibrium before any directional treatment and confirmed past the equilibrium plateau by the saturation analysis in the Results. Fifty replicates were run, each yielding all three treatment scenarios from this shared burn-in state, in R using the gstudio package (R. Dyer, 2013).
+The sensitivity and temporal behavior of the asymmetry index were evaluated using *individual-based stochastic simulation* following Dyer (2007). Every replicate run tracks a metapopulation of $K=25$ discrete demes, each of which has $N=100$ diploid individuals with $L=20$ independently segregating, codominant, biallelic loci whose starting frequencies are selected at random at the beginning of the simulation run.  Generations are non-overlapping and all mating is random within the population.  Mutation was excluded to isolate drift–migration dynamics. Every replicate runs begins with a 2,000-generation burn-in of symmetric gene flow on a one-dimensional symetric stepping-stone topology (${m}_{i\rightarrow i+1}={m}_{i+1\rightarrow i}=0.025$; total emigration $m=0.05$ at interior nodes, $0.025$ at the two ends), bringing each population to drift–migration equilibrium.  Fifty replicates were run and multilocus genotypes were recorded every five generations during the burn-in and the subsequence asymmetry tests. 
 
-At $t=0$ (generation 2,000), the migration matrix switches to one of three scenario-specific matrices (Tab_ScenarioParameters), with topology and population size unchanged. *Isotropic* holds migration at the burn-in rate and supplies the within-replicate empirical null. *Redistributed* asymmetry redistributes the same total emigration 4:1 forward, holding per-population drift dynamics fixed so that any change in ${\Delta }_{ij}$ reflects redistribution alone. *Obstructed* asymmetry instead holds the forward rate at baseline and suppresses reverse migration by 60%, modeling ambient-rate dispersal against a partially obstructed return path. Because each pair of scenarios differs in exactly one parameter, their contrasts decompose the drivers of ${\Delta }_{ij}$: isotropic versus redistributed isolates directional balance at fixed total flux, isotropic versus obstructed isolates back-flow suppression at fixed forward rate, and redistributed versus obstructed isolates the incremental effect of forward-rate elevation.
+After burn-in, each replicate run was used as the initial configuration to examine the consequences of separate patterns of connectivity for another 2,000 generations (Tab_ScenarioParameters).  *Isotropic* migration continued symmertic connectivity between all populations ($m_{i \; \rightarrow \; i+1} = m_{i+1 \; \leftarrow \; i} = 0.025$ ) and served as a null case onto which asymmetric connectivity was evaluated.  *Redistributed* asymetry fixed overall migration rate ($m = 0.05$)  but configured emigration as a 4:1 bias in direction ($m_{i \; \rightarrow \; i+1} = 0.04$; $m_{i+1 \; \leftarrow \; i} = 0.01$), holding per-population drift dynamics fixed so that any change in ${\Delta }_{ij}$ reflects redistribution of total migration.  *Obstructed* asymmetry held the forward migration rate fixed but suppressed reverse migration by 60% ($m_{i \; \rightarrow \; i+1} = 0.025$; $m_{i+1 \; \leftarrow \; i} = 0.01$), modeling ambient-rate forward dispersal (as in the *isotropic* case) against a partially obstructed return path connectivity.  Each asymmetric case diverges from the null case in exactly one parameter and their contrasts elucided orthoginal drivers on the parameter ${\Delta }_{ij}$: isotropic versus redistributed isolates directional balance at fixed total flux rates and isotropic versus obstructed isolates back-flow suppression at fixed forward rate.  Comparisons between the redistributed obstructed scenarios also illuminates the incremental effect of forward-rate migration elevation. Because all three scenarios branch from the same burn-in state within each replicate, the isotropic trajectory at each forward generation serves as a within-replicate empirical, fixed evolutionary trajectory null.  
 
-Because all three scenarios branch from the same burn-in state within each replicate, the isotropic trajectory at each forward generation serves as a within-replicate empirical null throughout. Inference is drawn from individual snapshots—the final-generation graph for endpoint comparisons, a grid of single generations for sensitivity and detection analyses—rather than the continuous 1,000-generation trajectory, whose mixed-effects modeling is reserved for the companion paper.
-
-
-## Graph summaries
-
-Each forward snapshot is converted into a Population Graph, and for every retained edge I compute the directional weights and the asymmetry index (Equation 4). From each graph I record the number of retained edges, the mean conditional genetic distance, and the mean asymmetry index $\Delta ‾$; these per-snapshot summaries are the inputs to the analyses below. Directed graph-theoretic metrics built from the same directional weights, and their longitudinal behavior, are developed in the companion paper.
-
+A snapshot of multilocus genotypes were retained every five generations.  The genotypes of each snapshot was converted into a Population Graph (Dyer & Nason 2004).  In addition to directional weights and asymmetry indices, edge density, graph diameter, and mean conditional genetic distance (cGD) were retained for each snapshot for compison to structure and isolation by distance inferences as shown in Dyer (2007).
 ## Comparison with a differentiation-based directional method
 
-To place the asymmetry index in the context of an existing tool that could be applied to data like these, I compared it directly with divMigrate (Sundqvist et al., 2016), which estimates directional relative migration between population pairs from genetic differentiation and is among the most widely used network-level descriptors of asymmetric gene flow. For the final-generation Population Graph of each replicate and scenario, I computed divMigrate’s directional relative migration ${m}_{i\rightarrow j}$ (using Jost’s $D$ as the underlying differentiation statistic) and formed the edge-level divMigrate asymmetry ${A}_{ij}={m}_{i\rightarrow j}-{m}_{j\rightarrow i}$ on the same retained, oriented edges as ${\Delta }_{ij}$, so the two indices are directly comparable. I contrast them in two ways: their per-edge *concordance* under the asymmetric scenarios (Spearman correlation, testing whether the two agree on the direction and rank of the imposed signal), and their *specificity* under the isotropic null (testing which index more cleanly returns to zero when migration is symmetric). Because divMigrate derives its directionality from pairwise differentiation rather than from the conditional graph topology, it should be the more sensitive of the two to drift- and ${N}_{e}$\-driven differentiation that is not directional in origin. To compare the two indices through time rather than at the endpoint alone, I repeated the edge-level comparison at a grid of forward generations and used it to assess each index’s *single-snapshot sensitivity*—how reliably one replicate’s snapshot separates an asymmetric scenario from the symmetric null—analyzed below.
+To evaluate the sensitivity of genetic gravity and its asymmetry index, the data were also evaluated against an existing tool that ingests the same data, `divMigrate` (Sundqvist et al., 2016), which estimates directional relative migration between population pairs from genetic differentiation and is among the most widely used network-level descriptors of asymmetric gene flow.  The estimated directional relative migration ${m}_{i\rightarrow j}$ from `divMigrate` used Jost’s $D$ to quantify differentiation and formed the edge-level divMigrate asymmetry ${A}_{ij}={m}_{i\rightarrow j}-{m}_{j\rightarrow i}$ on the same retained, oriented edges as ${\Delta }_{ij}$, yielding a direct comparison. I contrast them in two ways: their per-edge *concordance* under the asymmetric scenarios (Spearman correlation, testing whether the two agree on the direction and rank of the imposed signal), and their *specificity* under the isotropic null (testing which index more cleanly returns to zero when migration is symmetric). Because divMigrate derives its directionality from pairwise differentiation rather than from the conditional graph topology, it should be the more sensitive of the two to drift- and ${N}_{e}$\-driven differentiation that is not directional in origin. To compare the two indices through time rather than at the endpoint alone, I repeated the edge-level comparison at a grid of forward generations and used it to assess each index’s *single-snapshot sensitivity*—how reliably one replicate’s snapshot separates an asymmetric scenario from the symmetric null—analyzed below.
+
+All simulations were performed using simulations routines added to the `gstudio` R library and the complete set of all simulation and analysis scripts are available from the manuscripts github repository (https://github.com/dyerlab/Genetic_Gravity).
 
 # Results
 
@@ -203,7 +199,7 @@ Taken together, these results argue that directionality is recoverable from the 
 
 The asymmetry index, the local-bandwidth estimator, and the significance procedures described here are implemented in the open-source gstudio R package (R. Dyer, 2013), which also incorporates the conditional genetic-covariance routines of the former popgraph package.  The simulation code, analysis scripts, and derived data that reproduce all figures and tables in this paper are available in the project repository.
 
-## References
+# References
 
 Baker, S. A., & Dyer, R. J. (2011). Invasion genetics of Microstegium vimineum (Poaceae) within the James River basin of Virginia, USA. *Conservation Genetics*, *12*. [https://doi.org/10.1007/s10592-011-0186-0](https://doi.org/10.1007/s10592-011-0186-0)
 
@@ -257,7 +253,8 @@ Wogan, G. O. U., Voelker, G., Jain, T., Kaliba, P., & Bowie, R. C. K. (2024). Ni
 
 Wright, S. (1943). Isolation by distance. *Genetics*, *28*, 114–156.
 
-## Tables
+
+# Tables
 
 *Tab_HypothesisHierarchy:* The two questions Significance testing addresses for a single Population Graph. The graph-level test is one procedure used two ways—omnibus (two-sided, all edges) or, given an *a priori* directional prediction, restricted to a chosen axis or subgraph and run one-tailed; the edge-level test requires a resampling null.
 
@@ -269,17 +266,17 @@ Wright, S. (1943). Isolation by distance. *Genetics*, *28*, 114–156.
 *Tab_ResamplingNulls:* The two resampling nulls used for edge-level significance, and the question each answers.
 
 | Procedure | Null | Question answered |
-| :---- | :---- | :---- |
-| Fixed-topology permutation | Geometric | Is $|{\Delta }_{ij}|$ larger than the fixed graph geometry alone would produce? |
+|-----------|------|-------------------|
+| Fixed-topology permutation | Geometric | Is $\|{\Delta }_{ij}\|$ larger than the fixed graph geometry alone would produce? |
 | Bandwidth-alignment permutation | Alignment | Is the source/sink bandwidth pairing on this edge non-random? |
 
 *Tab_ScenarioParameters:* Post-burn-in migration parameters for the three simulation scenarios. All scenarios share an identical 2,000-generation isotropic burn-in before the treatment matrix is applied.
 
-| Name | ${m}_{i\rightarrow i+1}$ | ${m}_{i+1\rightarrow i}$ | ${m}_{Total}$ | Ratio | Constant |
-| :---- | :---: | :---: | :---: | :---: | :---- |
-| Isotropic | 0.025 | 0.025 | 0.050 | 1:1 | Symmetric connectivity |
-| Redistributed | 0.040 | 0.010 | 0.050 | 4:1 | Total emigration rate |
-| Obstructed | 0.025 | 0.010 | 0.035 | 2.5:1 | Forward rate |
+| Name          | $m_{i \rightarrow i+1}$ | $m_{i+1 \rightarrow i}$ | $m_{Total}$ | Ratio | Constant               |
+|---------------|:-----------------------:|:-----------------------:|:-----------:|:-----:|------------------------|
+| Isotropic     | 0.025                   | 0.025                   | 0.050       | 1:1   | Symmetric connectivity |
+| Redistributed | 0.040                   | 0.010                   | 0.050       | 4:1   | Total emigration rate  |
+| Obstructed    | 0.025                   | 0.010                   | 0.035       | 2.5:1 | Forward rate           |
 
 *Tab_GravityVsDivMigrate:* Genetic-gravity asymmetry versus divMigrate directional relative migration at the final forward generation, by scenario. gravity |Δ| and divM |A| are the mean absolute edge asymmetries (the typical magnitude of the directional signal each index reports); median ρ is the median across-replicate Spearman correlation between the two indices over the retained edges.
 
@@ -400,13 +397,13 @@ Wright, S. (1943). Isolation by distance. *Genetics*, *28*, 114–156.
 | ${w}_{i\rightarrow j}$ | Directional weight from $i$ to $j$ (equal to ${p}_{j∣i}$) |
 | ${\Delta }_{ij}$ | Asymmetry index ${w}_{i\rightarrow j}-{w}_{j\rightarrow i}$ |
 | ${\phi}_{i\rightarrow j}$ | Pairwise-normalized directional ratio ${w}_{i\rightarrow j}/({w}_{i\rightarrow j}+{w}_{j\rightarrow i})$; equals 0.5 when ${w}_{i\rightarrow j}={w}_{j\rightarrow i}$ (in expectation under symmetric connectivity) |
-| $\Delta ‾$ | Mean asymmetry index over all retained edges, $|E{|}^{-1}\sum\limits_{(i,j)\in E}^{}{\Delta }_{ij}$ |
+| $\Delta ‾$ | Mean asymmetry index over all retained edges, $\|E\|^{-1}\sum\limits_{(i,j)\in E}^{}{\Delta }_{ij}$ |
 | ${\hat{y}}_{i,2000}$ | Replicate-specific MM-predicted equilibrium of metric $y$ at the final burn-in census (generation 2000\) |
 | $\delta {y}_{i,t}$ | Standardized forward-phase deviation ${y}_{i,t}-{\hat{y}}_{i,2000}$ |
 
 
 
-## Figures
+# Figures
 
 ![](media/fig-divmigrate-sensitivity.png)
 
