@@ -68,7 +68,7 @@ The asymmetry index is derived from bandwidths, the pattern of topological conne
 
 ==FROM HERE==
 
-The asymmetry index is derived from bandwidths, the pattern of topological connections in the Population Graph and the full conditional genetic distance matrix, the combination of which has no closed-form sampling distribution and as a result hypothesis testing should rely on permuation approaches.  There is a heirarchy of hypotheses ordering by what the rejection of $H_0$ would elucidate, with each successive level conditioning on the one above it:
+The asymmetry index is derived from bandwidths, the pattern of topological connections in the Population Graph and the full conditional genetic distance matrix, the combination of which has no closed-form sampling distribution and as a result hypothesis testing should rely on permuation approaches.  There is a heirarchy of hypotheses ordering by what the rejection of $H_0$ would elucidate, with each successive level conditioning on the one above it, and requiring a different permutation schedule, all of which have been added to the `gstudio` R package.  
 
 1. **Network — omnibus.** $H_0: \Delta_{ij} = 0; \forall i \ne j$ for every edge in the graph; is there any asymmetry at all, anywhere? Tested by   rewiring the graph to random configurations of the same size/degree and asking whether the observed mean |Δ| across   the whole graph is unusual. Failing to reject means you have no basis to go hunting for directional edges at all, the graph as a whole looks like it could have arisen without any systematic asymmetry.
 
