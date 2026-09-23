@@ -1,14 +1,16 @@
 # Tab_FPRCalibration and Fig_FPRCalibration.
 #
-# Reproduces the calibration check of the fixed-topology permutation test
-# across the Stream C Arm A symmetric differentiation gradient (Isotropic,
+# Reproduces the calibration check of the edge-level "location" test
+# (asymmetry_significance(mode = "location"), the fixed-topology permutation
+# test) across the Stream C Arm A symmetric differentiation gradient (Isotropic,
 # sym-mid, sym-low, sym-verylow; N=100): whether the empirical edge-level
 # false-positive rate stays flat as neutral differentiation rises, at three
 # nominal alpha. Source data (data/fpr_calibration_summary.csv) is
 # the per-scenario/per-alpha summary already computed from the individual-
 # based simulation output by the private research repo's
 # R/specificity_analysis.R (fpr_calibration()); no raw simulation data is
-# required to run this script.
+# required to run this script. The fpr_bw_* columns hold the same check for
+# the "mechanism" test (mode = "mechanism", the bandwidth-alignment null).
 #
 # Run from the repository root:
 #   Rscript R/fpr_calibration.R
@@ -64,7 +66,7 @@ cat(sprintf("FPR at alpha=0.01 ratio to nominal = %sx\n", ratio1))
 cat(sprintf("Interior-only FPR range at alpha=0.05 = %.3f-%.3f, ratio = %sx\n",
             min(s5$fpr_int_mean), max(s5$fpr_int_mean), int_ratio))
 cat(sprintf("mean/median cGD ratio = %.2f\n", mm))
-cat(sprintf("Bandwidth-alignment null FPR range at alpha=0.05 = %.3f-%.3f, ratio = %sx\n",
+cat(sprintf("Mechanism (bandwidth-alignment) null FPR range at alpha=0.05 = %.3f-%.3f, ratio = %sx\n",
             bw_lo, bw_hi, bw_ratio))
 
 ## ---- Fig_FPRCalibration ---------------------------------------------------
