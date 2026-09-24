@@ -52,3 +52,6 @@ rsconnect/
 .CLAUDE
 .GEMINI
 data/derived
+local/
+
+
