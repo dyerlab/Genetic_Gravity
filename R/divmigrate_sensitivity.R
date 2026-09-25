@@ -6,8 +6,9 @@
 # against the empirical null supplied by the isotropic replicates at that same
 # generation. Source data (data/divmigrate_timecourse_timecourse.csv)
 # is the per-replicate/scenario/generation index summary already computed
-# from the individual-based simulation output by the private research repo's
-# R/divmigrate_timecourse.R; no raw simulation data or the diveRsity package
+# from the individual-based simulation output by the private research repo,
+# using divMigrate stat = "Nm" (see R/divmigrate_comparison.R for how the
+# divm_* columns are built); no raw simulation data or the diveRsity package
 # is required to run this script. The AUC/power logic below reimplements the
 # private repo's R/divmigrate_sensitivity.R verbatim (the rank-based
 # Mann-Whitney-style .auc() helper is shared with R/detection_analysis.R for

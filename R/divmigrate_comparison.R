@@ -6,9 +6,14 @@
 # over the forward phase. Source data (data/divmigrate_compare_summary.csv,
 # data/divmigrate_timecourse_timecourse.csv) are the per-replicate/
 # per-scenario/per-generation summaries already computed from the individual-
-# based simulation output by the private research repo's
-# R/divmigrate_compare.R and R/divmigrate_timecourse.R; no raw simulation data
-# or the diveRsity package is required to run this script. The time-course
+# based simulation output by the private research repo; no raw simulation data
+# or the diveRsity package is required to run this script. The compare summary
+# is from R/divmigrate_compare.R (divMigrate stat = "d", Jost's D). The
+# time-course table uses divMigrate stat = "Nm": its divm_* columns are the
+# mean (signed / absolute) edge asymmetry A_ij = m_i->j - m_j->i over each
+# snapshot's retained graph edges, taken from the saved per-census Nm matrices
+# (R/divmigrate_matrix_census.R), at the 21 generations of
+# R/divmigrate_timecourse.R (2004, every 50th to 2954, and 2999). The time-course
 # detection logic below reimplements the private repo's R/divmigrate_detection.R
 # (paired t-test of scenario-minus-isotropic signal per generation, plus the
 # first sustained-significant generation) directly on the cached per-replicate
