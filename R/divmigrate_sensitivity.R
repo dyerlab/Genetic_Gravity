@@ -36,13 +36,18 @@ suppressPackageStartupMessages({
 
 scn <- c("Isotropic", "Redistributed", "Obstructed")
 # divMigrate breakdown: relative Nm lies in [0, 1], so a valid snapshot's mean
-# |A_ij| cannot exceed 1. Snapshots whose mean is non-finite (NaN Nm on an
-# edge) or exceeds 1 (a finite but negative Nm on an edge, of order -1e10 to
-# -1e13) are the same differentiation-collapse failure and are set to NA for
-# divMigrate only, so they drop out of means, tests, and AUC alike.
+# |A_ij| cannot exceed 1, and a valid Nm matrix never contains an exact zero
+# (none of the 24,154 NaN-free per-census matrices do). Three signatures of
+# the same differentiation-collapse failure are set to NA for divMigrate only,
+# so they drop out of means, tests, and AUC alike:
+#   non-finite  NaN Nm on a graph edge (the estimate is 0/0);
+#   > 1         a finite but negative Nm on an edge (order -1e10 to -1e13);
+#   == 0        an infinite Nm elsewhere in the matrix: divMigrate divides by
+#               the matrix maximum, so an infinite maximum sets every finite
+#               entry, and hence every edge asymmetry, to exactly 0.
 tc <- read.csv("data/divmigrate_timecourse_timecourse.csv", stringsAsFactors = FALSE) |>
   mutate(scenario  = factor(scenario, levels = scn),
-         dm_broken = !is.finite(divm_abs) | divm_abs > 1,
+         dm_broken = !is.finite(divm_abs) | divm_abs > 1 | divm_abs == 0,
          divm_signed = ifelse(dm_broken, NA_real_, divm_signed),
          divm_abs    = ifelse(dm_broken, NA_real_, divm_abs))
 
