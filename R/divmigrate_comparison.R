@@ -57,8 +57,16 @@ cat(sprintf(
 
 ## ---- Fig_DivMigrateTimecourse --------------------------------------------
 
+# divMigrate breakdown: relative Nm lies in [0, 1], so a valid snapshot's mean
+# |A_ij| cannot exceed 1. Snapshots whose mean is non-finite (NaN Nm on an
+# edge) or exceeds 1 (a finite but negative Nm on an edge, of order -1e10 to
+# -1e13) are the same differentiation-collapse failure and are set to NA for
+# divMigrate only, so they drop out of means, tests, and AUC alike.
 tc <- read.csv("data/divmigrate_timecourse_timecourse.csv", stringsAsFactors = FALSE) |>
-  mutate(scenario = factor(scenario, levels = scn))
+  mutate(scenario  = factor(scenario, levels = scn),
+         dm_broken = !is.finite(divm_abs) | divm_abs > 1,
+         divm_signed = ifelse(dm_broken, NA_real_, divm_signed),
+         divm_abs    = ifelse(dm_broken, NA_real_, divm_abs))
 
 # Reimplements R/divmigrate_detection.R: pair each asymmetric-scenario
 # replicate's signed signal with the same replicate's isotropic signal at the

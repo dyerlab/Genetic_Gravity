@@ -91,4 +91,4 @@ $K=25$ demes, $N=100$, $L=20$ loci, 2000-generation burn-in, 1000-generation for
 
 ## Lag-1 Stability
 
-![](media/fig-divmig-lag1-all.png)
+![](media/fig-divmig-lag1-isoband.png)
