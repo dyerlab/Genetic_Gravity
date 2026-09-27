@@ -5,6 +5,30 @@
 
 Briefly, $K$ populations are represented as centroids in a multivariate genetic space, with the $K\times K$ Euclidean distance matrix $D$ double-centered via the idempotent operator $H=I-\frac{1}{K}\mathbf{1}\mathbf{1}^{T}$ to yield the covariance matrix $C=-\frac{1}{2}HD^{2}H$ (Dyer et al., 2004; Gower, 1966). Population Graph edges are retained where the corresponding partial correlation (from $C^{-1}$) is significant, so that an edge $e_{ij}\in E$ indicates a conditional genetic dependency between $i$ and $j$ that cannot be explained through intermediate populations (Dyer & Nason, 2004). I write $N(i)$ for the neighbors of node $i$ in $G$ and $k_{i}=|N(i)|$ for its degree.
 
+*Tab_Notation:* Mathematical notation used throughout.
+
+| Symbol                   | Description                                                  |
+|:------------------------:|--------------------------------------------------------------|
+|  $K$                     | Number of populations (strata)                               |
+|  $N$                     | Number of individuals per population                         |
+|  $L$                     | Number of loci                                               |
+|  $D$                     | $K\times K$ matrix of inter-centroid Euclidean distances in genetic space  |
+|  $C$                     | Double-centered covariance matrix derived from $D$           |
+|  $H$                     | Idempotent centering operator  $I-\frac{1}{K}\mathbf{1}\mathbf{1}^{T}$ |
+|  $G=\{V,E\}$             | Population Graph with vertex set $V$ and edge set $E$        |
+| $N(i)$                   | Neighbor set of node $i$ in $G$                              |
+| $k_{i}$                  | Topological degree of node $i$                               |
+| $e_{ij}$                 | Symmetric edge weight between populations $i$ and $j$        |
+| $b_{i}$                  | Local genetic-gravity bandwidth of the node $i$              |
+| $p_{j\mid i}$            | Conditional probability that $j$ is a neighbor of $i$        |
+| $w_{i\rightarrow j}$     | Directional weight from $i$ to $j$ (equal to $p_{j\mid i}$ ) |
+| $\Delta_{ij}$            | Asymmetry index $w_{i\rightarrow j}-w_{j\rightarrow i}$      |
+| $\bar{\Delta}$           | Mean asymmetry index over all retained edges, $\|E\|^{-1}\sum\limits_{(i,j)\in E}^{}\Delta_{ij}$  |
+| $\hat{y}_{i,2000}$       | Replicate-specific MM-predicted equilibrium of metric $y$ at the final burn-in census (generation 2000)  |
+| $\delta y_{i,t}$         | Standardized forward-phase deviation $y_{i,t}-{\hat{y}}_{i,2000}$  |
+| $\bar{C}_D$             | Mean degree centrality of the Population Graph, averaged over nodes |
+| Diameter                 | Longest shortest-path distance between any two nodes in the Population Graph |
+
 ### Trend-fitting for forward-phase metrics
 
 The isotropic burn-in relaxes to a single equilibrium, and a three-parameter exponential-equilibrium curve fits it well (Fig_IsotropicBaseline). The same form was tried for the forward-phase trajectories under the redistributed and obstructed treatments and rejected: for redistributed diameter and signed $\bar\Delta$, and for obstructed diameter, at least one parameter (typically the plateau) was driven far outside the range of the observed data by the optimizer rather than converging to a value the fit could support — a sign that the underlying trajectory is not a simple relaxation to one equilibrium over this window, consistent with the biphasic and rise-then-plateau shapes described in Results.
@@ -45,7 +69,32 @@ At $N=50$, the migration-ratio × $N_e$ detection grid (Methods) exposes a limit
 
 Net single-snapshot power—counting graph-construction failures as non-detections rather than dropping them—rises with both the migration asymmetry ratio and population size (Fig_StreamCPower, Tab_DetectionLimitsEndState). The $N=50$ row is limited not by the index's sensitivity but by graph construction itself: only 40% of replicates yielded a constructible graph at the 4:1 ratio, which caps attainable power there irrespective of signal strength. Among the population sizes that do reach the 80% threshold, the minimum detectable ratio is comparatively stable (2.0–2.5:1) even as the composite scale $4N_{e}\Delta m$ at those thresholds spans 6.7–34.3 (a 5.1-fold range); over this range, the detection limit tracks the migration asymmetry *ratio* more closely than the drift-relative composite (Discussion).
 
-The end-state envelope above reads the grid at the final generation, where the $N=50$ cells are partially truncated by construction failure. To separate the method's intrinsic sensitivity from this buildability floor, the same grid was re-evaluated at the common pre-fixation horizon—the latest generation at which every cell, $N=50$ included, is still fully constructible. At that horizon there are no construction failures, so net and conditional power coincide, and every population size is scored on a complete, equally drift-advanced sample. Evaluated at generation 2744 (about 744 generations after onset), the detection limits are broadly consistent with the end state: at $N=50$, where the end-state row is capped by construction failure, the method reaches the 80% threshold at a 2.5:1 ratio on the complete sample, whereas at the end state it does not reach the threshold at any tested ratio. This places the $N=50$ shortfall at the end state with graph buildability rather than with the index's sensitivity—given a constructible graph, the directional signal is detectable at small $N_{e}$ at a ratio comparable to larger populations—and keeps the sensitivity floor (the ratio threshold) usefully distinct from the buildability floor (small-$N_{e}$ fixation) in stating the operating envelope.
+![](media/fig-construction-survival.png)
+*Fig_ConstructionSurvival:* Graph-construction survival across the forward window. Each line shows the percentage of replicates that yield a constructible Population Graph at each census generation, for alternative migration ratios and population sizes. For every N \>= 100, the graph is constructible for all replicates throughout the window; only at N = 50 does drift-driven fixation erode constructibility—earliest and most severely at the steepest (4:1) ratio. The dotted vertical line marks the latest generation at which every cell is still fully constructible (the common pre-fixation horizon).
+
+![](media/fig-construction-erosion.png)
+*Fig_ConstructionErosion:* Erosion of the Population Graph approaching construction failure: mean retained edges among the surviving graphs, by migration ratio and population size. Each line ends at the last generation a graph could be built. Edge counts decline smoothly as drift removes conditional dependencies.
+
+![](media/fig-streamc-power.png)
+*Fig_StreamCPower:* Operating envelope of genetic gravity across the migration-ratio × $N_{e}$ grid. Cells show net single-snapshot power at a fixed 5% false-positive rate (matched symmetric null at each Ne), computed over all intended replicates. Graph-construction failures are counted as non-detections rather than dropped. Power increases with the migration asymmetry ratio and with population size; at N = 50, graph-construction failure under strong drift limits the attainable power irrespective of signal strength.
+
+*Tab_DetectionLimitsEndState:* Minimum detectable migration asymmetry ratio as a function of population size N: the smallest simulated ratio reaching \>= 80% net power at a 5% FPR (net power counts graph-construction failures as non-detections). The composite evolutionary scale 4 \* Ne \* delta\_m at each threshold is shown for comparison. Population sizes that do not reach 80% net power at any tested ratio are omitted.
+
+| Population Size (N) | Detectable Ratio | Power at Threshold | Composite Scale (4NeΔm) |
+| :---- | :---: | :---: | :---: |
+| 100 | 2.0:1 | 80.0% | 6.67 |
+| 200 | 2.5:1 | 95.0% | 17.14 |
+| 400 | 2.5:1 | 95.0% | 34.29 |
+
+The end-state envelope above reads the grid at the final generation, where the $N=50$ cells are partially truncated by construction failure. To separate the method's intrinsic sensitivity from this buildability floor, the same grid was re-evaluated at the common pre-fixation horizon—the latest generation at which every cell, $N=50$ included, is still fully constructible. At that horizon there are no construction failures, so net and conditional power coincide, and every population size is scored on a complete, equally drift-advanced sample. Evaluated at generation 2744 (about 744 generations after onset; Tab_DetectionLimitsPreFixation), the detection limits are broadly consistent with the end state: at $N=50$, where the end-state row is capped by construction failure, the method reaches the 80% threshold at a 2.5:1 ratio on the complete sample, whereas at the end state it does not reach the threshold at any tested ratio. This places the $N=50$ shortfall at the end state with graph buildability rather than with the index's sensitivity—given a constructible graph, the directional signal is detectable at small $N_{e}$ at a ratio comparable to larger populations—and keeps the sensitivity floor (the ratio threshold) usefully distinct from the buildability floor (small-$N_{e}$ fixation) in stating the operating envelope.
+
+*Tab_DetectionLimitsPreFixation:* Minimum detectable migration asymmetry ratio at the common pre-fixation horizon — the latest forward generation at which every grid cell (including N = 50) yields a constructible graph for all replicates. Because no replicate has yet failed to build at this horizon, net power equals conditional power, and all population sizes are compared on complete samples, isolating sensitivity from the buildability floor that truncates the N = 50 end-state. Population sizes that do not reach 80% power at any tested ratio are omitted.
+
+| Population Size (N) | Detectable Ratio | Power at Threshold | Composite Scale (4NeΔm) |
+| :---- | :---: | :---: | :---: |
+| 50 | 2.5:1 | 80.0% | 4.29 |
+| 200 | 2.5:1 | 80.0% | 17.14 |
+| 400 | 4.0:1 | 90.0% | 48.00 |
 
 ### Differentiation without Direction
 
@@ -53,9 +102,33 @@ The framework also claims *specificity*: the asymmetry index should respond to t
 
 Over 499 permutations per snapshot (20 snapshots per scenario), the empirical edge-level false-positive rate is essentially flat across the differentiation gradient (Tab_FPRCalibration, Fig_FPRCalibration): as mean differentiation rises about 2.1-fold from the isotropic baseline to the lowest-migration arm, the FPR at $\alpha =0.05$ stays within 0.061–0.089, and is in fact slightly lower at the most-differentiated arm. The rate does sit modestly above nominal—roughly 1.5$\times$ at $\alpha =0.05$ and somewhat more at the stringent $\alpha =0.01$ (about 2.8$\times$)—but that offset is differentiation-independent, not neutral structure being read as direction. Holding the adjacency fixed and permuting only the centroid identities, differentiation alone does not inflate the false-positive rate (Discussion). The offset is not a pendant-edge artifact either: restricting to interior edges (dropping those incident to a degree-one node) leaves the $\alpha =0.05$ rate essentially unchanged at 0.061–0.089 (about 1.5$\times$ nominal), so the mild anti-conservatism is distributed across the graph rather than localized to the topologically forced leaf edges. [NOTE: original text had a `gstudio pendant argument` implementation aside here — cut during the earlier code-vs-biology pass, not restored.] The mean and median conditional distances are close (mean/median $\approx$ 1.08, Tab_FPRCalibration), so the per-edge weight distribution is roughly symmetric and edge-weight outliers are not the driver.
 
+*Tab_FPRCalibration:* Calibration of the Location test across the symmetric differentiation gradient. For each symmetric scenario, the table gives the mean and median conditional genetic distance (the median guards against a few large-cGD edges inflating the mean) and the empirical edge-level false-positive rate—the mean fraction of edges flagged at p \< α over the sampled snapshots—at three nominal α. The diagnostic property is that each FPR column remains roughly constant across rows (invariant under differentiation), not that it equals α exactly: the rates run modestly above nominal by a differentiation-independent offset.
+
+| Scenario | Mean cGD | Median cGD | FPR (α=0.01) | FPR (α=0.05) | FPR (α=0.10) |
+| :---- | :---: | :---: | :---: | :---: | :---: |
+| Isotropic | 3.881 | 3.599 | 0.036 | 0.088 | 0.132 |
+| sym-mid | 5.311 | 4.982 | 0.019 | 0.066 | 0.108 |
+| sym-low | 6.640 | 6.054 | 0.033 | 0.089 | 0.135 |
+| sym-verylow | 8.181 | 7.646 | 0.025 | 0.061 | 0.100 |
+
+![](media/fig-fpr-calibration.png)
+*Fig_FPRCalibration:* Observed versus nominal false-positive rate for the Location test across the symmetric gradient. Points are the mean empirical edge-level FPR (± 1 SE over sampled snapshots) at each nominal α, coloured by scenario (increasing neutral differentiation). The dashed line is perfect calibration (observed = nominal). The scenarios cluster at a common height at each α rather than climbing with differentiation (the false-positive rate is invariant to drift-mediated differentiation) while sitting modestly above the diagonal by a differentiation-independent offset.
+
 A second null isolates the cause of the offset. The Mechanism test—which holds the metric geometry (distances and adjacency) fixed and permutes only the node bandwidths, testing directional *alignment* rather than the presence of any structure—yields an $\alpha =0.05$ false-positive rate of 0.013–0.021 (about 0.3$\times$ nominal). It is therefore conservative where the Location test is anti-conservative (Discussion). Neither null is exactly calibrated—the precisely calibrated reference is the empirical isotropic null used in the simulation study.
 
 The same specificity is evident in the graph-mean index $\bar{\Delta}$, a descriptive complement to the calibrated per-edge test above. If the index were merely a differentiation detector, $\bar{\Delta}$ would climb with the gradient; if it is direction-specific, it should stay at the isotropic null however high differentiation rises—the "scissors" of Fig_StreamCScissors. Across the symmetric gradient, the drift–migration balance tips steadily toward drift: as the per-direction rate falls, neutral differentiation climbs sharply—mean cGD at the lowest-migration arm reaches roughly 2.6$\times$ its isotropic value—yet the *signed* mean asymmetry index never leaves the isotropic null, staying below 9e-04 across the entire gradient with no trend in sign (Tab_DifferentiationVsAsymmetry). That is the scissors of Fig_StreamCScissors: the *amount* of structure rises sharply while its *direction* does not. The absolute index $|\bar{\Delta}|$ does creep up modestly (from 0.0047 under isotropy to about 0.0058 at the lowest-migration arm) as differentiation rises (Discussion), but it stays well below the levels the asymmetric scenarios reach, which depart from the null at differentiation far below what this gradient reaches.
+
+*Tab_DifferentiationVsAsymmetry:* Differentiation versus asymmetry at the final forward generation across the symmetric gradient. Mean cGD rises as migration falls (drift-driven differentiation); the signed and absolute mean asymmetry index stay near the isotropic baseline.
+
+| Scenario | Mean cGD | Signed Δ̄ | \|Δ̄\| |
+| :---- | :---: | :---: | :---: |
+| Isotropic | 3.730 | 9e-04 | 0.0047 |
+| sym-mid | 5.526 | -2e-04 | 0.0050 |
+| sym-low | 7.140 | 2e-04 | 0.0067 |
+| sym-verylow | 9.553 | 1e-04 | 0.0058 |
+
+![](media/fig-streamc-scissors.png)
+*Fig_StreamCScissors:* Specificity ‘scissors’ across the symmetric differentiation gradient. Left: neutral differentiation (mean conditional genetic distance) rises as per-direction migration falls and drift dominates. Right: the mean asymmetry index stays pinned at the isotropic null (dashed line at zero) over the same gradient. Symmetric migration raises the amount of structure but imposes no direction, so the index does not move.
 
 ### Pendants, boundary effects, and other marginalia issues relevant to applying $\Delta_{ij}$
 
@@ -79,6 +152,15 @@ Expected heterozygosity at the chain ends sits below the interior in every scena
 *Fig_DivMigrateLag1:* Census-to-census (lag-1, 5-generation) stability of directional structure, by treatment (panels) and matrix type (color): median Spearman's $\rho$ between each census's matrix and the following census's matrix, for divMigrate's $N_m$ matrix (blue) and the pGD-derived similarity matrix $S_{ij}$ (red), across all replicates. The shaded bands, carried into the redistributed and obstructed panels, are the isotropic across-replicate mean $\pm$ 1 SD for each series, shown as a null reference. Under isotropic migration both series are flat throughout. Under redistributed, $N_m$ departs below its isotropic band from roughly generation 2500–2600 onward, while $S$ instead stays within its band until becoming markedly more volatile and dropping below it from approximately generation 2700 on. Under obstructed, $N_m$ stays close to its isotropic band throughout, while $S$ rises steadily above its band from roughly generation 2400–2500 onward.
 
 ### Tables
+
+*Tab_ToolSummary:* What each tool in the framework certifies, the null it is referenced to, and its principal limitation. The framework is reliable at the network level and exploratory at the edge level; practitioners should select the strongest level their sampling design supports and reference significance to the matching null.
+
+| Inferential target | Recommended tool | Null / reference | Reliably certifies | Principal limitation |
+| :---- | :---- | :---- | :---- | :---- |
+| Network-level direction | $\bar{\Delta}$, graph metrics | Empirical isotropic null | Presence, cause, and timing of asymmetry | Needs a replicate or time-series null; sign needs a node ordering |
+| Edge-level (which edges) | $\Delta_{ij}$ + permutation / bandwidth null + FDR | Location (anti-cons.) or Mechanism (cons.) | Exploratory ranking of candidate edges | Bandwidth-sensitive sign/rank, degree-confounded, non-independent |
+| Detection feasibility | Single-snapshot power envelope | Matched isotropic null at each $N_{e}$ | Whether a given asymmetry is detectable from one snapshot | Graph buildability floor at small $N_{e}$ (fixation) |
+| Cross-method check | divMigrate comparison | — | Concordance where flow is present | divMigrate confounds differentiation magnitude; blows up at fixation |
 
 *Tab_SensitivityAUC:* Single-snapshot sensitivity at several checkpoints after onset, by index, for each asymmetric scenario (panels). Each cell is AUC (power at a fixed 5% false-positive rate); column headers are generations since onset (targets \~50–400, snapped to the every-fifth-generation census grid). AUC is the rank-based separation of asymmetric from symmetric replicates (0.5 = no discrimination, 1 = perfect). The checkpoints span the early window, where AUC can dip toward or below 0.5 before recovering, as well as the later plateau.
 
