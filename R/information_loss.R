@@ -37,8 +37,9 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-fwd     <- read.csv("data/forward_scenarios.csv", stringsAsFactors = FALSE)
-nl      <- read.csv("data/information_null.csv", stringsAsFactors = FALSE) |> filter(ok == 1)
+source("exploratory/gravity_convention.R")   # sign convention; dbar = new-sign Delta-bar
+fwd     <- gc_read_forward()
+nl      <- gc_read_information_null() |> filter(ok == 1)
 iso_par <- read.csv("data/derived/isotropic_fit_params.csv", stringsAsFactors = FALSE)
 
 red <- filter(fwd, Scenario == "Redistributed")
@@ -58,9 +59,9 @@ null_bins <- nl |>
             abs_med  = median(mean_abs_delta),
             abs_q05  = quantile(mean_abs_delta, 0.05),
             abs_q95  = quantile(mean_abs_delta, 0.95),
-            sgn_med  = median(mean_delta),
-            sgn_q05  = quantile(mean_delta, 0.05),
-            sgn_q95  = quantile(mean_delta, 0.95),
+            sgn_med  = median(dbar),
+            sgn_q05  = quantile(dbar, 0.05),
+            sgn_q95  = quantile(dbar, 0.95),
             .groups  = "drop")
 
 ## ---- Tab_InformationNull --------------------------------------------------
@@ -75,9 +76,9 @@ tbl_null <- red |>
             `Null |Delta|`             = first(abs_med),
             `Ratio`                    = median(mean_abs_delta) / first(abs_med),
             `> null 95th (|Delta|)`    = mean(mean_abs_delta > abs_q95),
-            `Redistributed Delta-bar`  = median(mean_delta),
-            `> null 95th (Delta-bar)`  = mean(mean_delta > sgn_q95),
-            `< null 5th (Delta-bar)`   = mean(mean_delta < sgn_q05),
+            `Redistributed Delta-bar`  = median(dbar),
+            `> null 95th (Delta-bar)`  = mean(dbar > sgn_q95),
+            `< null 5th (Delta-bar)`   = mean(dbar < sgn_q05),
             .groups = "drop") |>
   arrange(desc(bin)) |>
   rename(`Polymorphic loci / deme` = bin) |>
@@ -115,7 +116,7 @@ cat(sprintf(paste0(
 
 ## ---- Fig_InformationNull --------------------------------------------------
 
-lev <- c("mean_abs_delta", "mean_delta")
+lev <- c("mean_abs_delta", "dbar")
 lab <- c("bar('|' * Delta * '|')", "bar(Delta)")
 
 pts <- red |>
@@ -123,7 +124,7 @@ pts <- red |>
   mutate(Statistic = factor(stat, lev, lab))
 band <- bind_rows(
   transmute(null_bins, x, med = abs_med, lo = abs_q05, hi = abs_q95, stat = "mean_abs_delta"),
-  transmute(null_bins, x, med = sgn_med, lo = sgn_q05, hi = sgn_q95, stat = "mean_delta")) |>
+  transmute(null_bins, x, med = sgn_med, lo = sgn_q05, hi = sgn_q95, stat = "dbar")) |>
   mutate(Statistic = factor(stat, lev, lab))
 zero <- data.frame(Statistic = factor("bar(Delta)", lab), y = 0)
 
@@ -139,6 +140,6 @@ fig_null <- ggplot(pts, aes(n_poly_pop, value)) +
   labs(x = "Polymorphic loci per deme (of 20)", y = NULL) +
   theme_minimal(base_size = 11)
 
-out_png <- "data/derived/fig-information-null_reproduced.png"
+out_png <- "media/fig-information-null-v2.png"
 ggsave(out_png, fig_null, width = 7, height = 5.5, dpi = 150)
 cat(sprintf("\nSaved %s\n", out_png))

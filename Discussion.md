@@ -1,4 +1,4 @@
-# Discussion
+# Discussion - DO NOT CONSIDER CONTENT
 
 ## The contribution and its scope
 

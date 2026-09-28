@@ -25,7 +25,7 @@
 #
 # Source data (data/isotropic_baseline.csv) is the N=100 burn-in and scenario-1
 # subset of the private research repo's data/graph_summary.rda
-# (R/graph_summarizer.R), with mean_delta and mean_abs_delta recomputed from the
+# (R/graph_summarizer.R), with dbar and mean_abs_delta recomputed from the
 # stored graphs with gstudio::graph_asymmetries(). Diameter is the weighted
 # (conditional genetic distance) igraph diameter. C_D-bar is derived from the
 # edge count, since the mean of d(v_i)/(K-1) over K nodes equals 2|E|/(K(K-1)).
@@ -39,7 +39,8 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-iso <- read.csv("data/isotropic_baseline.csv", stringsAsFactors = FALSE)
+source("exploratory/gravity_convention.R")   # sign convention; dbar = new-sign Delta-bar
+iso <- gc_read_stored("data/isotropic_baseline.csv")
 
 K <- 25
 BURNIN_END <- 2000
@@ -118,13 +119,13 @@ cat(sprintf("Fits failing to converge: %d of %d\n",
 # Signed Delta-bar: per-replicate window means, t-interval across replicates.
 signed_window <- function(lo, hi) {
   r  <- iso |> filter(generation >= lo, generation <= hi) |>
-    group_by(replicate) |> summarise(m = mean(mean_delta), .groups = "drop")
+    group_by(replicate) |> summarise(m = mean(dbar), .groups = "drop")
   tt <- t.test(r$m)
   c(mean = mean(r$m), lo = tt$conf.int[1], hi = tt$conf.int[2])
 }
 rv_iso_signed_all <- signed_window(0, 2999)
 rv_iso_signed_fwd <- signed_window(BURNIN_END, 2999)
-rv_iso_signed_max <- max(abs(tapply(iso$mean_delta, iso$generation, mean)))
+rv_iso_signed_max <- max(abs(tapply(iso$dbar, iso$generation, mean)))
 
 cat(sprintf(paste0(
   "\nrv_iso_signed_all = %.5f (95%% CI %.5f to %.5f; gens 0-2999)",

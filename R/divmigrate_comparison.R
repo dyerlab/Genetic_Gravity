@@ -19,6 +19,12 @@
 # first sustained-significant generation) directly on the cached per-replicate
 # time-course table.
 #
+# Sign convention: exploratory/gravity_convention.R. The stored gravity
+# columns (gravity_signed, and median_rho = rho(old Delta, A) per edge) are
+# old-sign and are negated there or below; divMigrate's A (row = source) is
+# already source-positive, so after conversion both indices are positive when
+# the upstream population is the source.
+#
 # Run from the repository root:
 #   Rscript R/divmigrate_comparison.R
 
@@ -27,13 +33,17 @@ suppressPackageStartupMessages({
   library(tidyr)
   library(ggplot2)
 })
+source("exploratory/gravity_convention.R")
 
 ## ---- Tab_GravityVsDivMigrate --------------------------------------------
 
 cmp <- read.csv("data/divmigrate_compare_summary.csv", stringsAsFactors = FALSE)
 
 scn <- c("Isotropic", "Redistributed", "Obstructed")
-cmp <- cmp |> mutate(scenario = factor(scenario, levels = scn)) |> arrange(scenario)
+cmp <- cmp |> mutate(scenario = factor(scenario, levels = scn),
+                     gravity_dbar = gc_dbar_from_stored(gravity_signed),
+                     median_rho = -median_rho) |>   # rho(Delta, A) with the new Delta
+  select(-gravity_signed) |> arrange(scenario)
 
 tbl_divmigrate <- cmp |>
   transmute(Scenario = scenario,
@@ -67,7 +77,7 @@ cat(sprintf(
 #   == 0        an infinite Nm elsewhere in the matrix: divMigrate divides by
 #               the matrix maximum, so an infinite maximum sets every finite
 #               entry, and hence every edge asymmetry, to exactly 0.
-tc <- read.csv("data/divmigrate_timecourse_timecourse.csv", stringsAsFactors = FALSE) |>
+tc <- gc_read_divmigrate_timecourse() |>
   mutate(scenario  = factor(scenario, levels = scn),
          dm_broken = !is.finite(divm_abs) | divm_abs > 1 | divm_abs == 0,
          divm_signed = ifelse(dm_broken, NA_real_, divm_signed),
@@ -80,7 +90,7 @@ tc <- read.csv("data/divmigrate_timecourse_timecourse.csv", stringsAsFactors = F
 # which the test stays significant at alpha for every later generation.
 long <- tc |>
   select(replicate, scenario, generation,
-         gravity = gravity_signed, divMigrate = divm_signed) |>
+         gravity = gravity_dbar, divMigrate = divm_signed) |>
   pivot_longer(c(gravity, divMigrate), names_to = "method", values_to = "signal")
 
 ref <- long |>
@@ -147,6 +157,6 @@ fig_dm_timecourse <- ggplot(sig_w, aes(generation, mean_diff_w, colour = method,
        colour = NULL, fill = NULL) +
   theme_minimal() + theme(legend.position = "top")
 
-out_png <- "data/derived/fig-divmigrate-timecourse_reproduced.png"
+out_png <- "media/fig-divmigrate-timecourse-v2.png"
 ggsave(out_png, fig_dm_timecourse, width = 8, height = 4, dpi = 150)
 cat(sprintf("\nSaved reproduced Fig_DivMigrateTimecourse to %s\n", out_png))

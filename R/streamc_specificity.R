@@ -23,7 +23,8 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-graph_summary <- read.csv("data/graph_summary.csv", stringsAsFactors = FALSE)
+source("exploratory/gravity_convention.R")   # sign convention; dbar = new-sign Delta-bar
+graph_summary <- gc_read_stored("data/graph_summary.csv")
 
 ARM_A_CONDS  <- c(1L, 4L, 5L, 6L)
 ARM_A_LABELS <- c("1" = "Isotropic", "4" = "sym-mid",
@@ -51,13 +52,13 @@ sa <- list(
   traj = fw |>
     group_by(scenario, generation, step) |>
     summarise(mean_cGD   = mean(mean_cGD,   na.rm = TRUE),
-              mean_delta = mean(mean_delta, na.rm = TRUE), .groups = "drop"),
+              dbar = mean(dbar, na.rm = TRUE), .groups = "drop"),
   summary = fw |>
     filter(generation == 2999) |>
     group_by(scenario) |>
     summarise(mean_cGD     = round(mean(mean_cGD, na.rm = TRUE), 3),
-              signed_delta = round(mean(mean_delta, na.rm = TRUE), 4),
-              abs_delta    = round(mean(abs(mean_delta), na.rm = TRUE), 4),
+              signed_delta = round(mean(dbar, na.rm = TRUE), 4),
+              abs_delta    = round(mean(abs(dbar), na.rm = TRUE), 4),
               .groups = "drop"))
 
 ## ---- Tab_DifferentiationVsAsymmetry ---------------------------------------
@@ -87,10 +88,10 @@ cat(sprintf("|Delta-bar|: isotropic = %s, %s = %s\n",
 ## ---- Fig_StreamCScissors --------------------------------------------------
 
 fig_scissors <- sa$traj |>
-  pivot_longer(c(mean_cGD, mean_delta), names_to = "measure", values_to = "value") |>
+  pivot_longer(c(mean_cGD, dbar), names_to = "measure", values_to = "value") |>
   mutate(measure = recode(measure,
                            mean_cGD   = "Differentiation (mean cGD)",
-                           mean_delta = "Asymmetry index (Delta-bar)")) |>
+                           dbar = "Asymmetry index (Delta-bar)")) |>
   ggplot(aes(step, value, colour = scenario)) +
   geom_hline(data = data.frame(measure = "Asymmetry index (Delta-bar)", y = 0),
              aes(yintercept = y), linetype = "dashed", colour = "grey60") +
@@ -99,6 +100,6 @@ fig_scissors <- sa$traj |>
   labs(x = "Generations since onset", y = NULL, colour = NULL) +
   theme_minimal(base_size = 11) + theme(legend.position = "top")
 
-out_png <- "data/derived/fig-streamc-scissors_reproduced.png"
+out_png <- "media/fig-streamc-scissors-v2.png"
 ggsave(out_png, fig_scissors, width = 9, height = 3.6, dpi = 150)
 cat(sprintf("\nSaved reproduced Fig_StreamCScissors to %s\n", out_png))

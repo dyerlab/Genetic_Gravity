@@ -16,10 +16,14 @@
 # intercept excluded from the plotted prediction. A smoother is used rather
 # than a parametric form because the forward trajectories are not approaches
 # to a single equilibrium: Redistributed diameter is sigmoidal, its signed
-# Delta-bar is biphasic (negative, then reversing to positive), and Obstructed
+# Delta-bar rises and then changes sign late in the window, and Obstructed
 # diameter rises and then declines, so no single parametric family fits all
 # of them without parameters running to their bounds. The isotropic signed
 # Delta-bar is fit with the same smoother for Fig_SignedAsymmetry.
+#
+# Sign convention: exploratory/gravity_convention.R (higher = more of a source;
+# Delta-bar > 0 when upstream populations read as sources). The stored
+# mean_delta column is old-sign and is read only through gc_read_forward().
 #
 # Source data: data/forward_scenarios.csv (R/extract_forward_scenarios.R) and
 # data/derived/isotropic_fit_params.csv (written by R/isotropic_baseline.R,
@@ -35,7 +39,8 @@ suppressPackageStartupMessages({
   library(mgcv)
 })
 
-fwd     <- read.csv("data/forward_scenarios.csv", stringsAsFactors = FALSE)
+source("exploratory/gravity_convention.R")
+fwd     <- gc_read_forward()
 iso_par <- read.csv("data/derived/isotropic_fit_params.csv", stringsAsFactors = FALSE)
 
 GENS <- 2000:2999
@@ -94,8 +99,7 @@ scenario_figure <- function(scn) {
     theme_minimal(base_size = 11)
 }
 
-save_fig <- function(p, name, height) {
-  out_png <- sprintf("data/derived/%s_reproduced.png", name)
+save_fig <- function(p, name, height, out_png = sprintf("data/derived/%s_reproduced.png", name)) {
   ggsave(out_png, p, width = 7, height = height, dpi = 150)
   cat(sprintf("Saved %s\n", out_png))
 }
@@ -107,7 +111,7 @@ save_fig(scenario_figure("Obstructed"),    "fig-obstructed",    6.5)
 
 ## ---- Fig_SignedAsymmetry --------------------------------------------------
 
-signed <- fwd |> transmute(Scenario, replicate, generation, value = mean_delta)
+signed <- fwd |> transmute(Scenario, replicate, generation, value = dbar)
 
 iso_signed <- fit_trend(filter(signed, Scenario == "Isotropic"))$curve
 cat(sprintf("\nIsotropic signed Delta-bar trend range: %.5f to %.5f\n",
@@ -141,4 +145,10 @@ fig_signed <- ggplot(fac(sig_band), aes(generation)) +
   labs(x = "Generation", y = expression(bar(Delta))) +
   theme_minimal(base_size = 11)
 
-save_fig(fig_signed, "fig-signed-asymmetry", 5)
+for (s in scn_levels) {
+  cv <- sig_fit[[s]]$curve; zc <- cv$generation[which(diff(sign(cv$fit)) != 0) + 1]
+  cat(sprintf("  %-13s trend max %.4f at %d; min %.4f at %d; sign changes at %s\n", s,
+              max(cv$fit), cv$generation[which.max(cv$fit)], min(cv$fit),
+              cv$generation[which.min(cv$fit)], paste(zc, collapse = ", ")))
+}
+save_fig(fig_signed, "fig-signed-asymmetry", 5, "media/fig-signed-asymmetry-v2.png")

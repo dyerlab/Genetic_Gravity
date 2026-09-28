@@ -30,6 +30,9 @@
 #                         aligned at its own (smoothed) peak, with the
 #                         isotropic alignment control (see the section below).
 #
+# Signed Delta-bar follows exploratory/gravity_convention.R (higher = more of
+# a source).
+#
 # Source data: data/forward_scenarios.csv (R/extract_forward_scenarios.R) and
 # data/derived/isotropic_fit_params.csv (R/isotropic_baseline.R).
 #
@@ -43,7 +46,8 @@ suppressPackageStartupMessages({
   library(mgcv)
 })
 
-fwd     <- read.csv("data/forward_scenarios.csv", stringsAsFactors = FALSE)
+source("exploratory/gravity_convention.R")   # sign convention; dbar = new-sign Delta-bar
+fwd     <- gc_read_forward()
 iso_par <- read.csv("data/derived/isotropic_fit_params.csv", stringsAsFactors = FALSE)
 
 red <- filter(fwd, Scenario == "Redistributed")
@@ -108,10 +112,11 @@ trend_on_clock <- function(col) {
   as.numeric(predict(m, grid))
 }
 abs_tr <- trend_on_clock("mean_abs_delta")
-sgn_tr <- trend_on_clock("mean_delta")
+sgn_tr <- trend_on_clock("dbar")
 
-i_min  <- which.min(sgn_tr)
-i_zero <- i_min - 1 + which(sgn_tr[i_min:length(sgn_tr)] > 0)[1]
+# New sign: Delta-bar peaks (imposed direction) and later changes sign.
+i_min  <- which.max(sgn_tr)
+i_zero <- i_min - 1 + which(sgn_tr[i_min:length(sgn_tr)] < 0)[1]
 
 rv_lc_sgn_min      <- sgn_tr[i_min]
 rv_lc_sgn_min_ae   <- grid$sumAe_total[i_min]
@@ -128,11 +133,11 @@ bin_sd <- function(key, col) {
 }
 rv_lc_sd_gen_abs <- bin_sd(red$generation,   "mean_abs_delta")
 rv_lc_sd_ae_abs  <- bin_sd(-red$sumAe_total, "mean_abs_delta")
-rv_lc_sd_gen_sgn <- bin_sd(red$generation,   "mean_delta")
-rv_lc_sd_ae_sgn  <- bin_sd(-red$sumAe_total, "mean_delta")
+rv_lc_sd_gen_sgn <- bin_sd(red$generation,   "dbar")
+rv_lc_sd_ae_sgn  <- bin_sd(-red$sumAe_total, "dbar")
 
 cat(sprintf(paste0(
-  "\nrv_lc_sgn_min      = %.4f (signed Delta-bar minimum, at sumAe = %.2f)",
+  "\nrv_lc_sgn_min      = %.4f (signed Delta-bar maximum, at sumAe = %.2f)",
   "\nrv_lc_sgn_zero_ae  = %.2f (signed Delta-bar crosses zero)",
   "\nrv_lc_abs_peak     = %.4f (mean |Delta| trend peak, at sumAe = %.2f)",
   "\nrv_lc_cor_peak     = %.2f (cor of sumAe at gen 2899 with replicate peak generation)",
@@ -169,17 +174,17 @@ win <- red |>
   mutate(w = floor((generation - 2000) / 25)) |>
   group_by(replicate, w) |>
   summarise(generation = mean(generation), sumAe = mean(sumAe_total),
-            mean_abs_delta = mean(mean_abs_delta), mean_delta = mean(mean_delta),
+            mean_abs_delta = mean(mean_abs_delta), dbar = mean(dbar),
             .groups = "drop")
 
-clk_lev <- c("mean_abs_delta", "mean_delta")
+clk_lev <- c("mean_abs_delta", "dbar")
 clk_lab <- c("bar('|' * Delta * '|')", "bar(Delta)")
 
 clk <- win |>
   pivot_longer(all_of(clk_lev), names_to = "stat", values_to = "value") |>
   mutate(Statistic = factor(stat, clk_lev, clk_lab))
 trend <- bind_rows(data.frame(sumAe = grid$sumAe_total, value = abs_tr, stat = "mean_abs_delta"),
-                   data.frame(sumAe = grid$sumAe_total, value = sgn_tr, stat = "mean_delta")) |>
+                   data.frame(sumAe = grid$sumAe_total, value = sgn_tr, stat = "dbar")) |>
   mutate(Statistic = factor(stat, clk_lev, clk_lab))
 refs <- data.frame(stat = clk_lev, y = c(iso_abs_plateau, 0),
                    lt = c("22", "solid"), col = c("grey30", "grey60")) |>
@@ -256,12 +261,11 @@ fig_peak <- ggplot(pa_red$aligned, aes(rel, value)) +
        y = expression(bar("|" * Delta * "|"))) +
   theme_minimal(base_size = 11)
 
-save_fig <- function(p, name, height) {
-  out_png <- sprintf("data/derived/%s_reproduced.png", name)
+save_fig <- function(p, name, height, out_png = sprintf("data/derived/%s_reproduced.png", name)) {
   ggsave(out_png, p, width = 7, height = height, dpi = 150)
   cat(sprintf("Saved %s\n", out_png))
 }
 
 save_fig(fig_div,   "fig-lineage-diversity", 5.5)
-save_fig(fig_clock, "fig-lineage-clock",     5.5)
+save_fig(fig_clock, "fig-lineage-clock",     5.5, "media/fig-lineage-clock-v2.png")
 save_fig(fig_peak,  "fig-peak-alignment",    4)

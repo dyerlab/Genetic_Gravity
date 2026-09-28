@@ -16,7 +16,8 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-edges <- read.csv("data/boundary_summary_edges.csv", stringsAsFactors = FALSE)
+source("exploratory/gravity_convention.R")   # sign convention; dbar = new-sign Delta-bar
+edges <- gc_read_stored("data/boundary_summary_edges.csv")
 div   <- read.csv("data/boundary_summary_diversity.csv", stringsAsFactors = FALSE)
 
 scn <- c("Isotropic", "Redistributed", "Obstructed")
@@ -45,7 +46,7 @@ edge_at <- function(scenario_name, edge_class, col) {
 tbl_boundary <- edges |>
   filter(generation >= gen_lo, generation <= gen_hi) |>
   group_by(Scenario = scenario, `Edge class` = edge_class) |>
-  summarise(`Mean signed Delta` = round(mean(mean_delta), 3),
+  summarise(`Mean signed Delta` = round(mean(dbar), 3),
             `Mean |Delta|`      = round(mean(mean_abs), 3),
             `Edges/graph`       = round(mean(n), 1), .groups = "drop") |>
   arrange(Scenario, factor(`Edge class`, levels = c("interior", "leaf-incident", "all")))
@@ -53,9 +54,9 @@ tbl_boundary <- edges |>
 cat("=== Tab_EdgeClassDecomposition ===\n")
 print(as.data.frame(tbl_boundary), row.names = FALSE)
 
-rv_bd_int_redistributed <- edge_at("Redistributed", "interior", "mean_delta")
-rv_bd_int_obstructed <- edge_at("Obstructed", "interior", "mean_delta")
-rv_bd_int_iso  <- edge_at("Isotropic",      "interior", "mean_delta")
+rv_bd_int_redistributed <- edge_at("Redistributed", "interior", "dbar")
+rv_bd_int_obstructed <- edge_at("Obstructed", "interior", "dbar")
+rv_bd_int_iso  <- edge_at("Isotropic",      "interior", "dbar")
 rv_bd_leaf_abs <- round(mean(vapply(scn, edge_at, numeric(1),
                                      edge_class = "leaf-incident", col = "mean_abs"),
                               na.rm = TRUE), 3)
