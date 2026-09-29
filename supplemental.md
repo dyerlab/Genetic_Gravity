@@ -36,7 +36,7 @@ Briefly, $K$ populations are represented as centroids in a multivariate genetic 
 
 ### Trend-fitting for forward-phase metrics
 
-The isotropic burn-in relaxes to a single equilibrium, and a three-parameter exponential-equilibrium curve fits it well (Fig_IsotropicBaseline). The same form was tried for the forward-phase trajectories under the redistributed and obstructed treatments and rejected: for redistributed diameter and signed $\bar\Delta$, and for obstructed diameter, at least one parameter (typically the plateau) was driven far outside the range of the observed data by the optimizer rather than converging to a value the fit could support — a sign that the underlying trajectory is not a simple relaxation to one equilibrium over this window, consistent with the biphasic and rise-then-plateau shapes described in the main text.
+The isotropic burn-in relaxes to a single equilibrium, and a three-parameter exponential-equilibrium curve fits it well (Fig_IsotropicBaseline). The same form was tried for the forward-phase trajectories under the redistributed and obstructed treatments and rejected: for redistributed diameter and signed $\bar\Delta$, and for obstructed diameter, at least one parameter (typically the plateau) was driven far outside the range of the observed data by the optimizer rather than converging to a value the fit could support — a sign that the underlying trajectory is not a simple relaxation to one equilibrium over this window, consistent with the rise–plateau–decline shapes described in the main text, which pass through the three phases at different times in different lineages.
 
 Trends reported for these metrics are instead generalized additive models, $y \sim s(\text{generation}, k=20) + s(\text{replicate}, \text{bs}=\text{"re"})$, fit by REML (`mgcv`) to every replicate snapshot in the forward phase. The smooth term over generation captures the shape of the trend without committing to a functional form; the replicate-level random intercept absorbs stable between-replicate offsets so that a few extreme replicates do not dominate the fitted trend, and is excluded from the plotted prediction, which reports the population-level smooth only. The same fitting procedure was applied identically across the isotropic, redistributed, and obstructed forward phases so that trends remain directly comparable to one another.
 
@@ -87,13 +87,13 @@ The shared-bandwidth identity shows how the direction of an edge arises when eve
 
 ### Directional balance vs. backflow suppression
 
-The redistributed and obstructed scenarios (main text) both impose a net directional bias in migration, but by different means: redistributed raises forward migration while holding total flux fixed, whereas obstructed suppresses reverse migration while holding forward flux at its isotropic value. The signed graph-mean asymmetry, $\bar{\Delta}$, over the forward phase resolves the two (Fig_SignedAsymmetry). Both scenarios carry the imposed direction through reorganization, with $\bar{\Delta}>0$: upstream populations read as sources. Redistributed $\bar{\Delta}$ reaches its maximum around generation 2435 (~400 generations after treatment onset). Obstructed $\bar{\Delta}$ reaches its maximum around generation 2820 (~800 generations post-onset) and stays positive through the end of the simulated window, easing only slightly. The two-fold difference in time to peak directional signal tracks the two-fold difference in net directional migration bias between the scenarios exactly: $m_{i\rightarrow i+1}-m_{i\leftarrow i+1}=0.03$ for redistributed versus $0.015$ for obstructed (Tab_ScenarioParameters)—the same process, running at half the rate. Each scenario was designed to isolate one departure from isotropic rather than to hold total migration fixed against the other, so total flux also differs between them (0.05 versus 0.035); that difference is smaller and less closely tracks the observed 2:1 timescale ratio than $\Delta m$ does, but it is not excluded as a contributor.
+The redistributed and obstructed scenarios (main text) both impose a net directional bias in migration, but by different means: redistributed raises forward migration while holding total flux fixed, whereas obstructed suppresses reverse migration while holding forward flux at its isotropic value. The signed graph-mean asymmetry, $\bar{\Delta}$, over the forward phase resolves the two (Fig_SignedAsymmetry). Both scenarios carry the imposed direction through reorganization and the plateau, with $\bar{\Delta}>0$: upstream populations read as sources. By each lineage's own phase (main text), redistributed $\bar{\Delta}$ is positive in 98% of lineages during reorganization (median 0.007) and in 88% on the plateau (median 0.018); obstructed $\bar{\Delta}$ is positive in 96% and 92% of lineages (medians 0.007 and 0.016). On the plateau the two treatments therefore carry nearly the same directional signal; what differs is when they reach it. The across-lineage trend peaks around generation 2435 under redistribution (~400 generations after onset) and around 2820 under obstruction (~800 generations), and each lineage's reorganization ends at a median of generation 2324 and 2639 respectively. Obstruction reaches each stage 1.9–2.8 times later depending on the measure (2.0 times for the end of reorganization), close to the two-fold difference in net directional bias ($m_{i\rightarrow i+1}-m_{i\leftarrow i+1}=0.03$ for redistributed against $0.015$ for obstructed; Tab_ScenarioParameters)—the same process, running more slowly. Each scenario was designed to isolate one departure from isotropic rather than to hold total migration fixed against the other, so total flux also differs between them (0.05 against 0.035) and is not excluded as a contributor.
 
-Redistributed $\bar{\Delta}$ then changes sign late in the window. The fitted trend crosses zero near generation 2700; lineage by lineage, it crosses in 39 of the 50 lineages, at a median of generation 2684 (IQR 2626–2789), against only 9 obstructed lineages. This is not a reversal of the direction of gene flow. The population-level source–sink score keeps the imposed ordering through the crossing—$r(S,x)<0$ in 97% of redistributed censuses in generations 2504–2749—and weakens only as lineages collapse. The crossing itself is carried by the interior of the graph, not by the chain ends or by the part of the asymmetries no source-to-sink ordering reproduces (below). It falls in the collapse phase, after the directional isolation gain has peaked (main text, Fig_DirectionalIBGD).
+Redistributed $\bar{\Delta}$ then changes sign, and it does so in the falling-apart phase: after the informative horizon it is negative in 78% of lineages (median $-0.028$). The fitted trend crosses zero near generation 2700; lineage by lineage, the smoothed series crosses in 39 of the 50 lineages, at a median of generation 2684 (IQR 2626–2789), against a median horizon of 2674, and in only 9 obstructed lineages. This is not a reversal of the direction of gene flow. The population-level source–sink score keeps the imposed ordering through the crossing—$r(S,x)<0$ in 98% of plateau censuses and 77% of falling-apart censuses—and weakens only as lineages fall apart. The crossing itself is carried by the interior of the graph, not by the chain ends or by the part of the asymmetries no source-to-sink ordering reproduces (below).
 
-![](media/fig-signed-asymmetry-v2.png)
+![](media/fig-signed-asymmetry-v4.png)
 
-*Fig_SignedAsymmetry*: Signed graph-mean asymmetry, $\bar{\Delta}$ (positive when upstream populations are the sources, the imposed direction), for the redistributed and obstructed scenarios (rows) over the forward phase (generations 2000–2999), fit with the same penalized-regression-spline approach used for Fig_ScenarioComparison in the main text. The shaded band is the across-replicate $\pm$1 SD, and the dashed line is the fitted isotropic trend, which sits slightly below zero ($-0.0016$ to $-0.0010$; the burn-in lineage lean), as the null reference. Redistributed $\bar{\Delta}$ rises to a maximum near generation 2435 and changes sign near generation 2700, an interior-topology effect rather than a reversal of direction (below); obstructed $\bar{\Delta}$ rises to a maximum near generation 2820 and stays positive throughout the window.
+*Fig_SignedAsymmetry*: Signed graph-mean asymmetry, $\bar{\Delta}$ (positive when upstream populations are the sources, the imposed direction), for the redistributed and obstructed scenarios (columns) over the forward phase (generations 2000–2999), fit with the same penalized-regression-spline approach used for Fig_ScenarioComparison in the main text. The shaded band is the across-replicate $\pm$1 SD, and the dashed line is the fitted isotropic trend, which sits slightly below zero ($-0.0016$ to $-0.0010$; the burn-in lineage lean), as the null reference. Redistributed $\bar{\Delta}$ rises to a maximum near generation 2435 and changes sign near generation 2700, an interior-topology effect rather than a reversal of direction (below); obstructed $\bar{\Delta}$ rises to a maximum near generation 2820 and stays positive throughout the window. The strip beneath shows, at each census, how many of the 50 lineages in each asymmetric scenario are reorganizing, on the plateau, or falling apart, each lineage assigned by its own boundaries. The late redistributed sign change coincides with lineages entering the falling-apart phase.
 
 ### Decomposition of the late sign change in $\bar{\Delta}$
 
@@ -150,25 +150,36 @@ As lineages approach fixation the number of loci still polymorphic within demes 
 
 *Fig_InformationNull*: Directional signal versus information loss. Mean absolute (top) and signed (bottom) asymmetry index for every redistributed snapshot (points) against the mean number of loci polymorphic within demes. The black line and band are the median and 90% range for isotropic graphs rebuilt from random subsets of polymorphic loci—the values expected from information content alone. The vertical dashed line marks the informative horizon (4.5 polymorphic loci per deme), below which information loss alone inflates $\overline{|\Delta_{i\rightarrow j}|}$ by more than 10%.
 
+### Detection rates for the source–sink gradient test
+
+*Tab_SourceSinkPower:* Rejection rate of the source–sink gradient test at $\alpha=0.05$, median $r(S,x)$, the fraction of censuses with sources upstream ($r(S,x)<0$), and the fraction of lineages whose mean $r(S,x)$ in the phase is negative, by scenario and each lineage's own phase (main text). Censuses every 50 generations in 2004–2954, 50 replicates. Obstructed lineages reach the falling-apart phase in only 6 censuses (4 lineages), which are not tabulated.
+
+| Scenario | Phase | Censuses (lineages) | Rejected | Median $r(S,x)$ | Censuses with sources upstream | Lineages with sources upstream |
+| :---- | :---- | :---: | :---: | :---: | :---: | :---: |
+| Isotropic | whole forward phase | 1,000 (50) | 6.0% | 0.11 | 38% | 28% |
+| Redistributed | reorganization | 345 (50) | 14.8% | −0.38 | 80% | 98% |
+| Redistributed | plateau | 358 (50) | 40.5% | −0.76 | 98% | 100% |
+| Redistributed | falling apart | 297 (50) | 17.8% | −0.37 | 77% | 96% |
+| Obstructed | reorganization | 655 (50) | 13.7% | −0.39 | 79% | 96% |
+| Obstructed | plateau | 339 (48) | 29.5% | −0.71 | 99% | 100% |
+
 ### Detection rates for the directional isolation test
 
-*Tab_IBGDDetection:* Fraction of censuses in which the directional isolation model ($\text{pGD}_{ij} \sim |dx_{ij}| + |dx_{ij}|\cdot r_{ij}$, adjusted $R^2$) fits better than standard IBGD (cGD against $|dx_{ij}|$), by scenario and forward-phase window, with the median $\Delta R^2 = R^2_{pGD}-R^2_{cGD}$. Under symmetric migration this fraction is the false-positive rate; under the asymmetric treatments it is the detection rate. 50 replicates; 5-generation censuses (1,000 per window for the burn-in reference, 2,500 per 250-generation forward window, 10,000 for the isotropic forward phase and for each symmetric differentiation-gradient scenario). Under strong drift (sym-low, sym-verylow) the rule is anti-conservative.
+*Tab_IBGDDetection:* Fraction of censuses in which the directional isolation model ($\text{pGD}_{ij} \sim |dx_{ij}| + |dx_{ij}|\cdot r_{ij}$, adjusted $R^2$) fits better than standard IBGD (cGD against $|dx_{ij}|$), by scenario and, for the asymmetric treatments, each lineage's own phase (main text), with the median $\Delta R^2 = R^2_{pGD}-R^2_{cGD}$ and, among detections, the fraction with a forward-to-reverse slope ratio below one. Under symmetric migration the preferred fraction is the false-positive rate; under the asymmetric treatments it is the detection rate. 50 replicates; 5-generation censuses (1,000 for the burn-in reference, 10,000 for the isotropic forward phase and for each symmetric differentiation-gradient scenario; asymmetric phases as listed). The obstructed falling-apart row rests on 6 lineages. Under strong drift (sym-low, sym-verylow) the rule is anti-conservative.
 
-| Scenario | Window | Directional model preferred | Median $\Delta R^2$ |
-| :---- | :---- | :---: | :---: |
-| Burn-in (symmetric) | 1904–1999 | 1.9% | −0.055 |
-| Isotropic | 2004–2999 | 4.1% | −0.055 |
-| Redistributed | 2004–2249 | 11.6% | −0.049 |
-| Redistributed | 2254–2499 | 53.6% | 0.005 |
-| Redistributed | 2504–2749 | 73.2% | 0.033 |
-| Redistributed | 2754–2999 | 55.5% | 0.011 |
-| Obstructed | 2004–2249 | 6.4% | −0.055 |
-| Obstructed | 2254–2499 | 20.1% | −0.033 |
-| Obstructed | 2504–2749 | 43.2% | −0.008 |
-| Obstructed | 2754–2999 | 54.3% | 0.006 |
-| sym-mid (symmetric) | 2004–2999 | 5.8% | −0.054 |
-| sym-low (symmetric) | 2004–2999 | 13.6% | −0.043 |
-| sym-verylow (symmetric) | 2004–2999 | 14.3% | −0.040 |
+| Scenario | Window or phase | Censuses | Directional model preferred | Median $\Delta R^2$ | Slope ratio < 1 among detections |
+| :---- | :---- | :---: | :---: | :---: | :---: |
+| Burn-in (symmetric) | 1904–1999 | 1,000 | 1.9% | −0.055 | 26% |
+| Isotropic | 2004–2999 | 10,000 | 4.1% | −0.055 | 35% |
+| sym-mid (symmetric) | 2004–2999 | 10,000 | 5.8% | −0.054 | 41% |
+| sym-low (symmetric) | 2004–2999 | 10,000 | 13.6% | −0.043 | 38% |
+| sym-verylow (symmetric) | 2004–2999 | 10,000 | 14.3% | −0.040 | 33% |
+| Redistributed | reorganization | 3,237 | 17.6% | −0.042 | 98.1% |
+| Redistributed | plateau | 3,559 | 67.1% | 0.023 | 100% |
+| Redistributed | falling apart | 3,204 | 59.1% | 0.016 | 98.2% |
+| Obstructed | reorganization | 6,344 | 17.8% | −0.039 | 97.7% |
+| Obstructed | plateau | 3,576 | 53.5% | 0.005 | 100% |
+| Obstructed | falling apart | 80 | 68.8% | 0.025 | 100% |
 
 ### Permutation nulls for $\Delta_{i\rightarrow j}$
 

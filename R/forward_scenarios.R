@@ -1,4 +1,5 @@
 # Fig_Redistributed, Fig_Obstructed, and Fig_SignedAsymmetry.
+# Phase strips use the heterozygosity-gradient reorganization boundary (2026-09-29); earlier file = gain-based boundary.
 #
 # Forward-phase (gens 2004-2999, N=100) trends in graph structure and
 # asymmetry under the two directional scenarios, each against the isotropic
@@ -100,7 +101,7 @@ scenario_figure <- function(scn) {
 }
 
 save_fig <- function(p, name, height, out_png = sprintf("data/derived/%s_reproduced.png", name)) {
-  ggsave(out_png, p, width = 7, height = height, dpi = 150)
+  ggsave(out_png, p, width = if (grepl("signed", out_png)) 9 else 7, height = height, dpi = 150, bg = "white")
   cat(sprintf("Saved %s\n", out_png))
 }
 
@@ -134,6 +135,7 @@ iso_ref <- expand_grid(Scenario = scn_levels, iso_signed)
 
 fac <- function(d) mutate(d, Scenario = factor(Scenario, scn_levels))
 
+xs_sig <- scale_x_continuous(limits = c(2000, 3000), breaks = seq(2000, 2750, 250), expand = c(0, 0))
 fig_signed <- ggplot(fac(sig_band), aes(generation)) +
   geom_hline(yintercept = 0, colour = "grey60", linewidth = 0.3) +
   geom_ribbon(aes(ymin = mean - sd, ymax = mean + sd), fill = "grey70", alpha = 0.5) +
@@ -141,14 +143,14 @@ fig_signed <- ggplot(fac(sig_band), aes(generation)) +
   geom_line(data = fac(iso_ref), aes(y = fit), colour = "grey30",
             linetype = "22", linewidth = 0.6) +
   geom_line(data = fac(sig_trend), aes(y = fit), colour = "firebrick", linewidth = 0.7) +
-  facet_grid(Scenario ~ .) +
-  labs(x = "Generation", y = expression(bar(Delta))) +
-  theme_minimal(base_size = 11)
+  facet_grid(. ~ Scenario) + xs_sig +
+  labs(x = NULL, y = expression(bar(Delta))) +
+  theme_minimal(base_size = 11) +
+  theme(axis.text.x = element_blank(), panel.spacing.x = unit(1.2, "lines"), panel.grid.minor = element_blank())
+# v3: columns instead of rows, with the phase-share strip (exploratory/lineage_phases.R)
+source("exploratory/lineage_phases.R")
+fig_signed <- patchwork::wrap_plots(fig_signed,
+  lp_strip(scn_levels, xs_sig, facet = "col") + labs(x = "Generation") + theme(panel.spacing.x = unit(1.2, "lines")),
+  ncol = 1, heights = c(4, 0.9))
 
-for (s in scn_levels) {
-  cv <- sig_fit[[s]]$curve; zc <- cv$generation[which(diff(sign(cv$fit)) != 0) + 1]
-  cat(sprintf("  %-13s trend max %.4f at %d; min %.4f at %d; sign changes at %s\n", s,
-              max(cv$fit), cv$generation[which.max(cv$fit)], min(cv$fit),
-              cv$generation[which.min(cv$fit)], paste(zc, collapse = ", ")))
-}
-save_fig(fig_signed, "fig-signed-asymmetry", 5, "media/fig-signed-asymmetry-v2.png")
+save_fig(fig_signed, "fig-signed-asymmetry", 5, "media/fig-signed-asymmetry-v4.png")   # v2: rows, no strip
