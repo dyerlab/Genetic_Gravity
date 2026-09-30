@@ -187,6 +187,21 @@ As lineages approach fixation the number of loci still polymorphic within demes 
 | *Obstructed* | *plateau* | 3,576 | 53.5% | 0.005 | 100% |
 | *Obstructed* | *decay* | 80 | 68.8% | 0.025 | 100% |
 
+### Agreement between the two tests
+
+*Tab_TestOverlap:* Census-level agreement between the source–sink gradient test (rejection at $\alpha=0.05$) and the directional isolation model comparison ($\Delta R^2>0$), by scenario and each lineage's own phase. "Both / either" is the fraction of censuses flagged by either test that were flagged by both; "Same direction" counts joint detections in which both tests place the sources upstream ($r(S,x)<0$ together with $b_{fwd}/b_{rev}<1$). Censuses every 50 generations, 50 replicates; *burn-in*: generations 1904–1999, every 5 generations. The *Obstructed* *decay* row rests on 6 censuses and is shown for completeness only.
+
+| Scenario | Phase | Censuses | Both | Source–sink only | $\Delta R^2$ only | Neither | Both / either | Same direction |
+| :---- | :---- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| *Redistributed* | *ascent* | 345 | 19 | 32 | 41 | 253 | 0.21 | 19/19 |
+| *Redistributed* | *plateau* | 358 | 109 | 36 | 134 | 79 | 0.39 | 109/109 |
+| *Redistributed* | *decay* | 297 | 37 | 16 | 140 | 104 | 0.19 | 37/37 |
+| *Obstructed* | *ascent* | 655 | 39 | 51 | 88 | 477 | 0.22 | 39/39 |
+| *Obstructed* | *plateau* | 339 | 70 | 30 | 121 | 118 | 0.32 | 70/70 |
+| *Obstructed* | *decay* | 6 | 3 | 0 | 1 | 2 | (0.75) | 3/3 |
+| *Symmetric* | whole forward phase | 1,000 | 8 | 52 | 28 | 912 | 0.09 | 2/8 |
+| *Burn-in* | generations 1904–1999 | 1,000 | 1 | 41 | 18 | 940 | 0.02 | 0/1 |
+
 ### Permutation nulls for $\Delta_{i\rightarrow j}$
 
 Before adopting the source–sink gradient test and the model comparison (main text), significance tests built directly on the asymmetry index were evaluated against the same symmetric reference (the final 100 generations of *burn-in*; 1,000 censuses, 95,903 edges). None was usable as a test.
