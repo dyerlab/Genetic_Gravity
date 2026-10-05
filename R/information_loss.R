@@ -38,9 +38,10 @@ suppressPackageStartupMessages({
 })
 
 source("exploratory/gravity_convention.R")   # sign convention; dbar = new-sign Delta-bar
-fwd     <- gc_read_forward()
-nl      <- gc_read_information_null() |> filter(ok == 1)
-iso_par <- read.csv("data/derived/isotropic_fit_params.csv", stringsAsFactors = FALSE)
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
+fwd     <- gc_read_forward(sprintf("data/forward_scenarios%s.csv", SFX))
+nl      <- gc_read_information_null(sprintf("data/information_null%s.csv", SFX)) |> filter(ok == 1)
+iso_par <- read.csv(sprintf("data/derived/isotropic_fit_params%s.csv", SFX), stringsAsFactors = FALSE)
 
 red <- filter(fwd, Scenario == "Redistributed")
 iso_abs_plateau <- iso_par$yinf[iso_par$stat == "mean_abs_delta"]
@@ -140,6 +141,6 @@ fig_null <- ggplot(pts, aes(n_poly_pop, value)) +
   labs(x = "Polymorphic loci per deme (of 20)", y = NULL) +
   theme_minimal(base_size = 11)
 
-out_png <- "media/fig-information-null-v2.png"
+out_png <- if (nzchar(TAG)) "media/fig-information-null-v3.png" else "media/fig-information-null-v2.png"
 ggsave(out_png, fig_null, width = 7, height = 5.5, dpi = 150)
 cat(sprintf("\nSaved %s\n", out_png))

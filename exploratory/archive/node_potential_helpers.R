@@ -36,10 +36,11 @@ incidence <- function(el, nodes) {
 #'
 #' @param g Undirected Population Graph (edge attribute `weight` = cGD).
 #' @param bandwidth Passed to graph_asymmetries() (NULL = local bandwidth).
+#' @param gamma Bandwidth multiplier (graph_asymmetries(scale = gamma)); 1 = local mean.
 #' @return List: `nodes` (data.frame, one row per node) and `census` (named
 #'   numeric vector), plus the edge list, delta, B and L for reuse.
-node_fields <- function(g, bandwidth = NULL) {
-  ga <- graph_asymmetries(g, bandwidth = bandwidth)
+node_fields <- function(g, bandwidth = NULL, gamma = 1) {
+  ga <- graph_asymmetries(g, bandwidth = bandwidth, scale = gamma)
   nodes <- V(ga)$name
   el <- as_edgelist(ga, names = TRUE)
   delta <- E(ga)$delta
@@ -94,6 +95,7 @@ null_draws <- function(f, listws, B = 999L) {
 #' @return data.frame, one row per null x correlation type: r_obs, p.
 field_tests <- function(f, x, draws, keep = rep(TRUE, length(f))) {
   B <- ncol(draws[[1]]); out <- list()
+  f <- signif(f, 12)     # tie rounding (gravity_convention.R gc_rank_S); pass the same rounded f to null_draws()
   for (m in c("spearman", "pearson")) {
     r_obs <- cor(f[keep], x[keep], method = m)
     for (nm in names(draws)) {

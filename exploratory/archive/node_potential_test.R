@@ -67,7 +67,7 @@ census_one <- function(i) {
   interior <- nd$k > 1 & nd$x >= 3 & nd$x <= 23
   tests <- list()
   for (fld in c("phi", "div", "phi_res")) {
-    f <- nd[[fld]]
+    f <- signif(nd[[fld]], 12)        # tie rounding before ranking and null draws (gc_rank_S)
     draws <- null_draws(f, listws, B_DRAWS)
     tests[[fld]] <- rbind(cbind(field = fld, nodes = "all", field_tests(f, nd$x, draws)),
                           cbind(field = fld, nodes = "interior", field_tests(f, nd$x, draws, interior)))

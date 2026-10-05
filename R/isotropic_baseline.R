@@ -40,7 +40,8 @@ suppressPackageStartupMessages({
 })
 
 source("exploratory/gravity_convention.R")   # sign convention; dbar = new-sign Delta-bar
-iso <- gc_read_stored("data/isotropic_baseline.csv")
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
+iso <- gc_read_stored(sprintf("data/isotropic_baseline%s.csv", SFX))
 
 K <- 25
 BURNIN_END <- 2000
@@ -147,7 +148,7 @@ traj <- long |>
 med_par <- fits |> group_by(stat) |>
   summarise(y0 = median(y0), yinf = median(yinf), tau = median(tau), .groups = "drop")
 # Reused as the isotropic reference curve by R/forward_scenarios.R.
-write.csv(med_par, "data/derived/isotropic_fit_params.csv", row.names = FALSE)
+write.csv(med_par, sprintf("data/derived/isotropic_fit_params%s.csv", SFX), row.names = FALSE)
 curve <-expand_grid(stat = stat_levels, generation = 0:2999) |>
   left_join(med_par, by = "stat") |>
   mutate(fit = yinf + (y0 - yinf) * exp(-generation / tau),
@@ -164,6 +165,6 @@ fig_iso <- ggplot(traj, aes(generation, mean)) +
   labs(x = "Generation", y = NULL) +
   theme_minimal(base_size = 11)
 
-out_png <- "data/derived/fig-isotropic-baseline_reproduced.png"
+out_png <- if (nzchar(TAG)) "media/fig-isotropic-baseline-v2.png" else "data/derived/fig-isotropic-baseline_reproduced.png"
 ggsave(out_png, fig_iso, width = 7, height = 6.5, dpi = 150)
 cat(sprintf("\nSaved Fig_IsotropicBaseline to %s\n", out_png))

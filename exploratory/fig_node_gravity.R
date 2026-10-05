@@ -1,5 +1,6 @@
 # exploratory/fig_node_gravity.R
 # Phase strips use the heterozygosity-gradient reorganization boundary (2026-09-29); earlier file = gain-based boundary.
+# 2026-10-01: strips use the phase policy (unflagged lineages held in ascent; lineage_phases.R phase_policy_R_gen).
 #
 # Fig_SourceSinkScore: the population-level source-sink score S through time.
 #   Top row: median S across the 50 replicates, by deme (y) and generation (x),
@@ -11,11 +12,13 @@
 #            spectral null on the census's own graph, B = 999) and fraction with
 #            sources upstream (r(S, x) < 0), with binomial 95% intervals.
 #
-# S is computed from the saved graphs with exploratory/gravity_convention.R
-# (every 5 generations in 1904-1999, every 10 generations in 2004-2994). The
-# test results are the round-1 locked-test output re-expressed in the new sign
-# (rean$sstest in data/derived/node_potential_reanalysis.rda; censuses every
-# 5 generations in burn-in, every 50 in the forward phase).
+# S is computed from the saved graphs with gstudio::source_sink_scores() (every 5
+# generations in 1904-1999, every 10 generations in 2004-2994). With GG_TAG=g05 (gamma = 1/2,
+# the manuscript's bandwidth) both inputs are written by exploratory/half_bandwidth_results.R:
+# node S (data/derived/node_gravity_heatmap_g05.rds) and source_sink_test() results
+# (data/derived/sstest_g05.rds; censuses every 5 generations in burn-in, every 50 in the
+# forward phase). Without a tag (gamma = 1, earlier figure versions) the test results are
+# rean$sstest in data/derived/node_potential_reanalysis.rda.
 #
 # Run from the repository root:  Rscript exploratory/fig_node_gravity.R
 # Outputs: data/derived/node_gravity_heatmap.rds (per-census node S),
@@ -25,8 +28,9 @@ suppressPackageStartupMessages({ library(igraph); library(gstudio); library(dply
   library(parallel); library(ggplot2); library(patchwork) })
 source("exploratory/gravity_convention.R")
 source("exploratory/lineage_phases.R")
-CACHE <- "data/derived/node_gravity_heatmap.rds"
-FIG   <- "media/fig-source-sink-score-v3.png"   # v2 adds the phase strip (earlier: fig-source-sink-score.png)
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
+CACHE <- sprintf("data/derived/node_gravity_heatmap%s.rds", SFX)
+FIG   <- if (nzchar(TAG)) "media/fig-source-sink-score-v6.png" else "media/fig-source-sink-score-v4.png"   # v6: gstudio 1.15 source_sink_test() (identical with rounding or tolerance ties; v5: earlier draws); v2 adds the phase strip
 SCEN  <- c(Isotropic = 1L, Redistributed = 2L, Obstructed = 3L)
 
 if (file.exists(CACHE)) nodes <- readRDS(CACHE) else {
@@ -37,9 +41,9 @@ if (file.exists(CACHE)) nodes <- readRDS(CACHE) else {
     j <- jobs[i, ]
     g <- gc_load_graph(j$Replicate, j$generation, if (j$scenario == "Burn-in") NULL else SCEN[[j$scenario]])
     if (is.null(g)) return(NULL)
-    cs <- tryCatch(gc_census(g), error = function(e) NULL)
-    if (is.null(cs)) return(NULL)
-    data.frame(j, deme = cs$nodes$x, S = cs$nodes$S, k = cs$nodes$k)
+    sc <- tryCatch(source_sink_scores(g, gamma = if (nzchar(TAG)) 0.5 else 1), error = function(e) NULL)
+    if (is.null(sc)) return(NULL)
+    data.frame(j, deme = gc_x(sc$Stratum), S = sc$S, k = sc$degree)
   }, mc.cores = max(1L, detectCores() - 1L))
   nodes <- do.call(rbind, res)
   attr(nodes, "missing") <- nrow(jobs) - sum(!vapply(res, is.null, logical(1)))
@@ -60,8 +64,8 @@ print(hm |> filter(generation %in% c(1999, 2454, 2824, 2994)) |> group_by(scenar
                   r = cor(S, deme, method = "spearman"), .groups = "drop") |> as.data.frame(), digits = 3)
 
 ## ---- test data ------------------------------------------------------------------------
-e <- new.env(); load("data/derived/node_potential_reanalysis.rda", envir = e)
-tt <- e$rean$sstest$tests |> filter(null == "N1w")
+tt <- if (nzchar(TAG)) readRDS(sprintf("data/derived/sstest%s.rds", SFX)) else {
+  e <- new.env(); load("data/derived/node_potential_reanalysis.rda", envir = e); e$rean$sstest$tests |> filter(null == "N1w") }
 tt <- bind_rows(lapply(names(SCEN), function(s) filter(tt, scenario == "Burn-in") |> mutate(scenario = s)),
                 filter(tt, scenario %in% names(SCEN)))
 ci <- function(x) { b <- binom.test(sum(x), length(x))$conf.int; c(b[1], b[2]) }
@@ -98,7 +102,7 @@ top <- ggplot(hm, aes(generation, deme, fill = S, width = width)) +
                        breaks = c(-lim, 0, lim), labels = c("sink", "0", "source"),
                        name = "Median S") +
   scale_y_continuous(breaks = c(1, 5, 10, 15, 20, 25), expand = c(0, 0)) + xs +
-  facet_grid(. ~ scenario) +
+  facet_grid(. ~ scenario, labeller = as_labeller(c(Isotropic = "Symmetric", Redistributed = "Redistributed", Obstructed = "Obstructed"))) +
   labs(x = NULL, y = "Deme") + th +
   theme(panel.grid = element_blank(), axis.text.x = element_blank(), legend.position = "right",
         legend.key.height = unit(1.2, "cm"), legend.key.width = unit(0.35, "cm"), panel.spacing.x = unit(0.8, "lines"))
@@ -112,7 +116,7 @@ bot <- ggplot(pl, aes(generation, value, colour = series, fill = series)) +
   geom_line(linewidth = 0.7) + geom_point(size = 1.4) +
   scale_colour_manual(values = cols, name = NULL) + scale_fill_manual(values = cols, name = NULL) +
   scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.25), labels = scales::percent, expand = c(0, 0.01)) + xs +
-  facet_grid(. ~ scenario) +
+  facet_grid(. ~ scenario, labeller = as_labeller(c(Isotropic = "Symmetric", Redistributed = "Redistributed", Obstructed = "Obstructed"))) +
   labs(x = NULL, y = "Share of censuses") + th +
   theme(strip.text = element_blank(), legend.position = "right", panel.spacing.x = unit(0.8, "lines"),
         axis.text.x = element_blank())

@@ -43,8 +43,8 @@ OUT     <- "data/derived/ibd_cgd_vs_pgd.rda"
 #' @param graph Undirected igraph Population Graph with a `weight` attribute
 #'   (cGD) and node names PopNN.
 #' @return Named numeric vector of statistics (see header).
-ibd_one <- function(graph) {
-  ga <- graph_asymmetries(graph)
+ibd_one <- function(graph, gamma = 1) {          # gamma: bandwidth multiplier (1 = local mean)
+  ga <- graph_asymmetries(graph, scale = gamma)
   el <- as_edgelist(ga, names = TRUE)
   e  <- E(ga)$weight; wa <- E(ga)$w_away; wt <- E(ga)$w_to
   p_fwd <- e * wa / (wa + wt); p_rev <- e * wt / (wa + wt)

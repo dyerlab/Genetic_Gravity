@@ -16,7 +16,13 @@
 # This script needs the raw simulation output and so only runs where the
 # private research repo is available; everything downstream reads the CSV.
 #
+# GAMMA (environment variable, default 1) is the bandwidth multiplier,
+# b_i = GAMMA * s_i / k_i. At GAMMA = 1 the output is data/information_null.csv;
+# otherwise data/information_null_g<GAMMA without the point>.csv (0.5 -> _g05).
+# OUT overrides the output path.
+#
 #   Rscript R/extract_information_null.R
+#   GAMMA=0.5 Rscript R/extract_information_null.R
 
 suppressPackageStartupMessages({
   library(gstudio)
@@ -30,6 +36,9 @@ SIM_DIR <- "/Users/rodney/Documents/Research/PopulationGenetics/AsymmetricPopGra
 KS      <- c(2, 3, 4, 5, 6, 8, 10, 12)
 NSUB    <- 3
 GENS    <- c(2504, 2999)
+GAMMA   <- as.numeric(Sys.getenv("GAMMA", "1"))
+OUT     <- Sys.getenv("OUT", if (GAMMA == 1) "data/information_null.csv" else
+                        sprintf("data/information_null_g%s.csv", gsub("\\.", "", format(GAMMA))))
 
 jobs <- expand.grid(replicate = 1:50, generation = GENS)
 
@@ -49,7 +58,7 @@ null_for_snapshot <- function(i) {
     L   <- sample(poly, k)
     res <- tryCatch({
       gph <- popgraph(to_mv(x[, L, drop = FALSE]), groups = as.factor(x$Population))
-      d   <- E(graph_asymmetries(gph))$delta
+      d   <- E(graph_asymmetries(gph, scale = GAMMA))$delta
       c(ok = 1, n_edges = ecount(gph), mean_delta = mean(d), mean_abs_delta = mean(abs(d)))
     }, error = function(err) c(ok = 0, n_edges = NA, mean_delta = NA, mean_abs_delta = NA))
     out[[length(out) + 1]] <- data.frame(replicate = r, generation = g, k = k, subset = s,
@@ -61,6 +70,6 @@ null_for_snapshot <- function(i) {
 nl <- do.call(rbind, mclapply(seq_len(nrow(jobs)), null_for_snapshot,
                               mc.cores = max(1L, detectCores() - 2L)))
 
-write.csv(nl, "data/information_null.csv", row.names = FALSE)
-cat(sprintf("Wrote %d null graphs (%d failed) to data/information_null.csv\n",
-            nrow(nl), sum(nl$ok == 0)))
+write.csv(nl, OUT, row.names = FALSE)
+cat(sprintf("Wrote %d null graphs (%d failed) to %s (GAMMA = %g)\n",
+            nrow(nl), sum(nl$ok == 0), OUT, GAMMA))

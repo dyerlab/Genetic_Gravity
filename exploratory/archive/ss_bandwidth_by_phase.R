@@ -43,7 +43,7 @@ if (file.exists(OUT)) load(OUT) else {
       cs <- tryCatch(if (identical(a, "global")) gc_census(g, bandwidth = bbar) else do.call(gc_census, c(list(g), a)),
                      error = function(e) NULL)
       if (is.null(cs)) { out[[nm]] <- data.frame(jobs[i, ], bandwidth = nm, r_S = NA, p = NA, failed = TRUE); next }
-      S <- cs$nodes$S[match(nodes, cs$nodes$node)]
+      S <- gc_rank_S(cs$nodes$S[match(nodes, cs$nodes$node)])
       r_obs <- suppressWarnings(cor(S, x, method = "spearman"))
       dr <- as.matrix(adespatial::msr(S, lw, nrepet = B, method = "singleton", simplify = TRUE))
       r_null <- as.numeric(cor(dr, x, method = "spearman"))

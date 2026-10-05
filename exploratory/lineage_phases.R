@@ -34,10 +34,15 @@ lp_bounds <- local({
   if (file.exists(f)) read.csv(f, stringsAsFactors = FALSE) else NULL
 })
 
-lp_phase <- function(scenario, replicate, generation, bounds = lp_bounds) {
+# Phase policy (Rodney, 2026-09-30): lineages whose He-gradient rise does not
+# clear the isotropic 95th percentile (reorganized == FALSE) are held in
+# ascent until decay; column phase_policy_R_gen = R_gen if reorganized, else
+# F_gen (NA if none). lp_phase() uses it by default; rcol = "R_gen" gives the
+# earlier all-t90 policy.
+lp_phase <- function(scenario, replicate, generation, bounds = lp_bounds, rcol = "phase_policy_R_gen") {
   scenario <- as.character(scenario)
   b <- bounds[match(paste(scenario, replicate), paste(bounds$Scenario, bounds$Replicate)), ]
-  R <- ifelse(is.na(b$R_gen), Inf, b$R_gen)        # no R: reorganization never completed
+  R <- ifelse(is.na(b[[rcol]]), Inf, b[[rcol]])    # no R: ascent never completed
   F <- ifelse(is.na(b$F_gen), Inf, b$F_gen)
   out <- ifelse(generation < 2000, "Burn-in",
          ifelse(!scenario %in% c("Redistributed", "Obstructed"), "Symmetric",
@@ -53,7 +58,8 @@ if (sys.nframe() == 0L) {
   names(b) <- c("Scenario", "Replicate", "R_gain", "F_gen", "reorganized_gain")
   b <- merge(b, h$hb[, c("Scenario", "Replicate", "R_he", "reorg_he")], by = c("Scenario", "Replicate"))
   b$R_gen <- b$R_he; b$reorganized <- b$reorg_he
-  b <- b[, c("Scenario", "Replicate", "R_gen", "F_gen", "reorganized", "R_gain", "reorganized_gain")]
+  b$phase_policy_R_gen <- ifelse(b$reorganized, b$R_gen, b$F_gen)
+  b <- b[, c("Scenario", "Replicate", "R_gen", "F_gen", "reorganized", "phase_policy_R_gen", "R_gain", "reorganized_gain")]
   write.csv(b, "data/derived/lineage_phases.csv", row.names = FALSE)
   cat("Wrote data/derived/lineage_phases.csv:", nrow(b), "lineages\n")
   lp_bounds <- b
@@ -73,12 +79,12 @@ if (sys.nframe() == 0L) {
 # One ordinal blue ramp for the three phases (validated with the dataviz palette
 # checker: monotone lightness, single hue, light end >= 2:1 on white).
 LP_COL <- c(Reorganize = "#86b6ef", Plateau = "#2a78d6", `Fall apart` = "#104281")
-LP_LAB <- c(Reorganize = "Reorganizing", Plateau = "Plateau", `Fall apart` = "Falling apart")
+LP_LAB <- c(Reorganize = "Ascent", Plateau = "Plateau", `Fall apart` = "Decay")   # manuscript phase names
 
 #' Share of the 50 lineages in each phase at each census
-lp_share <- function(scenarios, gens = seq(2004, 2999, 5), bounds = lp_bounds) {
+lp_share <- function(scenarios, gens = seq(2004, 2999, 5), bounds = lp_bounds, rcol = "phase_policy_R_gen") {
   g <- expand.grid(Replicate = 1:50, Scenario = scenarios, generation = gens, stringsAsFactors = FALSE)
-  g$phase <- as.character(lp_phase(g$Scenario, g$Replicate, g$generation, bounds))
+  g$phase <- as.character(lp_phase(g$Scenario, g$Replicate, g$generation, bounds, rcol))
   g <- g[g$phase %in% names(LP_COL), ]
   if (!nrow(g)) return(data.frame(Scenario = character(), generation = numeric(), phase = factor(), share = numeric()))
   out <- as.data.frame(table(Scenario = g$Scenario, generation = g$generation, phase = factor(g$phase, names(LP_COL))),
@@ -97,7 +103,7 @@ lp_strip <- function(levels, xscale, facet = "col", ink = "#3d3d3a", base_size =
   sh$Scenario <- factor(sh$Scenario, levels)
   none <- data.frame(Scenario = factor(setdiff(levels, c("Redistributed", "Obstructed")), levels))
   p <- ggplot2::ggplot(sh, ggplot2::aes(generation, share, fill = phase)) +
-    ggplot2::geom_area(position = ggplot2::position_stack(reverse = TRUE), colour = "white", linewidth = 0.15) +
+    ggplot2::geom_area(stat = "identity", position = ggplot2::position_stack(reverse = TRUE), colour = NA) +
     ggplot2::scale_fill_manual(values = LP_COL, labels = LP_LAB, name = "Lineages in phase", drop = FALSE) +
     ggplot2::scale_y_continuous(breaks = c(0, 0.5, 1), labels = c("0", "25", "50"), limits = c(0, 1), expand = c(0, 0)) +
     xscale + ggplot2::labs(y = "Lineages") +

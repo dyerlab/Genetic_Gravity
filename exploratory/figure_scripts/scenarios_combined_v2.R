@@ -1,19 +1,21 @@
 # scenarios_combined_v2.R
 # Phase strips use the heterozygosity-gradient reorganization boundary (2026-09-29); earlier file = gain-based boundary.
+# 2026-10-01: strips use the phase policy (unflagged lineages held in ascent; lineage_phases.R phase_policy_R_gen).
 # Fig_ScenarioComparison with a phase-share strip: the 3x2 facet of C_D-bar,
 # diameter and mean |Delta| (Redistributed | Obstructed, as in
 # scenarios_combined.R), plus a bottom row showing, at each census, the share of
 # the 50 lineages in reorganization, plateau and falling apart
 # (exploratory/lineage_phases.R). Each lineage changes phase at its own
 # generation, so the strip shows how many lineages each calendar-time median mixes.
-# -> media/fig-scenarios-combined-v3.png (earlier: fig-scenarios-combined.png)
+# -> media/fig-scenarios-combined-v4.png (earlier: fig-scenarios-combined.png)
 # Run from the manuscript repo root.
 
 suppressPackageStartupMessages({ library(dplyr); library(tidyr); library(ggplot2); library(mgcv); library(patchwork) })
 source("exploratory/lineage_phases.R")
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
 
-fwd     <- read.csv("data/forward_scenarios.csv", stringsAsFactors = FALSE)
-iso_par <- read.csv("data/derived/isotropic_fit_params.csv", stringsAsFactors = FALSE)
+fwd     <- read.csv(sprintf("data/forward_scenarios%s.csv", SFX), stringsAsFactors = FALSE)
+iso_par <- read.csv(sprintf("data/derived/isotropic_fit_params%s.csv", SFX), stringsAsFactors = FALSE)
 GENS <- 2000:2999
 stat_levels <- c("CD", "diameter", "mean_abs_delta")
 stat_labels <- c("bar(C)[D]", "Diameter", "bar('|' * Delta * '|')")
@@ -54,9 +56,9 @@ share <- expand.grid(Replicate = 1:50, Scenario = scn_levels, generation = seq(2
   mutate(share = n / 50, Scenario = factor(Scenario, scn_levels), phase = factor(phase, names(PHASE_COL)))
 
 bot <- ggplot(share, aes(generation, share, fill = phase)) +
-  geom_area(position = position_stack(reverse = TRUE), colour = "white", linewidth = 0.15) +
+  geom_area(stat = "identity", position = position_stack(reverse = TRUE), colour = NA) +
   scale_fill_manual(values = PHASE_COL, name = "Lineages in phase",
-                    labels = c(Reorganize = "Reorganizing", Plateau = "Plateau", `Fall apart` = "Falling apart")) +
+                    labels = LP_LAB) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c("0", "25", "50"), expand = c(0, 0)) +
   facet_grid(. ~ Scenario) + xs +
   labs(x = "Generation", y = "Lineages") + th +
@@ -65,5 +67,6 @@ bot <- ggplot(share, aes(generation, share, fill = phase)) +
         legend.key.size = unit(0.4, "cm"))
 
 p <- top / bot + plot_layout(heights = c(6.5, 1))
-ggsave("media/fig-scenarios-combined-v3.png", p, width = 9, height = 7.6, dpi = 150, bg = "white")
-cat("Saved media/fig-scenarios-combined-v3.png\n")
+FIG <- if (nzchar(TAG)) "media/fig-scenarios-combined-v5.png" else "media/fig-scenarios-combined-v4.png"
+ggsave(FIG, p, width = 9, height = 7.6, dpi = 150, bg = "white")
+cat("Saved", FIG, "\n")

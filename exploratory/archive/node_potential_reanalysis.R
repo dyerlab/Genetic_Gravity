@@ -218,7 +218,7 @@ timed("bw", {
       cs <- tryCatch(if (identical(a, "global")) gc_census(g, bandwidth = bbar) else do.call(gc_census, c(list(g), a)),
                      error = function(e) NULL)
       if (is.null(cs)) next
-      S <- cs$nodes$S[match(nodes, cs$nodes$node)]
+      S <- gc_rank_S(cs$nodes$S[match(nodes, cs$nodes$node)])
       r_obs <- rho(S, x)
       dr <- as.matrix(adespatial::msr(S, lw, nrepet = B, method = "singleton", simplify = TRUE))
       r_null <- as.numeric(cor(dr, x, method = "spearman"))

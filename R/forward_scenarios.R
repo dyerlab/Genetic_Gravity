@@ -41,8 +41,9 @@ suppressPackageStartupMessages({
 })
 
 source("exploratory/gravity_convention.R")
-fwd     <- gc_read_forward()
-iso_par <- read.csv("data/derived/isotropic_fit_params.csv", stringsAsFactors = FALSE)
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
+fwd     <- gc_read_forward(sprintf("data/forward_scenarios%s.csv", SFX))
+iso_par <- read.csv(sprintf("data/derived/isotropic_fit_params%s.csv", SFX), stringsAsFactors = FALSE)
 
 GENS <- 2000:2999
 
@@ -100,7 +101,7 @@ scenario_figure <- function(scn) {
     theme_minimal(base_size = 11)
 }
 
-save_fig <- function(p, name, height, out_png = sprintf("data/derived/%s_reproduced.png", name)) {
+save_fig <- function(p, name, height, out_png = sprintf("data/derived/%s%s_reproduced.png", name, SFX)) {
   ggsave(out_png, p, width = if (grepl("signed", out_png)) 9 else 7, height = height, dpi = 150, bg = "white")
   cat(sprintf("Saved %s\n", out_png))
 }
@@ -153,4 +154,4 @@ fig_signed <- patchwork::wrap_plots(fig_signed,
   lp_strip(scn_levels, xs_sig, facet = "col") + labs(x = "Generation") + theme(panel.spacing.x = unit(1.2, "lines")),
   ncol = 1, heights = c(4, 0.9))
 
-save_fig(fig_signed, "fig-signed-asymmetry", 5, "media/fig-signed-asymmetry-v4.png")   # v2: rows, no strip
+save_fig(fig_signed, "fig-signed-asymmetry", 5, if (nzchar(TAG)) "media/fig-signed-asymmetry-v6.png" else "media/fig-signed-asymmetry-v5.png")   # v2: rows, no strip

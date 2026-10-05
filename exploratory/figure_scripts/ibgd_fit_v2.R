@@ -1,6 +1,7 @@
 # ibgd_fit_v2.R
 # Phase strips use the heterozygosity-gradient reorganization boundary (2026-09-29); earlier file = gain-based boundary.
-# Fig_DirectionalIBGD with phase-share strips -> media/fig-ibgd-fit-v3.png
+# 2026-10-01: strips use the phase policy (unflagged lineages held in ascent; lineage_phases.R phase_policy_R_gen).
+# Fig_DirectionalIBGD with phase-share strips -> media/fig-ibgd-fit-v4.png
 # Top: standard IBGD R^2 (cGD ~ |dx|). Middle: the within-pGD directional gain,
 # direction-aware minus direction-blind pGD adjusted R^2 (what the caption and
 # text describe; the earlier media/fig-ibgd-fit.png plotted pGD - cGD Delta R^2
@@ -11,7 +12,8 @@
 
 suppressPackageStartupMessages({ library(dplyr); library(tidyr); library(ggplot2); library(patchwork) })
 source("exploratory/lineage_phases.R")
-load("data/derived/ibgd_trajectory_fit.rda")
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
+load(sprintf("data/derived/ibgd_trajectory_fit%s.rda", SFX))
 scen <- c("Isotropic", "Redistributed", "Obstructed")
 cols <- c(Isotropic = "#2a78d6", Redistributed = "#eb6834", Obstructed = "#1baf7a")
 ink <- "#3d3d3a"
@@ -41,5 +43,6 @@ strip <- lp_strip(c("Redistributed", "Obstructed"), xs, facet = "row", strip_lab
   geom_vline(xintercept = 2000, colour = "grey60", linewidth = 0.4) +
   labs(x = "Generation") + theme(strip.text.y = element_text(colour = ink, size = 9, angle = 0, hjust = 0), panel.spacing.y = unit(0.6, "lines"))
 p <- top / strip + plot_layout(heights = c(6, 1.5))
-ggsave("media/fig-ibgd-fit-v3.png", p, width = 8.5, height = 7.4, dpi = 150, bg = "white")
-cat("Saved media/fig-ibgd-fit-v3.png\n")
+FIG <- if (nzchar(TAG)) "media/fig-ibgd-fit-v5.png" else "media/fig-ibgd-fit-v4.png"
+ggsave(FIG, p, width = 8.5, height = 7.4, dpi = 150, bg = "white")
+cat("Saved", FIG, "\n")

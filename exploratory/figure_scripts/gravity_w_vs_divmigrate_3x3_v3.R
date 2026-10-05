@@ -1,6 +1,7 @@
 # gravity_w_vs_divmigrate_3x3_v3.R
 # Phase strips use the heterozygosity-gradient reorganization boundary (2026-09-29); earlier file = gain-based boundary.
-# v3 = v2 plus the phase-share strip (exploratory/lineage_phases.R) -> media/fig-gravity-w-vs-divmigrate-3x3-v4.png
+# 2026-10-01: strips use the phase policy (unflagged lineages held in ascent; lineage_phases.R phase_policy_R_gen).
+# v3 = v2 plus the phase-share strip (exploratory/lineage_phases.R) -> media/fig-gravity-w-vs-divmigrate-3x3-v5.png
 # Fig_DivMigrateTruth, transposed-truth version (local/node_potential_reanalysis.md, Task 3a):
 # w_{j|i} (W[i, j], j's weight in i's neighbourhood) is compared with m_{j->i}, the
 # transposed truth, because gene flow j -> i raises it; divMigrate's relative Nm
@@ -13,8 +14,9 @@
 
 suppressPackageStartupMessages({ library(ggplot2); library(dplyr); library(tidyr); library(patchwork) })
 source("exploratory/lineage_phases.R")
-e <- new.env(); load("data/derived/node_potential_reanalysis.rda", envir = e)
-t3 <- e$rean$truth$d
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
+t3 <- if (nzchar(TAG)) readRDS(sprintf("data/derived/truth%s.rds", SFX)) else {
+  e <- new.env(); load("data/derived/node_potential_reanalysis.rda", envir = e); e$rean$truth$d }
 key <- c("Replicate", "Treatment", "Generation")
 d <- bind_rows(
   t3 |> filter(Exclusion == "") |> transmute(across(all_of(key)), rho_all = w_rho_tr, rmse_all = w_rmse_tr,
@@ -50,5 +52,6 @@ xs <- scale_x_continuous(limits = c(2000, 3000), breaks = seq(2000, 2750, 250), 
 strip <- lp_strip(c("Isotropic", "Redistributed", "Obstructed"), xs, facet = "col") +
   labs(x = "Generation") + theme(panel.spacing.x = unit(1, "lines"))
 p <- p / strip + plot_layout(heights = c(7.5, 0.9))
-ggsave("media/fig-gravity-w-vs-divmigrate-3x3-v4.png", p, width = 10, height = 8.6, dpi = 150, bg = "white")
-cat("Saved media/fig-gravity-w-vs-divmigrate-3x3-v4.png\n")
+FIG <- if (nzchar(TAG)) "media/fig-gravity-w-vs-divmigrate-3x3-v6.png" else "media/fig-gravity-w-vs-divmigrate-3x3-v5.png"
+ggsave(FIG, p, width = 10, height = 8.6, dpi = 150, bg = "white")
+cat("Saved", FIG, "\n")
