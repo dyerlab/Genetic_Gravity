@@ -10,7 +10,9 @@
 #   Bottom row: the source-sink gradient test at each census (50 replicates):
 #            fraction rejected at alpha = 0.05 (locked spec: Spearman r(S, x),
 #            spectral null on the census's own graph, B = 999) and fraction with
-#            sources upstream (r(S, x) < 0), with binomial 95% intervals.
+#            sources upstream (r(S, x) < 0), with 95% intervals: binomial in the forward
+#            phase (one census per lineage per point), lineage-cluster bootstrap for the
+#            pooled burn-in bins (five censuses per lineage per bin).
 #
 # S is computed from the saved graphs with gstudio::source_sink_scores() (every 5
 # generations in 1904-1999, every 10 generations in 2004-2994). With GG_TAG=g05 (gamma = 1/2,
@@ -30,7 +32,7 @@ source("exploratory/gravity_convention.R")
 source("exploratory/lineage_phases.R")
 TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (exploratory/half_bandwidth_results.R), next figure version
 CACHE <- sprintf("data/derived/node_gravity_heatmap%s.rds", SFX)
-FIG   <- if (nzchar(TAG)) "media/fig-source-sink-score-v6.png" else "media/fig-source-sink-score-v4.png"   # v6: gstudio 1.15 source_sink_test() (identical with rounding or tolerance ties; v5: earlier draws); v2 adds the phase strip
+FIG   <- if (nzchar(TAG)) "media/fig-source-sink-score-v7.png" else "media/fig-source-sink-score-v4.png"   # v7: burn-in bins get lineage-bootstrap intervals; v6: gstudio 1.15 source_sink_test() (identical with rounding or tolerance ties; v5: earlier draws); v2 adds the phase strip
 SCEN  <- c(Isotropic = 1L, Redistributed = 2L, Obstructed = 3L)
 
 if (file.exists(CACHE)) nodes <- readRDS(CACHE) else {
@@ -73,11 +75,14 @@ pw <- tt |> group_by(scenario, generation) |>
   summarise(Rejected = mean(p < 0.05), rej_lo = ci(p < 0.05)[1], rej_hi = ci(p < 0.05)[2],
             `Sources upstream` = mean(r_S < 0), up_lo = ci(r_S < 0)[1], up_hi = ci(r_S < 0)[2], .groups = "drop")
 # burn-in censuses are every 5 generations: pool them into 25-generation bins so
-# every plotted point rests on a comparable number of censuses
+# every plotted point rests on a comparable number of censuses. A bin holds five censuses
+# per lineage, so its interval is a cluster bootstrap over lineages (percentile, 4,000 draws)
+cci <- function(x, rep) { L <- split(x, rep); set.seed(1)
+  quantile(replicate(4000, mean(unlist(sample(L, replace = TRUE)))), c(.025, .975), names = FALSE) }
 pw_bi <- tt |> filter(generation < 2000) |> mutate(generation = 1900 + 25 * ((generation - 1900) %/% 25) + 12) |>
   group_by(scenario, generation) |>
-  summarise(Rejected = mean(p < 0.05), rej_lo = ci(p < 0.05)[1], rej_hi = ci(p < 0.05)[2],
-            `Sources upstream` = mean(r_S < 0), up_lo = ci(r_S < 0)[1], up_hi = ci(r_S < 0)[2], .groups = "drop")
+  summarise(Rejected = mean(p < 0.05), rej_lo = cci(p < 0.05, Replicate)[1], rej_hi = cci(p < 0.05, Replicate)[2],
+            `Sources upstream` = mean(r_S < 0), up_lo = cci(r_S < 0, Replicate)[1], up_hi = cci(r_S < 0, Replicate)[2], .groups = "drop")
 pw <- bind_rows(pw_bi, filter(pw, generation > 2000))
 pl <- bind_rows(
   transmute(pw, scenario, generation, series = "Rejected (α = 0.05)", value = Rejected, lo = rej_lo, hi = rej_hi),
