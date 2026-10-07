@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Baja Example Data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="BajaSystem_files/libs/clipboard/clipboard.min.js"></script>
+<script src="BajaSystem_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="BajaSystem_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="BajaSystem_files/libs/quarto-html/popper.min.js"></script>
+<script src="BajaSystem_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="BajaSystem_files/libs/quarto-html/anchor.min.js"></script>
+<link href="BajaSystem_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="BajaSystem_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="BajaSystem_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="BajaSystem_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="BajaSystem_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Baja Example Data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Is a quick summary of the use of genetic gravity in a coupled plant insect system in Baja California. These data were published previously individually looking at phylogeny and spatial genetic structure of either species. This system includes a plant that serves as a host for a bark beetle. The plant does not need the bark beetle, but the bark beetle only lives within the senescing stems stems of the plant, so there is a one-way spatial/evolutionary/ecological relationship here.</p>
+<section id="host-plant---euphorbia-lomelii" class="level2">
+<h2 class="anchored" data-anchor-id="host-plant---euphorbia-lomelii">Host Plant - <em>Euphorbia lomelii</em></h2>
+<p><img src="media/pedima.jpg" class="img-fluid"></p>
+<p>This is the host plant, which is an endemic of the Sonoran desert, and it is ubiquitous throughout its range. Both this plant and the following bark beetle exist on both Peninsula Baja California and mainland Sonora, though much of the habitat on the mainland has been converted to agricultural use, and we were only able to find samples in relictual or marginal habitats.</p>
+<p>The topology using a population graph from genetic markers is mostly connected with a single population serving as an isllated node. This apology is presented in graph space, based upon the conditional covariance between each node, independent of where it was collected from, on the physical landscape.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_population</span>( <span class="st">"data/PedimaFinal.csv"</span>, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type=</span><span class="st">"zyme"</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">locus.columns =</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">15</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span> ) <span class="sc">|&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>( <span class="sc">-</span>SoC, <span class="sc">-</span>IoL, <span class="sc">-</span>MSP, <span class="sc">-</span>Geneland, <span class="sc">-</span>ID) <span class="sc">|&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>( <span class="at">Population =</span> <span class="fu">factor</span>( Pop) ) <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>( Population, </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">Latitude =</span> Lat, <span class="at">Longitude =</span> Lon, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">everything</span>() ) <span class="ot">-&gt;</span> pedima</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>(<span class="at">decorate=</span><span class="cn">TRUE</span>) <span class="ot">-&gt;</span> pgraph </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgraph, <span class="at">layout=</span><span class="st">"kk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pedimaTopology" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pedimaTopology-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-pedimaTopology-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pedimaTopology-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: the topography of genetic covariance as measured within the plant, <em>Euphoria lomeli</em>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>placing these nodes on the landscape itself, we see that there is a non-trivial amount of covariance throughout the peninsula with mainland relictual populations.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgraph, <span class="at">base =</span> bajaCalifornia )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pedimaTopologySpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pedimaTopologySpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-pedimaTopologySpatial-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pedimaTopologySpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: the spatial distribution of conditional genetic variants in <em>Euphoria lomeli</em>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="isolation-by-distance" class="level3">
+<h3 class="anchored" data-anchor-id="isolation-by-distance">Isolation by Distance</h3>
+<p>When measured on the population graph itself, we find a significant relationship between graph distance and physical separation on the landscape, using classic isolation by graph distance. In the original manuscript, we also evaluated the relative physical links of these edges on the landscape based upon compression and or expansion, which highlighted a couple scenarios where we felt that there was intervening landscape features that prevent direct connectivity, compression, or potential long distance dispersal events, extension.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph ) <span class="ot">-&gt;</span> ibd.pedima</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ibd.pedima</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Isolation by graph distance (cGD; Mantel permutation test)
+
+data:  pgraph and great-circle distance (km)
+r = 0.26811, pairs = 703, nperm = 999, p-value = 0.002
+alternative hypothesis: true r is greater than 0
+sample estimates:
+         R2       slope 
+0.071881490 0.003146664 </code></pre>
+</div>
+</div>
+</section>
+<section id="genetic-gravity" class="level3">
+<h3 class="anchored" data-anchor-id="genetic-gravity">Genetic Gravity</h3>
+<p>Estimating genetic gravity for this particular set of populations yields the following topology, here displayed in graph space to understand the relative source sink dynamics in the topology independent of the landscape itself.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_field</span>( pgraph ) <span class="ot">-&gt;</span> pgravity </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgravity, <span class="at">layout=</span><span class="st">"kk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pedimaTopologyGravity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pedimaTopologyGravity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-pedimaTopologyGravity-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pedimaTopologyGravity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: the distribution of asymmetries within the conditional covariance topology for <em>Euphoria lomeli</em>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>And here it is over laying on two this spatial locations of each of the populations sampled.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgravity, <span class="at">base =</span> bajaCalifornia, <span class="at">alpha=</span><span class="fl">0.75</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pedimaTopologyGravitySpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pedimaTopologyGravitySpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-pedimaTopologyGravitySpatial-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pedimaTopologyGravitySpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: the spatial distribution of asymmetry among populations in Baja California of <em>Euphoria lomeli</em>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the original manuscript, we hypothesized looking at the spatial pattern of loss of diversity that there may have been two refugium for the plant species, both of which following the Pleistocene were hypothesized to quickly spread in a southern direction. The geography of Baja California is one where the eastern edge is tipped up with a huge elevational gradient off of the Sea of Cortez and a gradual slope towards the Pacific Ocean. We originally argued that the refugium was in the Sea of Cortez area and then once the expansion crested the top of the eastern ridges along Baja California and the central region, there was a rapid expansion southward of the host plant. From the patterns we mapped, there may have been up to two separate and isolated refugia. And we showed that applying that refugium hypothesis to the distribution of genetic variants, we explain 29% of the among population genetic structure due to this pattern of range expansion alone.</p>
+</section>
+<section id="asymmetric-isolation-by-distance" class="level3">
+<h3 class="anchored" data-anchor-id="asymmetric-isolation-by-distance">Asymmetric Isolation By Distance</h3>
+<p>The richness–latitude pattern splits at about 25°N into two separate relationships. One covers central and northern Baja (slope 0.387, R² 0.60); the other covers the southern Cape Region (slope 1.334, R² 0.67). The split coincides with a genetic break estimated (via GeneLand at the time). And we offered two explanations for the southern pattern: a second expansion, or mixing of gene pools that were once separated across the Isthmus of La Paz.</p>
+<p>Giving the genetic gravity framework, we can now set up an isolation by weighted distance for a symmetric connectivity based upon these two hypothesized refugium.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Expansion distance: km (by latitude) from each population to the refugium</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># that seeded it.  With more than one refugium (ordered south to north),</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 'breaks' assigns populations to refugia by latitude.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>expansion_km <span class="ot">&lt;-</span> <span class="cf">function</span>( graph, refugia, <span class="at">breaks =</span> <span class="cn">NULL</span> ) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    lat <span class="ot">&lt;-</span> <span class="fu">V</span>( graph )<span class="sc">$</span>Latitude</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    dom <span class="ot">&lt;-</span> <span class="cf">if</span>( <span class="fu">is.null</span>( breaks ) ) <span class="fu">rep</span>( <span class="dv">1</span>, <span class="fu">length</span>( lat ) ) <span class="cf">else</span> <span class="fu">findInterval</span>( lat, breaks ) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>( <span class="fl">111.2</span> <span class="sc">*</span> <span class="fu">abs</span>( lat <span class="sc">-</span> refugia[ dom ] ), <span class="fu">V</span>( graph )<span class="sc">$</span>name )</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Refugium hypothesis for ibgd( mode="pgd" ): great-circle distance (km)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># between populations, and forward[i,j] = TRUE when j lies further along the</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># expansion than i (gene flow runs away from the refugium).</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>refugium_hypothesis <span class="ot">&lt;-</span> <span class="cf">function</span>( graph, refugia, <span class="at">breaks =</span> <span class="cn">NULL</span> ) {</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    nodes <span class="ot">&lt;-</span> <span class="fu">V</span>( graph )<span class="sc">$</span>name</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> <span class="fu">expansion_km</span>( graph, refugia, breaks )</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>( <span class="at">Stratum =</span> nodes,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">Longitude =</span> <span class="fu">V</span>( graph )<span class="sc">$</span>Longitude,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">Latitude =</span> <span class="fu">V</span>( graph )<span class="sc">$</span>Latitude ) <span class="sc">|&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">strata_distance</span>( <span class="at">mode =</span> <span class="st">"Circle"</span> ) <span class="sc">|&gt;</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.matrix</span>() <span class="ot">-&gt;</span> D</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>( <span class="at">distance =</span> D[ nodes, nodes ],</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>          <span class="at">forward =</span> <span class="fu">outer</span>( e, e, <span class="cf">function</span>( a, b ) b <span class="sc">&gt;</span> a ) )</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( <span class="sc">!</span>(Population <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"32"</span>,<span class="st">"101"</span>,<span class="st">"102"</span>)) ) <span class="sc">|&gt;</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>(<span class="at">decorate=</span><span class="cn">TRUE</span>) <span class="ot">-&gt;</span> pgraph_pen</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co"># plant distances under refugia hypotheses: a single northern refugium</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (~29°N) vs. a second refugium at ~25°N seeding the Cape Region.</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>plant.one <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>( pgraph_pen, <span class="at">refugia =</span> <span class="dv">29</span> )</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>plant.two <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>( pgraph_pen, <span class="at">refugia =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">29</span>), <span class="at">breaks =</span> <span class="dv">25</span> )</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co"># cGD vs. pGD under each hypothesis.  Delta R2 &gt; 0 favours the directional</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co"># model; a slope ratio &lt; 1 supports the hypothesized direction (genetic</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># distance accumulates more slowly moving away from the refugium).</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph_pen ) <span class="ot">-&gt;</span> fit.cgd.pedima</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph_pen, <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">distance =</span> plant.one<span class="sc">$</span>distance, <span class="at">forward =</span> plant.one<span class="sc">$</span>forward ) <span class="ot">-&gt;</span> fit.pgd1.pedima</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph_pen, <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">distance =</span> plant.two<span class="sc">$</span>distance, <span class="at">forward =</span> plant.two<span class="sc">$</span>forward ) <span class="ot">-&gt;</span> fit.pgd2.pedima</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>fit.cgd.pedima</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Isolation by graph distance (cGD; Mantel permutation test)
+
+data:  pgraph_pen and great-circle distance (km)
+r = 0.2694, pairs = 595, nperm = 999, p-value = 0.001
+alternative hypothesis: true r is greater than 0
+sample estimates:
+         R2       slope 
+0.072576577 0.002970258 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit.pgd1.pedima</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Directional isolation by graph distance (pGD at gamma = 0.5 vs cGD)
+
+data:  pgraph_pen and plant.one$distance
+delta R2 = 0.0034205, pairs = 1186
+sample estimates:
+       R2 cGD    adj R2 pGD forward slope reverse slope   slope ratio 
+ 0.0725765768  0.0759970907  0.0023842890  0.0004365893  5.4611711669 
+
+Directional description preferred (delta R2 &gt; 0); slope ratio 5.46: genetic
+distance accumulates more quickly in the forward direction.
+No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_test().</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit.pgd2.pedima</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Directional isolation by graph distance (pGD at gamma = 0.5 vs cGD)
+
+data:  pgraph_pen and plant.two$distance
+delta R2 = 0.029258, pairs = 1184
+sample estimates:
+       R2 cGD    adj R2 pGD forward slope reverse slope   slope ratio 
+ 7.257658e-02  1.018348e-01  2.617293e-03  1.885795e-04  1.387899e+01 
+
+Directional description preferred (delta R2 &gt; 0); slope ratio 13.9: genetic
+distance accumulates more quickly in the forward direction.
+No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_test().</code></pre>
+</div>
+</div>
+<p>==Insert findings here and compare pgd vs cgd for isolation==</p>
+</section>
+</section>
+<section id="bark-beetle---araptus-attenuatus" class="level2">
+<h2 class="anchored" data-anchor-id="bark-beetle---araptus-attenuatus">Bark Beetle - <em>Araptus attenuatus</em></h2>
+<p><img src="media/arapat.jpg" class="img-fluid"></p>
+<p>This barked beetle is only known to inhabit the senescing stems of the putative host plant. Two date has never been found on any other plant in the Sonoran desert. We sampled individuals from the same locations as the plants in the previous section, yet there was more subdivision in this species than in the plant species.</p>
+<p>What we found in the beetle was a separation of three putative species, whose genetic divergence in the mitochondria region was significant, and for individuals occurring in simpatry, we we showed non-overlapping allele presence, suggesting no intergeneration. Furthermore, within the largest group, we named as peninsula group, we found a subsequent partitioning of that putative species into a north, a central, and a Cape region, and we highlighted the potential that Pleistocene habitat suitability was partially responsible for that genetic partitioning within a single large distributed species along the peninsula of Baja California.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( arapat ) </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>arapat <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( Species <span class="sc">==</span> <span class="st">"Peninsula"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( <span class="sc">!</span>(Population <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"157"</span>, <span class="st">"73"</span>, <span class="st">"75"</span>, <span class="st">"98"</span>, <span class="st">"Const"</span>, <span class="st">"ESan"</span>, <span class="st">"Mat"</span>) ) )  <span class="sc">|&gt;</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">droplevels</span>() <span class="ot">-&gt;</span> peninsula</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>( Cluster, Species ) <span class="sc">|&gt;</span> </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Species
+Cluster Peninsula
+  CBP-C       146
+  NBP-C        84
+  SBP-C        10</code></pre>
+</div>
+</div>
+<p>For this example, we’re only going to use the larger clade that we identified in the manuscript as the peninsula “species”. We will also drop some populations that have small sample size, as in the southern region there were some populations that had more than one species occurring in sympatry, though never mixing within a single host plant. For robustness, we prevent population graphs being constructed from samples with fewer than five individuals each.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>( <span class="at">decorate=</span><span class="cn">TRUE</span> ) <span class="ot">-&gt;</span> agraph</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">components</span>(agraph)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>( agraph )<span class="sc">$</span>Subgraph <span class="ot">&lt;-</span> <span class="fu">factor</span>( comp<span class="sc">$</span>membership )</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agraph, <span class="at">layout=</span><span class="st">"kk"</span>, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="BajaSystem_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>When we mapped those groups found in the population graph onto the landscape, we can see it coincides with roughly the partitioning we defined in the original paper.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agraph, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>, <span class="at">base=</span>bajaCalifornia)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-araptusTopologySpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-araptusTopologySpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-araptusTopologySpatial-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-araptusTopologySpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: The spatial distribution of subcomponents within the bark beetles genetic topology.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="isolation-by-graph-distance" class="level3">
+<h3 class="anchored" data-anchor-id="isolation-by-graph-distance">Isolation By Graph Distance</h3>
+<p>In a similar fashion, we can carry out an isolation by graph distance using the separation between nodes in the topology, and we also find the level of contluence here in the insect is much more than what observed in the houseplant.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( agraph ) <span class="ot">-&gt;</span> fit.cgd </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>fit.cgd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Isolation by graph distance (cGD; Mantel permutation test)
+
+data:  agraph and great-circle distance (km)
+r = 0.17526, pairs = 129, nperm = 999, p-value = 0.064
+alternative hypothesis: true r is greater than 0
+sample estimates:
+         R2       slope 
+0.030717698 0.007345082 </code></pre>
+</div>
+</div>
+</section>
+<section id="asymmetries" class="level3">
+<h3 class="anchored" data-anchor-id="asymmetries">Asymmetries</h3>
+<p>Our hypotheses in the original paper, based on a range of inferences, including coalescent modeling and spatial patterns of a lyric loss set up a scenario for identifying asymmetries using genetic gravity. The topology that we get shows a significant degree of asymmetries in the underlying covariance structure.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_field</span>( agraph ) <span class="ot">-&gt;</span> agravity</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agravity, <span class="at">layout =</span> <span class="st">"kk"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-gravityArapatus" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gravityArapatus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-gravityArapatus-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gravityArapatus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: The graph structure of a symmetry in the bark beetle based upon a symmetry in connectivity.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>And when we display that overlaying on the landscape from which the organisms were sampled, we can see a degree of similarity in source- sink dynamics as hypothesized through systematic changes in the leak richness.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agravity, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>, <span class="at">base =</span> bajaCalifornia, <span class="at">alpha=</span><span class="fl">0.5</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-gravityArapatusSpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gravityArapatusSpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-gravityArapatusSpatial-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gravityArapatusSpatial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: The spatial location of a symmetry in source and sink dynamics within the bark beetle.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="asymmetric-isolation-by-distance-1" class="level3">
+<h3 class="anchored" data-anchor-id="asymmetric-isolation-by-distance-1">Asymmetric Isolation By Distance</h3>
+<p>Similar to <em>E. lomelli</em>, genetic gravity allows us to actually test whether an isolation by graft distance using the partition genetic distance pGD rather than symmetric conditional genetic distance cGD provides a better fit to the observed data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># beetle distances under a single central refugium (~27.5°N) expanding</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># both north and south (helpers defined in the E. lomelii section).</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>beetle.one <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>( agraph, <span class="at">refugia =</span> <span class="fl">27.5</span> )</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># cGD (fit.cgd, above) vs. pGD under the refugium hypothesis.</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( agraph, <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">distance =</span> beetle.one<span class="sc">$</span>distance, <span class="at">forward =</span> beetle.one<span class="sc">$</span>forward ) <span class="ot">-&gt;</span> fit.pgd.arapat</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>fit.pgd.arapat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Directional isolation by graph distance (pGD at gamma = 0.5 vs cGD)
+
+data:  agraph and beetle.one$distance
+delta R2 = 0.12096, pairs = 258
+sample estimates:
+       R2 cGD    adj R2 pGD forward slope reverse slope   slope ratio 
+  0.030717698   0.151676385  -0.001633887   0.008536900  -0.191391117 
+
+Directional description preferred (delta R2 &gt; 0); slope ratio -0.191: genetic
+distance accumulates more slowly in the forward direction.
+No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_test().</code></pre>
+</div>
+</div>
+<p>==Insert findings here and compare pgd vs cgd for isolation==</p>
+</section>
+</section>
+<section id="congruent-inferences" class="level2">
+<h2 class="anchored" data-anchor-id="congruent-inferences">Congruent Inferences</h2>
+<p>The next natural step was to examine any levels of congruence in the topologies between the plant and the bark beetle. To look at congruence between these two topologies, we had to make one adjustment in that we had sampled two additional populations in the bark beetle that were not in this data set for the plant. Because the topology depends upon the covariance between all population simultaneously, we cannot compare the two with non-overlapping node sets. So for comparison purposes, we will reconstruct both topologies with the intersection of sample locations.</p>
+<section id="topological-congruence" class="level3">
+<h3 class="anchored" data-anchor-id="topological-congruence">Topological Congruence</h3>
+<p>Topological congruence in a population graph is defined by the intersection of the edge sets. Two topologies are congruent if they have the exact same pattern of connectivity between nodes. For the host plant and the insect, we can define the subset of edges where the conditional independence within each species is spatially congruent and plotted here.</p>
+<p>In this case, the disconnect of the peninsula groups within the bark beetle are carried over into the congruence topology, where we have a set of connected populations in North Baja California, a diffuse collection within central Baja California, a Cape group, and then similarity again within the Sonoran desert groups.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pops <span class="ot">&lt;-</span> <span class="fu">intersect</span>( <span class="fu">V</span>(agraph)<span class="sc">$</span>name, <span class="fu">V</span>(pgraph)<span class="sc">$</span>name) </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( Population <span class="sc">%in%</span> pops ) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>( <span class="at">decorate =</span> <span class="cn">TRUE</span> ) <span class="ot">-&gt;</span> congA </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( Population <span class="sc">%in%</span> pops ) <span class="sc">|&gt;</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>( <span class="at">decorate =</span> <span class="cn">TRUE</span> ) <span class="ot">-&gt;</span> congP </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>cong <span class="ot">&lt;-</span> <span class="fu">congruence_topology</span>( congP, congA )</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(cong)<span class="sc">$</span>Latitude <span class="ot">&lt;-</span> <span class="fu">V</span>(congA)<span class="sc">$</span>Latitude</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(cong)<span class="sc">$</span>Longitude <span class="ot">&lt;-</span> <span class="fu">V</span>(congA)<span class="sc">$</span>Longitude </span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( cong, <span class="at">base=</span>bajaCalifornia )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-congruence" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-congruence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-congruence-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-congruence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: The congruence in conditional genetic structure based on the shared edge sets found in the plant and the insect topologies.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Of note, in this display of spatial congruence in conditional genetic structure, is that while in the insect the senoran group is most likely a different species, that pattern of connectivity is shared within the plant group which we see no evidence of taxonomic divergence divergence we see in the insect.</p>
+</section>
+<section id="congruence-in-asymmetry" class="level3">
+<h3 class="anchored" data-anchor-id="congruence-in-asymmetry">Congruence in Asymmetry</h3>
+<p>The following demonstrates similarity in the underlying genetic gravities produced by each individual species. We have indicated where a particular node has similarity as source, similarity as sink, between the two species, or where they are discordant. The same feature for edges, discordant edges are indicated as – whereas edges with arrows on them show a concordance in the directionality of genetic gravity or the flow into a node between both parental topologies.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_congruence</span>( <span class="fu">gravity_field</span>(congA), <span class="fu">gravity_field</span>(congP) ) <span class="ot">-&gt;</span> gravCong </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>gravCong</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Gravity congruence: gravity_field(congA) and gravity_field(congP)
+  26 populations, 7 shared edges (of 31 and 48), gamma = 0.5
+  S:              rho = 0.454, p = 0.011  [999 permutations]
+  edge direction: 0.429 concordant (3 of 7), p = 0.773  [sign test]
+  shared sources: 12, 160, 161, 162, 164, ... (9)
+  shared sinks:   166, 64, 77, 84, 89, ... (6)
+  discordant:     159, 168, 171, 173, 177, ... (7)
+  neutral:        153, 163, 58, Aqu</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gravCong )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-gravCong" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gravCong-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="BajaSystem_files/figure-html/fig-gravCong-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gravCong-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: The congruence topology in a symmetry measured in both the plant and insect species as estimated through genetic gravity.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We see there’s a significant correlation between the plant and the insect, with respect to the spatial distribution of sources and sinks across the Sonoran desert (Spearman <span class="math inline">\(\rho\)</span> = 0.454, P = 0.011). However, the edges do not show an overall significant correlation in the directions that they point (Binomial sign test: <span class="math inline">\(S\)</span> = 0.429, P = 0.7734). This discordance in edge direction versus population source and sink may be a function of that in one of the taps that we have a single proposed refugium and in the other we have two proposed refugia, so following the Pleistocene, the insect was emerging from the central portion of the peninsula, whereas the plant had a secondary refugium whose resident insects lineages are no longer found in contemporary data.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
