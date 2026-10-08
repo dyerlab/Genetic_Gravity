@@ -137,18 +137,18 @@ window.Quarto = {
 <p>This is the host plant, which is an endemic of the Sonoran desert, and it is ubiquitous throughout its range. Both this plant and the following bark beetle exist on both Peninsula Baja California and mainland Sonora, though much of the habitat on the mainland has been converted to agricultural use, and we were only able to find samples in relictual or marginal habitats.</p>
 <p>The topology using a population graph from genetic markers is mostly connected with a single population serving as an isllated node. This apology is presented in graph space, based upon the conditional covariance between each node, independent of where it was collected from, on the physical landscape.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_population</span>( <span class="st">"data/PedimaFinal.csv"</span>, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type=</span><span class="st">"zyme"</span>, </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">locus.columns =</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">15</span>, </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span> ) <span class="sc">|&gt;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>( <span class="sc">-</span>SoC, <span class="sc">-</span>IoL, <span class="sc">-</span>MSP, <span class="sc">-</span>Geneland, <span class="sc">-</span>ID) <span class="sc">|&gt;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>( <span class="at">Population =</span> <span class="fu">factor</span>( Pop) ) <span class="sc">|&gt;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>( Population, </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">Latitude =</span> Lat, <span class="at">Longitude =</span> Lon, </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">everything</span>() ) <span class="ot">-&gt;</span> pedima</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_population</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/PedimaFinal.csv"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"zyme"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">locus.columns =</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">15</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>SoC, <span class="sc">-</span>IoL, <span class="sc">-</span>MSP, <span class="sc">-</span>Geneland, <span class="sc">-</span>ID) <span class="sc">|&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Population =</span> <span class="fu">factor</span>(Pop)) <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Population, <span class="at">Latitude =</span> Lat, <span class="at">Longitude =</span> Lon, <span class="fu">everything</span>()) <span class="ot">-&gt;</span> pedima</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>(<span class="at">decorate=</span><span class="cn">TRUE</span>) <span class="ot">-&gt;</span> pgraph </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgraph, <span class="at">layout=</span><span class="st">"kk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">population_graph</span>(<span class="at">decorate =</span> <span class="cn">TRUE</span>) <span class="ot">-&gt;</span> pgraph</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pgraph, <span class="at">layout =</span> <span class="st">"kk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-pedimaTopology" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -164,7 +164,7 @@ Figure&nbsp;1: the topography of genetic covariance as measured within the plant
 </div>
 <p>placing these nodes on the landscape itself, we see that there is a non-trivial amount of covariance throughout the peninsula with mainland relictual populations.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgraph, <span class="at">base =</span> bajaCalifornia )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pgraph, <span class="at">base =</span> bajaCalifornia)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-pedimaTopologySpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -182,14 +182,14 @@ Figure&nbsp;2: the spatial distribution of conditional genetic variants in <em>E
 <h3 class="anchored" data-anchor-id="isolation-by-distance">Isolation by Distance</h3>
 <p>When measured on the population graph itself, we find a significant relationship between graph distance and physical separation on the landscape, using classic isolation by graph distance. In the original manuscript, we also evaluated the relative physical links of these edges on the landscape based upon compression and or expansion, which highlighted a couple scenarios where we felt that there was intervening landscape features that prevent direct connectivity, compression, or potential long distance dispersal events, extension.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph ) <span class="ot">-&gt;</span> ibd.pedima</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(pgraph) <span class="ot">-&gt;</span> ibd.pedima</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ibd.pedima</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Isolation by graph distance (cGD; Mantel permutation test)
 
 data:  pgraph and great-circle distance (km)
-r = 0.26811, pairs = 703, nperm = 999, p-value = 0.002
+r = 0.26811, pairs = 703, nperm = 999, p-value = 0.001
 alternative hypothesis: true r is greater than 0
 sample estimates:
          R2       slope 
@@ -201,8 +201,8 @@ sample estimates:
 <h3 class="anchored" data-anchor-id="genetic-gravity">Genetic Gravity</h3>
 <p>Estimating genetic gravity for this particular set of populations yields the following topology, here displayed in graph space to understand the relative source sink dynamics in the topology independent of the landscape itself.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_field</span>( pgraph ) <span class="ot">-&gt;</span> pgravity </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgravity, <span class="at">layout=</span><span class="st">"kk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_field</span>(pgraph) <span class="ot">-&gt;</span> pgravity</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pgravity, <span class="at">layout =</span> <span class="st">"kk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-pedimaTopologyGravity" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -218,7 +218,7 @@ Figure&nbsp;3: the distribution of asymmetries within the conditional covariance
 </div>
 <p>And here it is over laying on two this spatial locations of each of the populations sampled.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( pgravity, <span class="at">base =</span> bajaCalifornia, <span class="at">alpha=</span><span class="fl">0.75</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pgravity, <span class="at">base =</span> bajaCalifornia, <span class="at">alpha =</span> <span class="fl">0.75</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-pedimaTopologyGravitySpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -242,51 +242,64 @@ Figure&nbsp;4: the spatial distribution of asymmetry among populations in Baja C
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Expansion distance: km (by latitude) from each population to the refugium</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># that seeded it.  With more than one refugium (ordered south to north),</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 'breaks' assigns populations to refugia by latitude.</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>expansion_km <span class="ot">&lt;-</span> <span class="cf">function</span>( graph, refugia, <span class="at">breaks =</span> <span class="cn">NULL</span> ) {</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    lat <span class="ot">&lt;-</span> <span class="fu">V</span>( graph )<span class="sc">$</span>Latitude</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    dom <span class="ot">&lt;-</span> <span class="cf">if</span>( <span class="fu">is.null</span>( breaks ) ) <span class="fu">rep</span>( <span class="dv">1</span>, <span class="fu">length</span>( lat ) ) <span class="cf">else</span> <span class="fu">findInterval</span>( lat, breaks ) <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>( <span class="fl">111.2</span> <span class="sc">*</span> <span class="fu">abs</span>( lat <span class="sc">-</span> refugia[ dom ] ), <span class="fu">V</span>( graph )<span class="sc">$</span>name )</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Refugium hypothesis for ibgd( mode="pgd" ): great-circle distance (km)</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># between populations, and forward[i,j] = TRUE when j lies further along the</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># expansion than i (gene flow runs away from the refugium).</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>refugium_hypothesis <span class="ot">&lt;-</span> <span class="cf">function</span>( graph, refugia, <span class="at">breaks =</span> <span class="cn">NULL</span> ) {</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    nodes <span class="ot">&lt;-</span> <span class="fu">V</span>( graph )<span class="sc">$</span>name</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> <span class="fu">expansion_km</span>( graph, refugia, breaks )</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>( <span class="at">Stratum =</span> nodes,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">Longitude =</span> <span class="fu">V</span>( graph )<span class="sc">$</span>Longitude,</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">Latitude =</span> <span class="fu">V</span>( graph )<span class="sc">$</span>Latitude ) <span class="sc">|&gt;</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">strata_distance</span>( <span class="at">mode =</span> <span class="st">"Circle"</span> ) <span class="sc">|&gt;</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.matrix</span>() <span class="ot">-&gt;</span> D</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>( <span class="at">distance =</span> D[ nodes, nodes ],</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>          <span class="at">forward =</span> <span class="fu">outer</span>( e, e, <span class="cf">function</span>( a, b ) b <span class="sc">&gt;</span> a ) )</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( <span class="sc">!</span>(Population <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"32"</span>,<span class="st">"101"</span>,<span class="st">"102"</span>)) ) <span class="sc">|&gt;</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>(<span class="at">decorate=</span><span class="cn">TRUE</span>) <span class="ot">-&gt;</span> pgraph_pen</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co"># plant distances under refugia hypotheses: a single northern refugium</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (~29°N) vs. a second refugium at ~25°N seeding the Cape Region.</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>plant.one <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>( pgraph_pen, <span class="at">refugia =</span> <span class="dv">29</span> )</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>plant.two <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>( pgraph_pen, <span class="at">refugia =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">29</span>), <span class="at">breaks =</span> <span class="dv">25</span> )</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>expansion_km <span class="ot">&lt;-</span> <span class="cf">function</span>(graph, refugia, <span class="at">breaks =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  lat <span class="ot">&lt;-</span> <span class="fu">V</span>(graph)<span class="sc">$</span>Latitude</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  dom <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">is.null</span>(breaks)) {</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(lat))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">findInterval</span>(lat, breaks) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="fl">111.2</span> <span class="sc">*</span> <span class="fu">abs</span>(lat <span class="sc">-</span> refugia[dom]), <span class="fu">V</span>(graph)<span class="sc">$</span>name)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Refugium hypothesis for ibgd( mode="pgd" ): great-circle distance (km)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># between populations, and forward[i,j] = TRUE when j lies further along the</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># expansion than i (gene flow runs away from the refugium).</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>refugium_hypothesis <span class="ot">&lt;-</span> <span class="cf">function</span>(graph, refugia, <span class="at">breaks =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  nodes <span class="ot">&lt;-</span> <span class="fu">V</span>(graph)<span class="sc">$</span>name</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  e <span class="ot">&lt;-</span> <span class="fu">expansion_km</span>(graph, refugia, breaks)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">Stratum =</span> nodes,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">Longitude =</span> <span class="fu">V</span>(graph)<span class="sc">$</span>Longitude,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Latitude =</span> <span class="fu">V</span>(graph)<span class="sc">$</span>Latitude</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">strata_distance</span>(<span class="at">mode =</span> <span class="st">"Circle"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>() <span class="ot">-&gt;</span> D</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">distance =</span> D[nodes, nodes], <span class="at">forward =</span> <span class="fu">outer</span>(e, e, <span class="cf">function</span>(a, b) b <span class="sc">&gt;</span> a))</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(Population <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"32"</span>, <span class="st">"101"</span>, <span class="st">"102"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">population_graph</span>(<span class="at">decorate =</span> <span class="cn">TRUE</span>) <span class="ot">-&gt;</span> pgraph_pen</span>
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co"># cGD vs. pGD under each hypothesis.  Delta R2 &gt; 0 favours the directional</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co"># model; a slope ratio &lt; 1 supports the hypothesized direction (genetic</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># distance accumulates more slowly moving away from the refugium).</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph_pen ) <span class="ot">-&gt;</span> fit.cgd.pedima</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph_pen, <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">distance =</span> plant.one<span class="sc">$</span>distance, <span class="at">forward =</span> plant.one<span class="sc">$</span>forward ) <span class="ot">-&gt;</span> fit.pgd1.pedima</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( pgraph_pen, <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">distance =</span> plant.two<span class="sc">$</span>distance, <span class="at">forward =</span> plant.two<span class="sc">$</span>forward ) <span class="ot">-&gt;</span> fit.pgd2.pedima</span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>fit.cgd.pedima</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co"># plant distances under refugia hypotheses: a single northern refugium</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co"># (~29°N) vs. a second refugium at ~25°N seeding the Cape Region.</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>plant.one <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>(pgraph_pen, <span class="at">refugia =</span> <span class="dv">29</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plant.two <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>(pgraph_pen, <span class="at">refugia =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">29</span>), <span class="at">breaks =</span> <span class="dv">25</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co"># cGD vs. pGD under each hypothesis.  Delta R2 &gt; 0 favours the directional</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># model; a slope ratio &lt; 1 supports the hypothesized direction (genetic</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co"># distance accumulates more slowly moving away from the refugium).</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(pgraph_pen) <span class="ot">-&gt;</span> fit.cgd.pedima</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  pgraph_pen,</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">distance =</span> plant.one<span class="sc">$</span>distance,</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">forward =</span> plant.one<span class="sc">$</span>forward</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> fit.pgd1.pedima</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  pgraph_pen,</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">distance =</span> plant.two<span class="sc">$</span>distance,</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">forward =</span> plant.two<span class="sc">$</span>forward</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> fit.pgd2.pedima</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>fit.cgd.pedima</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Isolation by graph distance (cGD; Mantel permutation test)
 
 data:  pgraph_pen and great-circle distance (km)
-r = 0.2694, pairs = 595, nperm = 999, p-value = 0.001
+r = 0.2694, pairs = 595, nperm = 999, p-value = 0.002
 alternative hypothesis: true r is greater than 0
 sample estimates:
          R2       slope 
@@ -332,15 +345,17 @@ No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_te
 <p>This barked beetle is only known to inhabit the senescing stems of the putative host plant. Two date has never been found on any other plant in the Sonoran desert. We sampled individuals from the same locations as the plants in the previous section, yet there was more subdivision in this species than in the plant species.</p>
 <p>What we found in the beetle was a separation of three putative species, whose genetic divergence in the mitochondria region was significant, and for individuals occurring in simpatry, we we showed non-overlapping allele presence, suggesting no intergeneration. Furthermore, within the largest group, we named as peninsula group, we found a subsequent partitioning of that putative species into a north, a central, and a Cape region, and we highlighted the potential that Pleistocene habitat suitability was partially responsible for that genetic partitioning within a single large distributed species along the peninsula of Baja California.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( arapat ) </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>arapat <span class="sc">|&gt;</span> </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( Species <span class="sc">==</span> <span class="st">"Peninsula"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( <span class="sc">!</span>(Population <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"157"</span>, <span class="st">"73"</span>, <span class="st">"75"</span>, <span class="st">"98"</span>, <span class="st">"Const"</span>, <span class="st">"ESan"</span>, <span class="st">"Mat"</span>) ) )  <span class="sc">|&gt;</span> </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">droplevels</span>() <span class="ot">-&gt;</span> peninsula</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>( Cluster, Species ) <span class="sc">|&gt;</span> </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(arapat)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>arapat <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species <span class="sc">==</span> <span class="st">"Peninsula"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>(Population <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"157"</span>, <span class="st">"73"</span>, <span class="st">"75"</span>, <span class="st">"98"</span>, <span class="st">"Const"</span>, <span class="st">"ESan"</span>, <span class="st">"Mat"</span>))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>() <span class="ot">-&gt;</span> peninsula</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Cluster, Species) <span class="sc">|&gt;</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       Species
 Cluster Peninsula
@@ -351,11 +366,11 @@ Cluster Peninsula
 </div>
 <p>For this example, we’re only going to use the larger clade that we identified in the manuscript as the peninsula “species”. We will also drop some populations that have small sample size, as in the southern region there were some populations that had more than one species occurring in sympatry, though never mixing within a single host plant. For robustness, we prevent population graphs being constructed from samples with fewer than five individuals each.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>( <span class="at">decorate=</span><span class="cn">TRUE</span> ) <span class="ot">-&gt;</span> agraph</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">population_graph</span>(<span class="at">decorate =</span> <span class="cn">TRUE</span>) <span class="ot">-&gt;</span> agraph</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">components</span>(agraph)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>( agraph )<span class="sc">$</span>Subgraph <span class="ot">&lt;-</span> <span class="fu">factor</span>( comp<span class="sc">$</span>membership )</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agraph, <span class="at">layout=</span><span class="st">"kk"</span>, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(agraph)<span class="sc">$</span>Subgraph <span class="ot">&lt;-</span> <span class="fu">factor</span>(comp<span class="sc">$</span>membership)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(agraph, <span class="at">layout =</span> <span class="st">"kk"</span>, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -366,7 +381,7 @@ Cluster Peninsula
 </div>
 <p>When we mapped those groups found in the population graph onto the landscape, we can see it coincides with roughly the partitioning we defined in the original paper.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agraph, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>, <span class="at">base=</span>bajaCalifornia)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(agraph, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>, <span class="at">base =</span> bajaCalifornia)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-araptusTopologySpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -384,14 +399,14 @@ Figure&nbsp;5: The spatial distribution of subcomponents within the bark beetles
 <h3 class="anchored" data-anchor-id="isolation-by-graph-distance">Isolation By Graph Distance</h3>
 <p>In a similar fashion, we can carry out an isolation by graph distance using the separation between nodes in the topology, and we also find the level of contluence here in the insect is much more than what observed in the houseplant.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( agraph ) <span class="ot">-&gt;</span> fit.cgd </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(agraph) <span class="ot">-&gt;</span> fit.cgd</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>fit.cgd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Isolation by graph distance (cGD; Mantel permutation test)
 
 data:  agraph and great-circle distance (km)
-r = 0.17526, pairs = 129, nperm = 999, p-value = 0.064
+r = 0.17526, pairs = 129, nperm = 999, p-value = 0.075
 alternative hypothesis: true r is greater than 0
 sample estimates:
          R2       slope 
@@ -403,8 +418,8 @@ sample estimates:
 <h3 class="anchored" data-anchor-id="asymmetries">Asymmetries</h3>
 <p>Our hypotheses in the original paper, based on a range of inferences, including coalescent modeling and spatial patterns of a lyric loss set up a scenario for identifying asymmetries using genetic gravity. The topology that we get shows a significant degree of asymmetries in the underlying covariance structure.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_field</span>( agraph ) <span class="ot">-&gt;</span> agravity</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agravity, <span class="at">layout =</span> <span class="st">"kk"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_field</span>(agraph) <span class="ot">-&gt;</span> agravity</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(agravity, <span class="at">layout =</span> <span class="st">"kk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-gravityArapatus" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -420,7 +435,7 @@ Figure&nbsp;6: The graph structure of a symmetry in the bark beetle based upon a
 </div>
 <p>And when we display that overlaying on the landscape from which the organisms were sampled, we can see a degree of similarity in source- sink dynamics as hypothesized through systematic changes in the leak richness.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( agravity, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>, <span class="at">base =</span> bajaCalifornia, <span class="at">alpha=</span><span class="fl">0.5</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(agravity, <span class="at">node_fill =</span> <span class="st">"Subgraph"</span>, <span class="at">base =</span> bajaCalifornia, <span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-gravityArapatusSpatial" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -441,12 +456,16 @@ Figure&nbsp;7: The spatial location of a symmetry in source and sink dynamics wi
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># beetle distances under a single central refugium (~27.5°N) expanding</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># both north and south (helpers defined in the E. lomelii section).</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>beetle.one <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>( agraph, <span class="at">refugia =</span> <span class="fl">27.5</span> )</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>beetle.one <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>(agraph, <span class="at">refugia =</span> <span class="fl">27.5</span>)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># cGD (fit.cgd, above) vs. pGD under the refugium hypothesis.</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>( agraph, <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">distance =</span> beetle.one<span class="sc">$</span>distance, <span class="at">forward =</span> beetle.one<span class="sc">$</span>forward ) <span class="ot">-&gt;</span> fit.pgd.arapat</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>fit.pgd.arapat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  agraph,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">distance =</span> beetle.one<span class="sc">$</span>distance,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">forward =</span> beetle.one<span class="sc">$</span>forward</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> fit.pgd.arapat</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>fit.pgd.arapat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Directional isolation by graph distance (pGD at gamma = 0.5 vs cGD)
@@ -463,6 +482,77 @@ No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_te
 </div>
 </div>
 <p>==Insert findings here and compare pgd vs cgd for isolation==</p>
+<section id="central-clade-north-to-south" class="level4">
+<h4 class="anchored" data-anchor-id="central-clade-north-to-south">Central Clade, North to South</h4>
+<p>The peninsula topology mixes the north, central, and Cape partitions, so a single expansion axis is hard to read across it. Restricting to the largest partition, the central clade (CBP-C), lets us test one directional hypothesis: expansion from the northern edge of the clade (~27.4°N) southward.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># central clade only; drop the single CBP-C individual at Aqu (n &lt; 5).</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>arapat <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species <span class="sc">==</span> <span class="st">"Peninsula"</span>, Cluster <span class="sc">==</span> <span class="st">"CBP-C"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Population) <span class="sc">|&gt;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>() <span class="ot">-&gt;</span> central</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>central <span class="sc">|&gt;</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">population_graph</span>() <span class="sc">|&gt;</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">decorate_graph</span>(central) <span class="ot">-&gt;</span> cgraph</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># single refugium at the northernmost central population, expanding south.</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>central.north <span class="ot">&lt;-</span> <span class="fu">refugium_hypothesis</span>(cgraph, <span class="at">refugia =</span> <span class="fu">max</span>(<span class="fu">V</span>(cgraph)<span class="sc">$</span>Latitude))</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(cgraph, <span class="at">distance =</span> central.north<span class="sc">$</span>distance) <span class="ot">-&gt;</span> fit.cgd.central</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ibgd</span>(</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  cgraph,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"pgd"</span>,</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">distance =</span> central.north<span class="sc">$</span>distance,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">forward =</span> central.north<span class="sc">$</span>forward</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> fit.pgd.central</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>fit.cgd.central</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Isolation by graph distance (cGD; Mantel permutation test)
+
+data:  cgraph and central.north$distance
+r = 0.40555, pairs = 43, nperm = 999, p-value = 0.019
+alternative hypothesis: true r is greater than 0
+sample estimates:
+        R2      slope 
+0.16447336 0.01103444 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fit.pgd.central</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Directional isolation by graph distance (pGD at gamma = 0.5 vs cGD)
+
+data:  cgraph and central.north$distance
+delta R2 = 0.2159, pairs = 86
+sample estimates:
+       R2 cGD    adj R2 pGD forward slope reverse slope   slope ratio 
+ 0.1644733568  0.3803769667  0.0001295476  0.0109106112  0.0118735428 
+
+Directional description preferred (delta R2 &gt; 0); slope ratio 0.0119: genetic
+distance accumulates more slowly in the forward direction.
+No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_test().</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># corroborate: are sources at the northern end of the clade?</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source_sink_test</span>(cgraph, <span class="at">x =</span> <span class="fu">setNames</span>(<span class="sc">-</span><span class="fu">V</span>(cgraph)<span class="sc">$</span>Latitude, <span class="fu">V</span>(cgraph)<span class="sc">$</span>name))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Source-sink gradient test (Spearman r(S, x); Moran spectral
+    randomization on the graph)
+
+data:  cgraph and setNames(-V(cgraph)$Latitude, V(cgraph)$name)
+r = -0.58702, nodes = 16, nperm = 999, p-value = 0.036
+alternative hypothesis: true r is not equal to 0
+sample estimates:
+degree share 
+   0.5659134 
+
+Bandwidth gamma = 0.5.  Sources at low values of x.</code></pre>
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="congruent-inferences" class="level2">
@@ -473,20 +563,20 @@ No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_te
 <p>Topological congruence in a population graph is defined by the intersection of the edge sets. Two topologies are congruent if they have the exact same pattern of connectivity between nodes. For the host plant and the insect, we can define the subset of edges where the conditional independence within each species is spatially congruent and plotted here.</p>
 <p>In this case, the disconnect of the peninsula groups within the bark beetle are carried over into the congruence topology, where we have a set of connected populations in North Baja California, a diffuse collection within central Baja California, a Cape group, and then similarity again within the Sonoran desert groups.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pops <span class="ot">&lt;-</span> <span class="fu">intersect</span>( <span class="fu">V</span>(agraph)<span class="sc">$</span>name, <span class="fu">V</span>(pgraph)<span class="sc">$</span>name) </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( Population <span class="sc">%in%</span> pops ) <span class="sc">|&gt;</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>( <span class="at">decorate =</span> <span class="cn">TRUE</span> ) <span class="ot">-&gt;</span> congA </span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( Population <span class="sc">%in%</span> pops ) <span class="sc">|&gt;</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">population_graph</span>( <span class="at">decorate =</span> <span class="cn">TRUE</span> ) <span class="ot">-&gt;</span> congP </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>cong <span class="ot">&lt;-</span> <span class="fu">congruence_topology</span>( congP, congA )</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(cong)<span class="sc">$</span>Latitude <span class="ot">&lt;-</span> <span class="fu">V</span>(congA)<span class="sc">$</span>Latitude</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(cong)<span class="sc">$</span>Longitude <span class="ot">&lt;-</span> <span class="fu">V</span>(congA)<span class="sc">$</span>Longitude </span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( cong, <span class="at">base=</span>bajaCalifornia )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pops <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">V</span>(agraph)<span class="sc">$</span>name, <span class="fu">V</span>(pgraph)<span class="sc">$</span>name)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>peninsula <span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Population <span class="sc">%in%</span> pops) <span class="sc">|&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">population_graph</span>(<span class="at">decorate =</span> <span class="cn">TRUE</span>) <span class="ot">-&gt;</span> congA</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>pedima <span class="sc">|&gt;</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Population <span class="sc">%in%</span> pops) <span class="sc">|&gt;</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">population_graph</span>(<span class="at">decorate =</span> <span class="cn">TRUE</span>) <span class="ot">-&gt;</span> congP</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>cong <span class="ot">&lt;-</span> <span class="fu">congruence_topology</span>(congP, congA)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(cong)<span class="sc">$</span>Latitude <span class="ot">&lt;-</span> <span class="fu">V</span>(congA)<span class="sc">$</span>Latitude</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(cong)<span class="sc">$</span>Longitude <span class="ot">&lt;-</span> <span class="fu">V</span>(congA)<span class="sc">$</span>Longitude</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cong, <span class="at">base =</span> bajaCalifornia)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-congruence" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -506,12 +596,12 @@ Figure&nbsp;8: The congruence in conditional genetic structure based on the shar
 <h3 class="anchored" data-anchor-id="congruence-in-asymmetry">Congruence in Asymmetry</h3>
 <p>The following demonstrates similarity in the underlying genetic gravities produced by each individual species. We have indicated where a particular node has similarity as source, similarity as sink, between the two species, or where they are discordant. The same feature for edges, discordant edges are indicated as – whereas edges with arrows on them show a concordance in the directionality of genetic gravity or the flow into a node between both parental topologies.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_congruence</span>( <span class="fu">gravity_field</span>(congA), <span class="fu">gravity_field</span>(congP) ) <span class="ot">-&gt;</span> gravCong </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>gravCong</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gravity_congruence</span>(<span class="fu">gravity_field</span>(congA), <span class="fu">gravity_field</span>(congP)) <span class="ot">-&gt;</span> gravCong</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>gravCong</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Gravity congruence: gravity_field(congA) and gravity_field(congP)
   26 populations, 7 shared edges (of 31 and 48), gamma = 0.5
-  S:              rho = 0.454, p = 0.011  [999 permutations]
+  S:              rho = 0.454, p = 0.015  [999 permutations]
   edge direction: 0.429 concordant (3 of 7), p = 0.773  [sign test]
   shared sources: 12, 160, 161, 162, 164, ... (9)
   shared sinks:   166, 64, 77, 84, 89, ... (6)
@@ -520,7 +610,7 @@ Figure&nbsp;8: The congruence in conditional genetic structure based on the shar
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( gravCong )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gravCong)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-gravCong" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -534,7 +624,7 @@ Figure&nbsp;9: The congruence topology in a symmetry measured in both the plant 
 </div>
 </div>
 </div>
-<p>We see there’s a significant correlation between the plant and the insect, with respect to the spatial distribution of sources and sinks across the Sonoran desert (Spearman <span class="math inline">\(\rho\)</span> = 0.454, P = 0.011). However, the edges do not show an overall significant correlation in the directions that they point (Binomial sign test: <span class="math inline">\(S\)</span> = 0.429, P = 0.7734). This discordance in edge direction versus population source and sink may be a function of that in one of the taps that we have a single proposed refugium and in the other we have two proposed refugia, so following the Pleistocene, the insect was emerging from the central portion of the peninsula, whereas the plant had a secondary refugium whose resident insects lineages are no longer found in contemporary data.</p>
+<p>We see there’s a significant correlation between the plant and the insect, with respect to the spatial distribution of sources and sinks across the Sonoran desert (Spearman <span class="math inline">\(\rho\)</span> = 0.454, P = 0.015). However, the edges do not show an overall significant correlation in the directions that they point (Binomial sign test: <span class="math inline">\(S\)</span> = 0.429, P = 0.7734). This discordance in edge direction versus population source and sink may be a function of that in one of the taps that we have a single proposed refugium and in the other we have two proposed refugia, so following the Pleistocene, the insect was emerging from the central portion of the peninsula, whereas the plant had a secondary refugium whose resident insects lineages are no longer found in contemporary data.</p>
 </section>
 </section>
 

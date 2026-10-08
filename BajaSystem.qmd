@@ -10,10 +10,10 @@ execute:
 
 ```{r}
 #| echo: false
-library( maps )
-suppressMessages( suppressPackageStartupMessages( library( igraph ) ) )
-suppressMessages( suppressPackageStartupMessages( library( tidyverse ) ) )
-library( gstudio )
+library(maps)
+suppressMessages(suppressPackageStartupMessages(library(igraph)))
+suppressMessages(suppressPackageStartupMessages(library(tidyverse)))
+library(gstudio)
 ```
 
 Is a quick summary of the use of genetic gravity in a coupled plant insect system in Baja California. These data were published previously individually looking at phylogeny and spatial genetic structure of either species. This system includes a plant that serves as a host for a bark beetle. The plant does not need the bark beetle, but the bark beetle only lives within the senescing stems stems of the plant, so there is a one-way spatial/evolutionary/ecological relationship here.
@@ -23,19 +23,18 @@ Is a quick summary of the use of genetic gravity in a coupled plant insect syste
 ```{r}
 #| echo: false
 map_data("world") |>
-  filter( region == "Mexico") -> map
+  filter(region == "Mexico") -> map
 
-ggplot( ) + 
-  geom_polygon( aes( x=long, 
-                     y=lat, 
-                     group=group ), 
-                data=map, 
-                fill="grey" ) + 
-  xlab("Longitude") + 
-  ylab("Latitude") + 
-  theme_bw( base_size = 12 ) +
-  coord_sf( xlim = c(-115, -107),
-            ylim = c(22, 30) ) -> bajaCalifornia 
+ggplot() +
+  geom_polygon(
+    aes(x = long, y = lat, group = group),
+    data = map,
+    fill = "grey"
+  ) +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  theme_bw(base_size = 12) +
+  coord_sf(xlim = c(-115, -107), ylim = c(22, 30)) -> bajaCalifornia
 ```
 
 
@@ -52,18 +51,18 @@ The topology using a population graph from genetic markers is mostly connected w
 ```{r}
 #| label: fig-pedimaTopology
 #| fig-cap: "the topography of genetic covariance as measured within the plant, *Euphoria lomeli*."
-read_population( "data/PedimaFinal.csv", 
-                    type="zyme", 
-                    locus.columns = 10:15, 
-                    sep="\t" ) |>
-    select( -SoC, -IoL, -MSP, -Geneland, -ID) |>
-    mutate( Population = factor( Pop) ) |>
-    select( Population, 
-            Latitude = Lat, Longitude = Lon, 
-            everything() ) -> pedima
+read_population(
+  "data/PedimaFinal.csv",
+  type = "zyme",
+  locus.columns = 10:15,
+  sep = "\t"
+) |>
+  select(-SoC, -IoL, -MSP, -Geneland, -ID) |>
+  mutate(Population = factor(Pop)) |>
+  select(Population, Latitude = Lat, Longitude = Lon, everything()) -> pedima
 pedima |>
-    population_graph(decorate=TRUE) -> pgraph 
-plot( pgraph, layout="kk")
+  population_graph(decorate = TRUE) -> pgraph
+plot(pgraph, layout = "kk")
 ```
 
 
@@ -72,7 +71,7 @@ plot( pgraph, layout="kk")
 ```{r}
 #| label: fig-pedimaTopologySpatial
 #| fig-cap: "the spatial distribution of conditional genetic variants in *Euphoria lomeli*."
-plot( pgraph, base = bajaCalifornia )
+plot(pgraph, base = bajaCalifornia)
 ```
 
 
@@ -82,7 +81,7 @@ plot( pgraph, base = bajaCalifornia )
 When measured on the population graph itself, we find a significant relationship between graph distance and physical separation on the landscape, using classic isolation by graph distance. In the original manuscript, we also evaluated the relative physical links of these edges on the landscape based upon compression and or expansion, which highlighted a couple scenarios where we felt that there was intervening landscape features that prevent direct connectivity, compression, or potential long distance dispersal events, extension.
 
 ```{r}
-ibgd( pgraph ) -> ibd.pedima
+ibgd(pgraph) -> ibd.pedima
 ibd.pedima
 ```
 
@@ -94,8 +93,8 @@ Estimating genetic gravity for this particular set of populations yields the fol
 ```{r}
 #| label: fig-pedimaTopologyGravity
 #| fig-cap: "the distribution of asymmetries within the conditional covariance topology for *Euphoria lomeli*."
-gravity_field( pgraph ) -> pgravity 
-plot( pgravity, layout="kk")
+gravity_field(pgraph) -> pgravity
+plot(pgravity, layout = "kk")
 ```
 
 
@@ -104,7 +103,7 @@ And here it is over laying on two this spatial locations of each of the populati
 ```{r}
 #| label: fig-pedimaTopologyGravitySpatial
 #| fig-cap: "the spatial distribution of asymmetry among populations in Baja California of *Euphoria lomeli*."
-plot( pgravity, base = bajaCalifornia, alpha=0.75 )
+plot(pgravity, base = bajaCalifornia, alpha = 0.75)
 ```
 
 In the original manuscript, we hypothesized looking at the spatial pattern of loss of diversity that there may have been two refugium for the plant species, both of which following the Pleistocene were hypothesized to quickly spread in a southern direction. The geography of Baja California is one where the eastern edge is tipped up with a huge elevational gradient off of the Sea of Cortez and a gradual slope towards the Pacific Ocean. We originally argued that the refugium was in the Sea of Cortez area and then once the expansion crested the top of the eastern ridges along Baja California and the central region, there was a rapid expansion southward of the host plant. From the patterns we mapped, there may have been up to two separate and isolated refugia. And we showed that applying that refugium hypothesis to the distribution of genetic variants, we explain 29% of the among population genetic structure due to this pattern of range expansion alone.
@@ -120,48 +119,60 @@ Giving the genetic gravity framework, we can now set up an isolation by weighted
 # Expansion distance: km (by latitude) from each population to the refugium
 # that seeded it.  With more than one refugium (ordered south to north),
 # 'breaks' assigns populations to refugia by latitude.
-expansion_km <- function( graph, refugia, breaks = NULL ) {
-    lat <- V( graph )$Latitude
-    dom <- if( is.null( breaks ) ) rep( 1, length( lat ) ) else findInterval( lat, breaks ) + 1
-    setNames( 111.2 * abs( lat - refugia[ dom ] ), V( graph )$name )
+expansion_km <- function(graph, refugia, breaks = NULL) {
+  lat <- V(graph)$Latitude
+  dom <- if (is.null(breaks)) {
+    rep(1, length(lat))
+  } else {
+    findInterval(lat, breaks) + 1
+  }
+  setNames(111.2 * abs(lat - refugia[dom]), V(graph)$name)
 }
 
 # Refugium hypothesis for ibgd( mode="pgd" ): great-circle distance (km)
 # between populations, and forward[i,j] = TRUE when j lies further along the
 # expansion than i (gene flow runs away from the refugium).
-refugium_hypothesis <- function( graph, refugia, breaks = NULL ) {
-    nodes <- V( graph )$name
-    e <- expansion_km( graph, refugia, breaks )
-    data.frame( Stratum = nodes,
-                Longitude = V( graph )$Longitude,
-                Latitude = V( graph )$Latitude ) |>
-        strata_distance( mode = "Circle" ) |>
-        as.matrix() -> D
-    list( distance = D[ nodes, nodes ],
-          forward = outer( e, e, function( a, b ) b > a ) )
+refugium_hypothesis <- function(graph, refugia, breaks = NULL) {
+  nodes <- V(graph)$name
+  e <- expansion_km(graph, refugia, breaks)
+  data.frame(
+    Stratum = nodes,
+    Longitude = V(graph)$Longitude,
+    Latitude = V(graph)$Latitude
+  ) |>
+    strata_distance(mode = "Circle") |>
+    as.matrix() -> D
+  list(distance = D[nodes, nodes], forward = outer(e, e, function(a, b) b > a))
 }
 
 pedima |>
-    filter( !(Population %in% c("32","101","102")) ) |>
-    population_graph(decorate=TRUE) -> pgraph_pen
+  filter(!(Population %in% c("32", "101", "102"))) |>
+  population_graph(decorate = TRUE) -> pgraph_pen
 
 # plant distances under refugia hypotheses: a single northern refugium
 # (~29°N) vs. a second refugium at ~25°N seeding the Cape Region.
-plant.one <- refugium_hypothesis( pgraph_pen, refugia = 29 )
-plant.two <- refugium_hypothesis( pgraph_pen, refugia = c(25, 29), breaks = 25 )
+plant.one <- refugium_hypothesis(pgraph_pen, refugia = 29)
+plant.two <- refugium_hypothesis(pgraph_pen, refugia = c(25, 29), breaks = 25)
 
 # cGD vs. pGD under each hypothesis.  Delta R2 > 0 favours the directional
 # model; a slope ratio < 1 supports the hypothesized direction (genetic
 # distance accumulates more slowly moving away from the refugium).
-ibgd( pgraph_pen ) -> fit.cgd.pedima
-ibgd( pgraph_pen, mode = "pgd",
-      distance = plant.one$distance, forward = plant.one$forward ) -> fit.pgd1.pedima
-ibgd( pgraph_pen, mode = "pgd",
-      distance = plant.two$distance, forward = plant.two$forward ) -> fit.pgd2.pedima
+ibgd(pgraph_pen) -> fit.cgd.pedima
+ibgd(
+  pgraph_pen,
+  mode = "pgd",
+  distance = plant.one$distance,
+  forward = plant.one$forward
+) -> fit.pgd1.pedima
+ibgd(
+  pgraph_pen,
+  mode = "pgd",
+  distance = plant.two$distance,
+  forward = plant.two$forward
+) -> fit.pgd2.pedima
 fit.cgd.pedima
 fit.pgd1.pedima
 fit.pgd2.pedima
-
 ```
 
 ==Insert findings here and compare pgd vs cgd for isolation==
@@ -178,26 +189,28 @@ What we found in the beetle was a separation of three putative species, whose ge
 ```{r}
 #| label: fig-araptusTopology
 #| fig-cap: "The the genetic covariance of the bark beetle populations in graph space."
-data( arapat ) 
-arapat |> 
-    filter( Species == "Peninsula") |>
-    filter( !(Population %in% c("157", "73", "75", "98", "Const", "ESan", "Mat") ) )  |> 
-    droplevels() -> peninsula
+data(arapat)
+arapat |>
+  filter(Species == "Peninsula") |>
+  filter(
+    !(Population %in% c("157", "73", "75", "98", "Const", "ESan", "Mat"))
+  ) |>
+  droplevels() -> peninsula
 
 peninsula |>
-    select( Cluster, Species ) |> 
-    table()
+  select(Cluster, Species) |>
+  table()
 ```
 
 
 For this example, we're only going to use the larger clade that we identified in the manuscript as the peninsula "species".  We will also drop some populations that have small sample size, as in the southern region there were some populations that had more than one species occurring in sympatry, though never mixing within a single host plant. For robustness, we prevent population graphs being constructed from samples with fewer than five individuals each.
 
 ```{r}
-peninsula |> 
-    population_graph( decorate=TRUE ) -> agraph
+peninsula |>
+  population_graph(decorate = TRUE) -> agraph
 comp <- components(agraph)
-V( agraph )$Subgraph <- factor( comp$membership )
-plot( agraph, layout="kk", node_fill = "Subgraph")
+V(agraph)$Subgraph <- factor(comp$membership)
+plot(agraph, layout = "kk", node_fill = "Subgraph")
 ```
 
 
@@ -206,7 +219,7 @@ When we mapped those groups found in the population graph onto the landscape, we
 ```{r}
 #| label: fig-araptusTopologySpatial
 #| fig-cap: "The spatial distribution of subcomponents within the bark beetles genetic topology."
-plot( agraph, node_fill = "Subgraph", base=bajaCalifornia)
+plot(agraph, node_fill = "Subgraph", base = bajaCalifornia)
 ```
 
 ### Isolation By Graph Distance
@@ -214,7 +227,7 @@ plot( agraph, node_fill = "Subgraph", base=bajaCalifornia)
 In a similar fashion, we can carry out an isolation by graph distance using the separation between nodes in the topology, and we also find the level of contluence here in the insect is much more than what observed in the houseplant.
 
 ```{r}
-ibgd( agraph ) -> fit.cgd 
+ibgd(agraph) -> fit.cgd
 fit.cgd
 ```
 
@@ -225,8 +238,8 @@ Our hypotheses in the original paper, based on a range of inferences, including 
 ```{r}
 #| label: fig-gravityArapatus
 #| fig-cap: "The graph structure of a symmetry in the bark beetle based upon a symmetry in connectivity."
-gravity_field( agraph ) -> agravity
-plot( agravity, layout = "kk" )
+gravity_field(agraph) -> agravity
+plot(agravity, layout = "kk")
 ```
 
 And when we display that overlaying on the landscape from which the organisms were sampled, we can see a degree of similarity in source- sink dynamics as hypothesized through systematic changes in the leak richness.
@@ -234,7 +247,7 @@ And when we display that overlaying on the landscape from which the organisms we
 ```{r}
 #| label: fig-gravityArapatusSpatial
 #| fig-cap: "The spatial location of a symmetry in source and sink dynamics within the bark beetle."
-plot( agravity, node_fill = "Subgraph", base = bajaCalifornia, alpha=0.5 )
+plot(agravity, node_fill = "Subgraph", base = bajaCalifornia, alpha = 0.5)
 ```
 
 ### Asymmetric Isolation By Distance
@@ -245,17 +258,55 @@ Similar to *E. lomelli*, genetic gravity allows us to actually test whether an i
 ```{r}
 # beetle distances under a single central refugium (~27.5°N) expanding
 # both north and south (helpers defined in the E. lomelii section).
-beetle.one <- refugium_hypothesis( agraph, refugia = 27.5 )
+beetle.one <- refugium_hypothesis(agraph, refugia = 27.5)
 
 # cGD (fit.cgd, above) vs. pGD under the refugium hypothesis.
-ibgd( agraph, mode = "pgd",
-      distance = beetle.one$distance, forward = beetle.one$forward ) -> fit.pgd.arapat
+ibgd(
+  agraph,
+  mode = "pgd",
+  distance = beetle.one$distance,
+  forward = beetle.one$forward
+) -> fit.pgd.arapat
 fit.pgd.arapat
-
 ```
 
 
 ==Insert findings here and compare pgd vs cgd for isolation==
+
+
+#### Central Clade, North to South
+
+The peninsula topology mixes the north, central, and Cape partitions, so a single expansion axis is hard to read across it. Restricting to the largest partition, the central clade (CBP-C), lets us test one directional hypothesis: expansion from the northern edge of the clade (~27.4°N) southward.
+
+```{r}
+# central clade only; drop the single CBP-C individual at Aqu (n < 5).
+arapat |>
+  filter(Species == "Peninsula", Cluster == "CBP-C") |>
+  group_by(Population) |>
+  filter(n() >= 5) |>
+  ungroup() |>
+  droplevels() -> central
+
+central |>
+  population_graph() |>
+  decorate_graph(central) -> cgraph
+
+# single refugium at the northernmost central population, expanding south.
+central.north <- refugium_hypothesis(cgraph, refugia = max(V(cgraph)$Latitude))
+
+ibgd(cgraph, distance = central.north$distance) -> fit.cgd.central
+ibgd(
+  cgraph,
+  mode = "pgd",
+  distance = central.north$distance,
+  forward = central.north$forward
+) -> fit.pgd.central
+fit.cgd.central
+fit.pgd.central
+
+# corroborate: are sources at the northern end of the clade?
+source_sink_test(cgraph, x = setNames(-V(cgraph)$Latitude, V(cgraph)$name))
+```
 
 
 ## Congruent Inferences
@@ -271,20 +322,20 @@ In this case, the disconnect of the peninsula groups within the bark beetle are 
 ```{r}
 #| label: fig-congruence
 #| fig-cap: "The congruence in conditional genetic structure based on the shared edge sets found in the plant and the insect topologies."
-pops <- intersect( V(agraph)$name, V(pgraph)$name) 
+pops <- intersect(V(agraph)$name, V(pgraph)$name)
 peninsula |>
-    filter( Population %in% pops ) |>
-    population_graph( decorate = TRUE ) -> congA 
+  filter(Population %in% pops) |>
+  population_graph(decorate = TRUE) -> congA
 
 pedima |>
-    filter( Population %in% pops ) |>
-    population_graph( decorate = TRUE ) -> congP 
+  filter(Population %in% pops) |>
+  population_graph(decorate = TRUE) -> congP
 
 
-cong <- congruence_topology( congP, congA )
+cong <- congruence_topology(congP, congA)
 V(cong)$Latitude <- V(congA)$Latitude
-V(cong)$Longitude <- V(congA)$Longitude 
-plot( cong, base=bajaCalifornia )
+V(cong)$Longitude <- V(congA)$Longitude
+plot(cong, base = bajaCalifornia)
 ```
 
 Of note, in this display of spatial congruence in conditional genetic structure, is that while in the insect the senoran group is most likely a different species, that pattern of connectivity is shared within the plant group which we see no evidence of taxonomic divergence divergence we see in the insect.
@@ -294,7 +345,7 @@ Of note, in this display of spatial congruence in conditional genetic structure,
 The following demonstrates similarity in the underlying genetic gravities produced by each individual species. We have indicated where a particular node has similarity as source, similarity as sink, between the two species, or where they are discordant. The same feature for edges, discordant edges are indicated as – whereas edges with arrows on them show a concordance in the directionality of genetic gravity or the flow into a node between both parental topologies.
 
 ```{r}
-gravity_congruence( gravity_field(congA), gravity_field(congP) ) -> gravCong 
+gravity_congruence(gravity_field(congA), gravity_field(congP)) -> gravCong
 gravCong
 ```
 
@@ -303,7 +354,7 @@ gravCong
 ```{r}
 #| label: fig-gravCong
 #| fig-cap: "The congruence topology in a symmetry measured in both the plant and insect species as estimated through genetic gravity."
-plot( gravCong )
+plot(gravCong)
 ```
 
 
