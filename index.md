@@ -262,7 +262,13 @@ The two expansions inferred by Garrick et al. (2013) from diversity gradients ar
 
 # Discussion
 
-==[Outline, 2026-10-07. Each section lists what it should argue (bullets), with the Results it rests on. Prose blocks marked "Pulled" come from the old Discussion.md and have been revised so their claims and numbers match the current Methods and Results. Everything else from the old file was left out because it no longer fits.]==
+Genetic gravity converts the undirected skeleton of a Population Graph into a signed field of directional influence using only the conditional edge weights the graph already produces, without the addition of a demographic model or equilibrium assumptions. 
+
+
+
+
+
+
 
 ## Reading direction from a single Population Graph
 
@@ -274,7 +280,9 @@ The two expansions inferred by Garrick et al. (2013) from diversity gradients ar
 
 ==[Pulled: old "Extensions" closing paragraph and old "Relationship" ¶1 last two sentences, revised. $\bar{\Delta}$ and "directed-graph metrics" replaced by $S$.]==
 
-Taken together, these results show that directionality is recoverable from the information already present in a Population Graph, without new population-genetic modeling machinery. The neighborhood weights, and the asymmetry index $\Delta_{i\rightarrow j}$ they generate, summarized at the population level by the source–sink score $S$, give an interpretable map of that directional information from a single snapshot of genotypes. It is not a replacement for migration-rate estimation; it is a structural summary that narrows the hypothesis space for the heavier, model-based methods.
+Taken together, these results show that directionality is recoverable from the information already present in a Population Graph, without new population-genetic modeling machinery. 
+
+
 
 ## The source–sink map: direction lives at the population level
 
