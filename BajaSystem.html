@@ -299,7 +299,7 @@ Figure&nbsp;4: the spatial distribution of asymmetry among populations in Baja C
     Isolation by graph distance (cGD; Mantel permutation test)
 
 data:  pgraph_pen and great-circle distance (km)
-r = 0.2694, pairs = 595, nperm = 999, p-value = 0.002
+r = 0.2694, pairs = 595, nperm = 999, p-value = 0.001
 alternative hypothesis: true r is greater than 0
 sample estimates:
          R2       slope 
@@ -406,7 +406,7 @@ Figure&nbsp;5: The spatial distribution of subcomponents within the bark beetles
     Isolation by graph distance (cGD; Mantel permutation test)
 
 data:  agraph and great-circle distance (km)
-r = 0.17526, pairs = 129, nperm = 999, p-value = 0.075
+r = 0.17526, pairs = 129, nperm = 999, p-value = 0.086
 alternative hypothesis: true r is greater than 0
 sample estimates:
          R2       slope 
@@ -543,7 +543,7 @@ No p-value: the fits are not nested (see ?ibgd); corroborate with source_sink_te
     randomization on the graph)
 
 data:  cgraph and setNames(-V(cgraph)$Latitude, V(cgraph)$name)
-r = -0.58702, nodes = 16, nperm = 999, p-value = 0.036
+r = -0.58702, nodes = 16, nperm = 999, p-value = 0.04
 alternative hypothesis: true r is not equal to 0
 sample estimates:
 degree share 
@@ -601,7 +601,7 @@ Figure&nbsp;8: The congruence in conditional genetic structure based on the shar
 <div class="cell-output cell-output-stdout">
 <pre><code>Gravity congruence: gravity_field(congA) and gravity_field(congP)
   26 populations, 7 shared edges (of 31 and 48), gamma = 0.5
-  S:              rho = 0.454, p = 0.015  [999 permutations]
+  S:              rho = 0.454, p = 0.013  [999 permutations]
   edge direction: 0.429 concordant (3 of 7), p = 0.773  [sign test]
   shared sources: 12, 160, 161, 162, 164, ... (9)
   shared sinks:   166, 64, 77, 84, 89, ... (6)
@@ -624,7 +624,7 @@ Figure&nbsp;9: The congruence topology in a symmetry measured in both the plant 
 </div>
 </div>
 </div>
-<p>We see there’s a significant correlation between the plant and the insect, with respect to the spatial distribution of sources and sinks across the Sonoran desert (Spearman <span class="math inline">\(\rho\)</span> = 0.454, P = 0.015). However, the edges do not show an overall significant correlation in the directions that they point (Binomial sign test: <span class="math inline">\(S\)</span> = 0.429, P = 0.7734). This discordance in edge direction versus population source and sink may be a function of that in one of the taps that we have a single proposed refugium and in the other we have two proposed refugia, so following the Pleistocene, the insect was emerging from the central portion of the peninsula, whereas the plant had a secondary refugium whose resident insects lineages are no longer found in contemporary data.</p>
+<p>We see there’s a significant correlation between the plant and the insect, with respect to the spatial distribution of sources and sinks across the Sonoran desert (Spearman <span class="math inline">\(\rho\)</span> = 0.454, P = 0.013). However, the edges do not show an overall significant correlation in the directions that they point (Binomial sign test: <span class="math inline">\(S\)</span> = 0.429, P = 0.7734). This discordance in edge direction versus population source and sink may be a function of that in one of the taps that we have a single proposed refugium and in the other we have two proposed refugia, so following the Pleistocene, the insect was emerging from the central portion of the peninsula, whereas the plant had a secondary refugium whose resident insects lineages are no longer found in contemporary data.</p>
 </section>
 </section>
 

@@ -14,9 +14,13 @@ Richmond, Virginia 23284
 
 # Introduction
 
-Inferring the pattern and direction of genetic connectivity from molecular data is a central problem in evolutionary, population, and landscape genetics (Slatkin, 1985; Dyer, 2015).  The distribution of population genetic covariance we see today is the result of overlapping evolutionary processes—stochastic, neutral, and adaptive.  A common approach to elucidating the relative importance of these processes is to partition genetic variance into within- and among-stratum components using Wright’s $F_{ST}$ (or one of its many derivatives).  Applying an underlying evolutionary model then allows us to compute the expected values of evolutionarily relevant parameters, such as migration rate (*m*; Slatkin, 1981, 1993), genetic effective population size ($N_e$; Wright, 1931), inbreeding ($F_{IS}$; Wright, 1965; Weir & Cockerham, 1984), and others.  This process raises several specific challenges to using the current distribution of genetic variation to infer historical processes.  First, the relationship between an estimated standardized parameter and the stratigraphy of evolutionary and demographic histories that produced the set of sampled alleles and genotypes is non-reversible—the same ratio of within- and among-stratum variances can arise from completely non-overlapping demographic and evolutionary histories.   Second, treating connectivity as a scalar, undirected quantity is analytically convenient, but it homogenizes the varied histories of interactions that created these systems by taking an ‘average across generations under equilibrium conditions’ rather than directly embracing the potential for spatial and temporal heterogeneity within populations.  Estimating the effective number of migrants per generation, *Nem*, is critical for comparative inferences, but may be too coarse when the analytical questions focus on more intricate demographic processes or when attempting to include more granular landscape, demographic, or ecological features that may affect standing genetic structure.  Questions focusing on understanding how genetic structure is affected by colonization, range expansion, source–sink dynamics, wind- or water-mediated dispersal, and environmentally filtered gene flow benefit from approaches that are more fine-grained than a single summarizing parameter, as these inter-strata interactions are heterogeneous and fundamentally *directional* in nature (Baker & Dyer, 2011; Wogan et al., 2024).
+==[Evolution Version]==There is a fundamental tension between mathematical tractability and biological reality when estimating asymmetric connectivity in population genetics. While foundational theory—most notably Sewall Wright’s (1931) island model, parameterized as $F_{ST} \approx \frac{1}{4N_em + 1}$, requires strict symmetry in effective population sizes and bidirectional migration rates, it is widely recognized that directional, asymmetric gene flow is a primary driving force of evolutionary change across a species’ range (Slatkin, 1987). In fact, Wright’s (1932) own Shifting Balance Theory relies explicity on asymmetric gene flow during its third phase *(interdemic selectio*n), wherein demes occupying higher adaptive peaks export surplus migrants to pull neighboring populations toward new adaptive optima (Joshi, 1999).  
 
-The field is not, of course, without tools for addressing questions such as these, and an increasingly sophisticated set of approaches is available for estimating heterogeneity in connectivity and asymmetric gene flow from genetic data. Assignment-based tools such as `BayesAss` infer recent, directional migration rates from multilocus genotypes under linkage and Hardy–Weinberg assumptions (Wilson & Rannala, 2003), while coalescent and isolation-with-migration frameworks recover asymmetric long-term migration matrices, either by direct likelihood over genealogies (Beerli & Felsenstein, 2001) or by fitting the joint site-frequency spectrum of a few populations (e.g., Gutenkunst et al., 2009). Where the question is specifically the direction of a range expansion, the directionality index $\psi$ reads the origin and axis of spread from pairwise allele-frequency asymmetries (Peter & Slatkin, 2013). At the landscape scale, effective-migration-surface methods map spatial heterogeneity in gene flow (Marcus et al., 2021; Petkova et al., 2016), and recent extensions of that family relax their symmetry assumption to render the surface directional. Each of these is powerful within its domain, but each also exacts a characteristic cost: a prespecified demographic or spatial model, an assumption of migration–drift equilibrium, genome-scale marker panels, a small number of demes, explicit spatial coordinates, or substantial computational resources. This manuscript provides a lightweight summary of *directional structure* that requires no demographic model, can be read directly from the multivariate covariance dependency topology, and scales to many populations from a single snapshot; it does leave the researcher choices—of bandwidth and of test—that depend on what she is trying to test and examine. The framework extended herein is intended to fill this niche by using conditional genetic covariance structures, as represented within Population Graphs (Dyer & Nason, 2004; Dyer, 2007, 2015), to identify and quantify asymmetry in population migration.
+==[Evolution Version]==However, empirically resolving asymmetric connectivity in natural systems has remained notoriously difficult. In nature, symmetrical exchange is the exception rather than the rule: physical transport vectors (e.g., prevailing wind patterns, ocean currents, and dendritic river networks), habitat quality gradients (source–sink dynamics), and historical range expansions inherently bias the direction of dispersal (Pringle et al., 2011; Paz-Vinas & Blanchet 2015; Paz-Vinas et al., 2015). Yet, when translating empirical genetic data into connectivity estimates, population geneticists have historically defaulted to pairwise summary statistics like $F_{ST}$ or its analogs. Because pairwise $F_{ST}$ is an inherently symmetric matrix ($F_{ST(i,j)} = F_{ST(j,i)}$) that conflates effective population size ($N_e$) with migration rate ($m$), it collapses directional movement into a single, non-directional average (Whitlock & McCauley, 1999). Consequently, relying on symmetric metrics in asymmetric biological systems masks critical evolutionary and demographic processes—confounding a thriving source population with a dependent sink, or misinterpreting directional gene swamping as high bidirectional connectivity (Beerli & Felsenstein, 2001; Marko & Hart, 2011).
+
+==[Old Version]== Inferring the pattern and direction of genetic connectivity from molecular data is a central problem in evolutionary, population, and landscape genetics (Slatkin, 1985; Dyer, 2015).  The distribution of population genetic covariance we see today is the result of overlapping evolutionary processes—stochastic, neutral, and adaptive.  A common approach to elucidating the relative importance of these processes is to partition genetic variance into within- and among-stratum components using Wright’s $F_{ST}$ (or one of its many derivatives).  Applying an underlying evolutionary model then allows us to compute the expected values of evolutionarily relevant parameters, such as migration rate (*m*; Slatkin, 1981, 1993), genetic effective population size ($N_e$; Wright, 1931), inbreeding ($F_{IS}$; Wright, 1965; Weir & Cockerham, 1984), and others.  This process raises several specific challenges to using the current distribution of genetic variation to infer historical processes.  First, the relationship between an estimated standardized parameter and the stratigraphy of evolutionary and demographic histories that produced the set of sampled alleles and genotypes is non-reversible—the same ratio of within- and among-stratum variances can arise from completely non-overlapping demographic and evolutionary histories.   Second, treating connectivity as a scalar, undirected quantity is analytically convenient, but it homogenizes the varied histories of interactions that created these systems by taking an ‘average across generations under equilibrium conditions’ rather than directly embracing the potential for spatial and temporal heterogeneity within populations.  Estimating the effective number of migrants per generation, $N_em$, is critical for comparative inferences, but may be too coarse when the analytical questions focus on more intricate demographic processes or when attempting to include more granular landscape, demographic, or ecological features that may affect standing genetic structure.  Questions focusing on understanding how genetic structure is affected by colonization, range expansion, source–sink dynamics, wind- or water-mediated dispersal, and environmentally filtered gene flow benefit from approaches that are more fine-grained than a single summarizing parameter, as these inter-strata interactions are heterogeneous and fundamentally *directional* in nature (Baker & Dyer, 2011; Wogan et al., 2024).
+
+==[Old Version]==The field is not, of course, without tools for addressing questions such as these, and an increasingly sophisticated set of approaches is available for estimating heterogeneity in connectivity and asymmetric gene flow from genetic data. Assignment-based tools such as `BayesAss` infer recent, directional migration rates from multilocus genotypes under linkage and Hardy–Weinberg assumptions (Wilson & Rannala, 2003), while coalescent and isolation-with-migration frameworks recover asymmetric long-term migration matrices, either by direct likelihood over genealogies (Beerli & Felsenstein, 2001) or by fitting the joint site-frequency spectrum of a few populations (e.g., Gutenkunst et al., 2009). Where the question is specifically the direction of a range expansion, the directionality index $\psi$ reads the origin and axis of spread from pairwise allele-frequency asymmetries (Peter & Slatkin, 2013). At the landscape scale, effective-migration-surface methods map spatial heterogeneity in gene flow (Marcus et al., 2021; Petkova et al., 2016), and recent extensions of that family relax their symmetry assumption to render the surface directional. Each of these is powerful within its domain, but each also exacts a characteristic cost: a prespecified demographic or spatial model, an assumption of migration–drift equilibrium, genome-scale marker panels, a small number of demes, explicit spatial coordinates, or substantial computational resources. This manuscript provides a lightweight summary of *directional structure* that requires no demographic model, can be read directly from the multivariate covariance dependency topology, and scales to many populations from a single snapshot; it does leave the researcher choices—of bandwidth and of test—that depend on what she is trying to test and examine. The framework extended herein is intended to fill this niche by using conditional genetic covariance structures, as represented within Population Graphs (Dyer & Nason, 2004; Dyer, 2007, 2015), to identify and quantify asymmetry in population migration.
 
 The Population Graph framework translates the total among-stratum variance into a weighted connectivity network using conditional genetic covariance.  This approach is distinct from pairwise structure or genetic distance analyses in one important way.  Pairwise approaches focus on estimates from each pair of strata whereas estimates of stratum-to-stratum covariance in a Population Graph are based on the multilocus covariance between all populations in the analysis.  This resulting covariance topology is able to capture dependencies that pairwise measures obscure and the resulting network’s topological shape is diagnostic of the evolutionary processes that produced it—range expansions, vicariance, and equilibrium isolation-by-distance each leave characteristic signatures in node degree, edge length, and network diameter (Dyer, 2007, 2015). Population Graphs have been used to address questions of connectivity and structure in a broad range of scenarios including landscape genetics (Daniel et al., 2024; Dyer, 2015), conservation planning (Vilaça et al., 2024), biogeography (Wogan et al., 2024), life-history effects (Reed et al., 2023), invasive species management (Baker & Dyer, 2011), and pollen-mediated gene flow (DiLeo et al., 2014; Dyer et al., 2004; Smouse et al., 2001).
 
@@ -262,7 +266,11 @@ The two expansions inferred by Garrick et al. (2013) from diversity gradients ar
 
 # Discussion
 
-Genetic gravity converts the undirected skeleton of a Population Graph into a signed field of directional influence using only the conditional edge weights the graph already produces, without the addition of a demographic model or equilibrium assumptions. 
+### 1. Core Methodological Synthesis & Conceptual Advance
+
+- **Extracting Direction from Undirected Covariance**: Summarize how *Genetic Gravity* solves the directional connectivity challenge by evaluating undirected conditional genetic distances (\(cGD\)) through node-local Gaussian kernels.
+- **Markov Foundations**: Emphasize that because Population Graphs operate under pairwise and local Markov properties, every edge conditions on all sampled demes simultaneously. Direction is read as a global property of the covariance field, rather than isolated pairwise ratios.
+- **Parameter-Free Baseline**: Highlight that the model requires no prespecified demographic models, historical time-series sampling, or equilibrium assumptions.
 
 
 
@@ -270,171 +278,65 @@ Genetic gravity converts the undirected skeleton of a Population Graph into a si
 
 
 
-## Reading direction from a single Population Graph
+Genetic gravity converts the conditional covariate topology of a Population Graph into a signed field of directional influence using only the edge weights the graph already produces, without the addition of a demographic model or equilibrium assumptions.  The introduced asymmetry indices ($\Delta_{i\rightarrow j}$), summarized at the population level by the source–sink score $S$, yield a spatial trend surface of directional connectivity, providing a mappable surface in asymmetric connectivity upon which existing asymmetry hypotheses can be tested.  Moreover, the asymmetric distance topology, parameterized through $pGD$ feeds directly into subsequent hypotehses based on heterogeneous patterns of isolation by distance in downstream landscape and population genetic analyses.  
 
-*Outline:*
+The directional methods surveyed in the Introduction each occupy a different point on the trade-off between demographic interpretability and assumption load. Assignment-based estimators of recent migration (Wilson & Rannala, 2003) and coalescent or site-frequency-spectrum approaches (Beerli & Felsenstein, 2001; Gutenkunst et al., 2009) return demographically interpretable, asymmetric migration rates, but at the cost of equilibrium or explicit-model assumptions, genome-scale data or few populations, and substantial computation. Resistance-surface and effective-migration-surface methods (Daniel et al., 2024; Marcus et al., 2021; Petkova et al., 2016) recover landscape-level effective gene flow but require spatial coordinates and, in their classical form, treat migration as symmetric. The expansion directionality index $\psi$ (Peter & Slatkin, 2013) is closest in spirit—reading direction from allele-frequency asymmetry—but is tailored to a single range-expansion origin rather than to an arbitrary connectivity topology. Genetic gravity complements all of these: a topology-derived index of directional influence that requires no demographic model and no equilibrium assumption, and requires spatial information only when a hypothesis about the axis of flow is tested.  
 
-- Open with the claim: direction can be recovered from what a Population Graph already contains, from one snapshot, with no demographic model. The main product is a population-level map of genetic sources and sinks, not a set of edge arrows.
-- Name the toolkit in one sentence each: the source–sink score $S$ and its map, two tests (the source–sink gradient test and the directional isolation comparison), and pGD for downstream analyses.
-- Say early what it is not: not a migration rate, and not a demographic source or sink (Pulliam, 1988).
-
-==[Pulled: old "Extensions" closing paragraph and old "Relationship" ¶1 last two sentences, revised. $\bar{\Delta}$ and "directed-graph metrics" replaced by $S$.]==
-
-Taken together, these results show that directionality is recoverable from the information already present in a Population Graph, without new population-genetic modeling machinery. 
-
-
-
-## The source–sink map: direction lives at the population level
-
-*Outline:*
-
-- **Why the population level.** Edges that share a population are not independent, and edge signs are the least stable quantity in the analysis. Population-level ordering is the most stable.
-  - 22–28% of edges change sign between $\gamma=1$ and $\tfrac{1}{2}$.
-  - Every lineage places the sources upstream on the *plateau* at both bandwidths, and 95–100% do at every multiplier from 0.25 to 1.41.
-- **$S$ is a better aggregate than $\bar{\Delta}$.**
-  - After the horizon $\bar{\Delta}$ turned negative in 70% of *Redistributed* lineages, while $r(S,x)<0$ held in 86% of censuses.
-  - $S$ fits every edge at once; $\bar{\Delta}$ is sensitive to how the interior of the graph is wired. Recommend $S$ as the summary, and $\bar{\Delta}$ only on the *plateau*.
-- **Gravity and the source–sink score as a pair.**
-  - Gravity $g_i$ is conserved (it sums to $K$), so every source is balanced by sinks, a zero-sum budget of genetic influence.
-  - $S$ turns that budget into one ordering consistent with every edge.
-  - Gravity at $\gamma=1$ describes a population's pull in the network, where hubs count. $S$ at $\gamma=\tfrac{1}{2}$ describes direction. This connects to the bandwidth section.
-- **How to read the map** (Fig_SourceSinkExamples, Fig_GravityFieldBandwidth).
-  - No direction looks like weak sources and sinks alternating, with arrows pointing both ways.
-  - Direction looks like one run from red upstream to blue downstream.
-  - Collapse looks like the upstream demes merging to one value and the band of sources migrating downstream.
-  - The map shows the *state* of the system, not only its direction. The downstream advance of the source band under *Redistributed* migration (deme 3 → 11) is something no scalar statistic shows.
-  - The `gravity` data set makes the map reproducible from genotypes.
-- **Magnitude is not rate.**
-  - On the *plateau*, *Obstructed* and *Redistributed* lineages gave nearly the same $|\Delta|$, $\bar{\Delta}$ and $S$ gradient despite a two-fold difference in net bias.
-  - Net bias set *when* the plateau was reached, not how strong the signal was once there.
-  - So a strong map gradient is evidence of direction, not of a large asymmetry in $m$.
-- **Genetic vs demographic sinks.**
-  - Isolation and drift can mimic a sink.
-  - Read low $S$ alongside within-population diversity. This is short here because Methods already defines it.
-
-==[Pulled: old "Scope and reliability" ¶1, revised. The aggregate is now $S$ and the population ordering, not $\bar{\Delta}$ or graph metrics. The numbers are from the current bandwidth sweep. The $|\bar{\Delta}|$ "creep" caveat was dropped because the current Results don't show it. **Box needs a citation** (Box, 1976 or 1979).]==
-
-In the spirit of Box's dictum that all models are wrong but some are useful, the genetic-gravity kernel is plainly an idealization—it imposes a Gaussian decay and a local bandwidth that the biology never guarantees—and the purpose of the simulations was less to vindicate it than to bench-test where it is useful and where it is not. The clearest result is a separation by *scale of inference*: the framework is robust at the level of the population and fragile at the level of the individual edge. Between the local mean and the degree-neutral bandwidth, 22–28% of edges changed the sign of $\Delta_{i\rightarrow j}$, yet every lineage placed the sources upstream on the *plateau* at both, and 95–100% did so at every multiplier from 0.25 to 1.41. Individual-edge orientations also carry a deterministic degree component, are not independent observations, and have no calibrated significance test—every null built from a single graph's own edges was anti-conservative (Supplementary Materials)—so they are best read as hypothesis-generating rather than confirmatory.
-
-## Topology as signal and as nuisance: choosing the bandwidth by the question
-
-*Outline:*
-
-- **The degree floor is a real hazard.** At $\gamma=\infty$, topology alone draws the *reverse* of the imposed flow ($r(S,x)=0.68$; Fig_GravityFieldBandwidth). At the local mean, half the variance in $\Delta$ under symmetric migration is degree.
-- **Two bandwidths for two questions.** Use $\gamma=\tfrac{1}{2}$ for direction and $\gamma=1$ for connectivity. Make the analogy of choosing a rank vs a parametric correlation.
-  - The degree-neutral value was fixed once from the symmetric null (0.49) and replicated in fresh lineages (0.51).
-  - It held its false-positive rate and gained power in independent lineages (Supplementary Materials, Tab_BandwidthFresh).
-  - This retires the old "no free parameter" framing: the choice is real, it is set by the question, and it is reported.
-- **Degree is not only nuisance.**
-  - Under directional flow, the sparsely connected upstream demes are the true sources, so $\text{cor}(S,k)$ is negative even at $\gamma=\tfrac{1}{2}$.
-  - That is why per-graph tuning lost power: it lets the signal under test move the bandwidth.
-  - The degree share ($R^2$ of $\Delta$ on $\Delta^0$), not $\text{cor}(S,k)$, is the diagnostic to report.
-- **Leaves and termini.** Topology and biology coincide at the ends of the graph.
-
-==[Pulled: old "Caveats" ¶2 ("Second…"), trimmed and revised. The stale claim "no leaf-incident edges under the isotropic scenario" is replaced with the current frequencies. The divMigrate digression was moved out. The Supplementary section it cited no longer exists.]==
-
-A degree-one population places its entire neighborhood weight on its single neighbor, so its weight is 1 whatever the bandwidth or the direction of migration, and it reads as a sink by construction. Such leaves were rare here, and more frequent under asymmetric than symmetric migration (5–8% against under 1% of censuses), which suggests they are partly a signature of the asymmetric regime rather than only a geometric baseline. A terminus deme exchanges with a single neighbor and so receives roughly half the immigrant input of an interior deme, tipping its drift–migration balance toward drift and accelerating the loss of the variation the graph is built from. The behavior of $\Delta_{i\rightarrow j}$ at leaves is therefore partly a marker of a genuine regime—weak immigration and strong drift at a terminus—and not only a geometric artifact; conditioning the null on node degree is a natural refinement left to future work.
-
-## Testing for direction
-
-*Outline:*
-
-- **Why the null has to come from the graph.**
-  - A real study has exactly one lineage, which carries its own drift-generated, spatially smooth tilt. Use the lean as the worked example: weak and shared, absent in fresh seeds.
-  - Plain permutation rejected in 10–18% of symmetric censuses, and 24–33% at $\gamma=1$. Spectral randomization on the stepping-stone adjacency rejected in 5–7%. Spectral randomization on the Population Graph itself held 2.9–4.2%.
-  - So the graph is a better basis for a spatial null than the landscape that generated the data, which is a general point for landscape genetics.
-- **Two tests, two questions.**
-  - The source–sink test is conservative across the whole drift gradient and locates sources.
-  - $\Delta R^2$ is more powerful (78–89% vs 45–65% on the *plateau*) and speaks to downstream IBD and resistance models. It is anti-conservative under strong drift (12–15%; lineage-clustered upper limits near 20%; false positives cluster in particular lineages).
-  - Joint rejections agreed on direction 226/226.
-- **Calibrating by simulation has its own uncertainty.**
-  - Censuses within a lineage are correlated. Report lineage-clustered intervals.
-  - Design effects are about 1 for the source–sink test and 3–60 for $\Delta R^2$.
-  - Practical reading: a $\Delta R^2$ detection under strong drift in one system is weak evidence on its own.
-- **No edge-level test.** Say why: none of the single-graph nulls is exchangeable (Supplementary Materials). Edge arrows are exploratory.
-- **What pGD is for.**
-  - cGD remains the right distance for ordinary IBD.
-  - pGD is for when the process itself is directional; the direction-aware fit beats cGD largely only under asymmetry.
-  - ==[Candidate, from the old "one-way streets" corollary: pGD shortest paths shrink unevenly, with the grain of strongly asymmetric edges, which may explain part of the direction-aware gain mechanically. Include only after checking whether cGD itself compresses for the same pairs; otherwise leave it out.]==
-
-## Genetic gravity alongside existing methods
-
-*Outline:*
-
-- Position gravity on the trade-off between assumption load and interpretability (pulled ¶ below).
-- **divMigrate: what each tool is good at.**
-  - $N_m$ orients individual adjacent links better (67/62% vs 62/59% on the *plateau*).
-  - $w_{j\mid i}$ separates corridors from non-corridors better ($\rho$ 0.52–0.53 vs 0.39–0.41). Say candidly that this is partly the Population Graph's sparsity.
-  - $N_m$ becomes undefined earlier: 59% defined in the *Redistributed* *plateau* core, undefined at a median of 175 generations before the horizon.
-  - The two are complementary, not competing. Gravity answers *where*, and *whether* at the population level. Pairwise or model-based estimators quantify adjacent-link direction and rate.
-- **Network conditioning as the structural difference** (pulled ¶ below).
-- ==[Dropped from old text: "divMigrate reports residual asymmetry under symmetric migration while gravity stays near zero". The current Results show both at 50% orientation under *Symmetric* migration, and nothing tests the claim directly. Also dropped: the census-to-census stability placeholder (no current result) and the "concordant on the edges and orientations" claim.]==
-
-==[Pulled: old "Relationship to existing methods" ¶1, revised. "no equilibrium assumption, and no spatial layer" is softened, because the tests need a hypothesized axis or covariate.]==
-
-The directional methods surveyed in the Introduction each occupy a different point on the trade-off between demographic interpretability and assumption load. Assignment-based estimators of recent migration (Wilson & Rannala, 2003) and coalescent or site-frequency-spectrum approaches (Beerli & Felsenstein, 2001; Gutenkunst et al., 2009) return demographically interpretable, asymmetric migration rates, but at the cost of equilibrium or explicit-model assumptions, genome-scale data or few populations, and substantial computation. Resistance-surface and effective-migration-surface methods (Daniel et al., 2024; Marcus et al., 2021; Petkova et al., 2016) recover landscape-level effective gene flow but require spatial coordinates and, in their classical form, treat migration as symmetric. The expansion directionality index $\psi$ (Peter & Slatkin, 2013) is closest in spirit—reading direction from allele-frequency asymmetry—but is tailored to a single range-expansion origin rather than to an arbitrary connectivity topology. Genetic gravity complements all of these: a topology-derived index of directional influence that requires no demographic model and no equilibrium assumption, needs spatial information only when a hypothesis about the axis of flow is tested, can be computed from a single snapshot, and scales readily with the number of populations.
-
-==[Pulled: old "Relationship" ¶3 (network conditioning), revised. The closing claim that this is "the deeper reason the asymmetry index stays near zero under symmetric migration where a differentiation-based estimator cannot" was cut because it isn't supported. A sentence was added saying the mechanism was not tested directly.]==
+==[Assymetry asa uniform 1-d]==There are times when we have *a priori* reasons to posit uniformity of directionality and indeed a considerable quantity of phylogeographic, landscape genetic, and population geneticn analyses implicitly evaluate demographic processes such as range expansion and  ==my own work in Baja California is largely predicated on patters expected during Post-Pleistocene range expansion, which in that environment is essentially a 1-dimensional stepping stone.== ==[Needs a citation; first person.]==  However, more nuianced treatments of connectivity and asymmetry are prehaps more widespread of a phenomenon that we’ve not had the proper tools to assess.  For example, Mills et al. (2018) showed that within the larger connectivity network for black widdow spiders, there is an embedded topology of much higher connectivity that is driven by human-assisted migration between urban centers that has much larger spatial consequences than urban to proximiate non-urban environments.  A tool like population graphs and the extenion using genetic gravity can serve as a complement to existing approaches while facilitating more nuianced hypotheses: a topology-derived, coordinate-free index of directional influence that requires no ==demographic model, no equilibrium assumption, and no spatial layer, and that scales spatially and temporally. It is not a replacement for migration-rate estimation—and indeed genetic gravity and the associated asymmetry indices are not trying to mimic the estimation of $N_em$ —it is a prior structural summary that narrows the hypothesis space for more nuianced questions.
 
 The contrast with pairwise estimators is, at root, about *network conditioning*. `divMigrate`, like any pairwise estimator, evaluates each dyad in isolation: the relative migration assigned to $(i,j)$ is computed from the differentiation of $i$ and $j$ alone, with no reference to the rest of the network. An indirect channel—gene flow from $A$ to $C$ routed through an intermediate $B$—therefore registers as direct $A$–$C$ differentiation, and across a landscape these indirect signals accumulate into a dense field of directional estimates that an analyst cannot easily separate from the direct ones. Genetic gravity begins from a different object. A Population Graph is a Markov random field in which every retained edge has already been conditioned on the rest of the network, and conditionally independent pairs—precisely the indirect $A$–$C$ channels—are pruned before any direction is assigned; the kernel then reads direction only from edges that survived that conditioning. The framework therefore cannot manufacture an apparent $A\rightarrow C$ flow that is in fact $A\rightarrow B\rightarrow C$, because the $A$–$C$ edge does not exist in the graph to be directed. No degree of care in a pairwise method recovers the global conditioning the Population Graph performs by construction. Whether this filtering is what lets $w_{j\mid i}$ separate corridors from non-corridors more cleanly than $N_m$ was not tested directly here.
 
-## What a single snapshot can and cannot show
 
-*Outline:*
 
-- **A snapshot sits somewhere in a sequence.** The phases are an analysis device, not something a user observes.
-  - Detection is weakest early (*ascent*: 10–15% source–sink, 23–26% $\Delta R^2$) and late.
-  - A non-significant result is not evidence of symmetry.
-  - Temporal sampling is the way out (see Extensions).
-- **Decay is mostly a simulation artifact, and a boundary every method shares.**
-  - The simulations exclude mutation and loci are never filtered.
-  - Real panels are filtered for polymorphism, for example with MAF filters on SNP panels, so they rarely sit in that regime.
-  - Where diversity really is that low, any structure-based statistic loses the asymmetry. Bring in the $F_{ST}\approx 1/(4N_em+1)$ point.
-  - The pairwise-vs-joint degradation contrast goes here (existing paragraphs below).
-- **The topology is the ceiling** (pulled ¶ below).
-- **Design limits to name.** These are reviewer-facing.
-  - One-dimensional stepping stone with a known axis.
-  - Every deme sampled, $N=100$, $L=20$ biallelic loci.
-  - Unsampled populations change the whole topology (pairwise Markov property, Methods), and robustness to them was not tested.
-  - 2-D landscapes and empirical data are untested.
+### 2. Temporal Lineage Dynamics: Ascent, Plateau, and Decay
 
-==[Kept from the current Discussion placeholder: the two paragraphs already in index.md. These need merging into one.]==
+- **The Three Evolutionary Phases**:
+  - **Ascent**: Directional migration restructures covariance; upstream demes lose variation faster, establishing expected heterozygosity (\(H_e\)) gradients along the flow axis.
+  - **Plateau**: The optimal analytical window where covariance has fully adjusted to asymmetric gene flow and directional signal is strongest.
+  - **Decay**: Frequencies homogenize in closed systems; when within-deme diversity falls below \(\approx 4.5\) polymorphic loci per deme, among-population variance collapses.
+- **Graceful Erosion vs. Pairwise Collapse (\*divMigrate\*)**:
+  - Compare graph-based degradation against pairwise differentiation estimators like *divMigrate* (\(N_m\)).
+  - Highlight that \(N_m\) becomes non-finite/undefined in 45% of plateau censuses and 94% of decay censuses as loci fix, whereas Population Graph topology degrades gracefully across the global field.
+- **Interior Rewiring Artifacts**: Explain that late-decay sign changes in graph-mean asymmetry (\(\bar{\Delta}\)) reflect interior topological rewiring from locus loss rather than flow reversals, whereas the source–sink score (\(S\)) remains resilient.
 
-The two kinds of estimator lose this information differently. Pairwise statistics such as $F_{ST}$, or the differentiation-based relative migration of `divMigrate`, are computed one pair of populations at a time, so each pair's estimate becomes undefined as soon as that pair's differentiation is lost. A Population Graph estimates every edge from the multilocus covariance of all populations jointly, so a pair that has converged loses information locally, weakening or losing its edge, while the rest of the graph is still estimated. Directional information therefore erodes gradually across the system rather than failing pair by pair, although once among-population variance is exhausted across the whole system, direction cannot be identified by either approach.
 
-==[extra stuff perhaps for discussion] Past that point neither the presence nor the direction of migration can be identified from standing genetic variation by any method that relies on among-population variance or covariance. Statistics normalized by differentiation between populations become numerically unstable, returning undefined, negative or spuriously extreme values, and the conditional covariance from which a Population Graph is estimated degenerates, so edges are lost and eventually no graph can be estimated. The two degrade differently: pairwise statistics fail one pair at a time as each pair loses its differentiation, whereas a Population Graph estimates every edge from all populations jointly and loses information gradually across the system.==
 
-==[Pulled: old "Caveats" ¶3 ("Third…" and "Fourth…") nearly verbatim, plus the first sentence of "Finally…" on mutation, revised. The rest of "Finally" was dropped: the *Obstructed* diameter question is now answered by the phase analysis, and Fig_PeakAlignment no longer exists.]==
+### 3. Insights from Empirical Case Studies: Translating Theory to Landscapes
 
-The local kernel reads directionality only from edges that already exist in the topology; populations that are conditionally independent in the Population Graph receive zero directional weight by construction. The method therefore inherits the edge-retention properties of the underlying Population Graph estimator, and directional inference is only as good as the topology it rides on. Equally, $\Delta_{i\rightarrow j}$ and $S$ reflect the *structural* influence of one population on another, not a demographic migration rate; inferring $m$ from them requires an additional model and is outside the scope of this work. Finally, the validation simulations omit mutation, which isolates the drift–migration processes the framework is designed to detect but guarantees that every lineage eventually loses the polymorphism from which conditional covariance is estimated; a mutation–drift treatment would be needed to describe systems that persist on the *plateau* indefinitely.
+- **Grounding Theory in Empirical Data**: Frame empirical case studies (e.g., *Araptus attenuatus* in Baja California) as essential benchmarks demonstrating how genetic gravity performs on real-world, irregular graph topologies.
+- **Contrasting \(S\) and \(pGD\) Performance in Real Networks**:
+  - **Asymmetric Isolation (\(pGD\)) Sensitivity**: In the central Baja component, \(pGD\) uncovered directional isolation (\(\Delta R^2 = 0.20\)) where symmetric \(cGD\) showed no pattern (\(R^2 = 0.007\)), demonstrating how directional models recover signal masked by symmetric spatial averaging.
+  - **Network Density & Topological Floor Constraints**: In sparse empirical graphs (e.g., mean degree 2.7 in central Baja), degree share dominates \(S\) even at degree-neutral bandwidths (85% degree share), causing the source–sink gradient test to remain conservative (\(p = 0.44\)).
+- **Symmetric Baseline Verification**: Show how the northern component exhibited strong symmetric isolation (\(R^2 = 0.37\)) without directional improvement (\(\Delta R^2 = -0.11\)), confirming that the model avoids false directional claims on isotropic landscapes.
 
-## Recommendations for practice
 
-==[Draft from the project note "user_guidance_running_list". The principle: the simulations show how the method behaves; they do not set universal constants. Each item says what to examine in your own data. Decide whether this is a numbered list, a box, or a closing table.]==
 
-1. **Choose the bandwidth by the question.** Use the degree-neutral bandwidth ($\gamma=\tfrac{1}{2}$) for inferring direction: the source–sink test, $\Delta R^2$ and pGD, and mapping sources and sinks. Use the local mean ($\gamma=1$) to describe a population's overall weight in the network, where hubs should count.
-2. **Report how much of the index is degree.** Give the share of the variance in $\Delta_{i\rightarrow j}$ explained by $\Delta^{0}_{i\rightarrow j}$. If it is large at the chosen bandwidth, direction read from the edges is mostly topology. A sweep over $\gamma$ on your own graph is a useful sensitivity analysis.
-3. **Check information content before reading direction.** Count the loci that are polymorphic within populations, and rebuild the graph from random subsets of loci to see where $|\Delta|$ starts to inflate. Do this on your own graph rather than importing a threshold such as 4.5 loci.
-4. **Choose the test by the drift regime and the question.** The source–sink test is calibrated across drift levels and locates sources and sinks. $\Delta R^2$ is more powerful but anti-conservative under strong drift; corroborate it with the source–sink test there. When both reject, check that they agree on direction.
-5. **Read direction at the population level, not edge by edge.**
-6. **Do not tune the bandwidth on the data being tested.**
-7. **Treat a single snapshot as one point in a sequence.** A non-significant result is not evidence of symmetry.
-8. **Map it.** Plot the gravity field (`plot(gravity_field(graph))`) at both bandwidths, and report the degree share with the map.
+### 4. Kernel Mechanics, Bandwidth Choice, and Topological Floor
 
-## Extensions
+- **The Theoretical Continuum of Kernel Scale**:
+  - **Flat Limit (\(\gamma \to \infty\))**: Edge weights homogenize to \(1/k_i\), collapsing asymmetry into the topological floor (\(\Delta_{i \to j}^0 = 1/k_j - 1/k_i\)) governed strictly by node degree (\(k_i\)). Explain why unconstrained optimization (e.g., residual minimization) degenerates to this flat limit.
+  - **Sharp Limit (\(\gamma \to 0\))**: Weight concentrates on nearest retained neighbors, converting node gravity into the in-degree of a 1-nearest-neighbor DAG.
+  - **Degree-Neutral Baseline (\(\gamma = 0.5\))**: Deletes the topological degree floor under symmetric migration, isolating pure directional signal.
+- **Kernel Resolution Dial**: Discuss how sharpening the local bandwidth (\(\gamma = 0.5\)) enhances statistical resolution in high-drift or fine-scale spatial systems while preserving exact scale-invariance across marker panels.
 
-*Outline:*
 
-- **Temporal sampling.** Repeated sampling of the same populations would place a system within the *ascent*–*plateau*–*decay* sequence instead of inferring it from one snapshot.
-- **Landscape covariates and resistance distances.** Substitute ecological distance for spatial separation in both tests (already promised in the Introduction).
-- **Covariate-conditioned bandwidth** (pulled ¶ below). Be careful how this sits next to "do not tune on the data being tested".
-- **Node-restricted comparisons** (pulled ¶ below).
-- **2-D landscapes, unsampled populations, empirical applications.** Say whether a companion paper is planned; the old text promised one on deep-time trajectories, and the title has since dropped "I".
-- ==[Candidate testable extension, from the old "[Conjecture]" paragraph. If pairwise measures increasingly absorb indirect, multi-hop relatedness as a system homogenizes, the divergence between $N_m$ and the graph should track the growth of non-adjacent similarity specifically, not homogenization in general. Keep it only if you want a concrete prediction in the paper.]==
 
-==[Pulled: old "Extensions" ¶1, revised. The bandwidth extension is reworded so the multiplier stays fixed. The "derivative directly encodes the expansion rate" claim was softened.]==
+### 5. Practical User Guide: Test Selection & Statistical Nulls
 
-Several extensions follow naturally. Landscape-conditioned genetic gravity—in which each population's local scale is modulated by at-site ecological covariates, after the gravity-model treatment of pollen flow in DiLeo et al. (2014), while the multiplier itself stays fixed—could improve the biological specificity of the directional signal. Temporal sampling, by resampling the same populations across years or by using time-structured genotypes, would turn the static source–sink map into a series, letting a researcher see where a system sits in the sequence of states described here rather than infer it from a single snapshot. And the directional-versus-symmetric isolation comparison generalizes to node-restricted comparisons, for example restricting it to edges incident to a single population, which would support hypothesis tests about individual populations acting as sources or sinks.
+- **Selecting the Right Test**:
+  - **Source–Sink Gradient Test (\(S\) vs. \(x\))**: Conservative (FPR 3–4%); best suited for population-level attributes (elevation, river position, distance from refugia) and high-drift/high-differentiation systems.
+  - **Directional Isolation Model (\(pGD\) vs. \(cGD\))**: Higher power (78–89% on plateau); ideal for continuous landscape resistance surfaces, directional IBD, and wind/water currents.
+- **Null Model Calibration**: Emphasize why standard permutation nulls are strongly anti-conservative (10–18% FPR) and why **Moran Spectral Randomization** on the Population Graph Laplacian is strictly required to absorb graph smoothness.
+- **Corroboration under Heavy Drift**: Recommend using \(S\) and \(pGD\) jointly when drift is severe, as joint detections provide independent, highly reliable verification.
+
+------
+
+### 6. Biological vs. Demographic Sinks & Future Horizons
+
+- **Genetic Gravity vs. Demographic Growth (\(\lambda < 1\))**: Clarify that \(S\) measures relative directional influence on standing covariance fields, not demographic growth rates. Severe drift in isolated demes can mimic genetic sinks; scores should always be evaluated alongside expected heterozygosity (\(H_e\)) and node degree (\(k_i\)).
+- **Future Landscape Extensions**: Outline extensions to asymmetric ecological resistance surfaces (e.g., directional `ResistanceGA` surfaces, river network matrices) and high-density WGS/SNP panels across 2D landscapes.
+
+
 
 ## Software and data availability
 
@@ -468,17 +370,25 @@ Gutenkunst, R. N., Hernandez, R. D., Williamson, S. H., & Bustamante, C. D. (200
 
 Hinton, G. E., & Roweis, S. T. (2003). Stochastic neighbor embedding. In S. Becker, S. Thrun, & K. Obermayer (Eds.), *Advances in Neural Information Processing Systems 15* (pp. 857–864). MIT Press.
 
-Kamada, T., & Kawai, S. (1989). An algorithm for drawing general undirected graphs. *Information Processing Letters*, *31*, 7–15.
-
 Jiang, X., Lim, L.-H., Yao, Y., & Ye, Y. (2011). Statistical ranking and combinatorial Hodge theory. *Mathematical Programming*, *127*(1), 203–244. [https://doi.org/10.1007/s10107-010-0419-x](https://doi.org/10.1007/s10107-010-0419-x)
+
+Joshi, A. (1999). The Shifting Balance Theory of Evolution. *Resonance*, *4*(12), 66–75. https://doi.org/10.1007/bf02838675
+
+Kamada, T., & Kawai, S. (1989). An algorithm for drawing general undirected graphs. *Information Processing Letters*, *31*, 7–15.
 
 Marcus, J., Ha, W., Barber, R. F., & Novembre, J. (2021). Fast and flexible estimation of effective migration surfaces. *eLife*, *10*, e61927.
 
 Miles, L. S., Dyer, R. J., & Verrelli, B. C. (2018). Urban hubs of connectivity: Contrasting patterns of gene flow within and among cities in the western black widow spider. *Proceedings of the Royal Society B: Biological Sciences*, *285*. [https://doi.org/10.1098/rspb.2018.1224](https://doi.org/10.1098/rspb.2018.1224)
 
+Paz-Vinas, I., & Blanchet, S. (2015). Dendritic connectivity shapes spatial patterns of genetic diversity: a simulation-based study. *Journal of Evolutionary Biology*, 28(4), 986–994. [https://doi.org/10.1111/jeb.12626](https://www.google.com/search?q=https://doi.org/10.1111/jeb.12626
+
+Paz-Vinas, I., Loot, G., Stevens, V. M., & Blanchet, S. (2015). Evolutionary processes driving spatial patterns of intraspecific genetic diversity in river ecosystems. *Molecular Ecology*, 24(18), 4586–4604. [https://doi.org/10.1111/mec.13345](https://doi.org/10.1111/mec.13345)
+
 Peter, B. M., & Slatkin, M. (2013). Detecting range expansions from genetic data. *Evolution*, *67*(11), 3274–3289.
 
 Petkova, D., Novembre, J., & Stephens, M. (2016). Visualizing spatial population structure with estimated effective migration surfaces. *Nature Genetics*, *48*(1), 94–100.
+
+Pringle, J. M., Blakeslee, A. M. H., Byers, J. E., & Roman, J. (2011). Asymmetric dispersal allows an upstream region to control population structure throughout a species' range. *Proceedings of the National Academy of Sciences*, 108(37), 15288–15293. [https://doi.org/10.1073/pnas.1100473108](https://doi.org/10.1073/pnas.1100473108)
 
 Pulliam, H. R. (1988). Sources, sinks, and population regulation. *The American Naturalist*, *132*(5), 652–661.
 
@@ -503,6 +413,8 @@ Wagner, H. H., & Dray, S. (2015). Generating spatially constrained null models f
 Weir, B. S., & Cockerham, C. C. (1984). Estimating *F*-statistics for the analysis of population structure. *Evolution*, *38*(6), 1358–1370.
 
 Wilson, G. A., & Rannala, B. (2003). Bayesian inference of recent migration rates using multilocus genotypes. *Genetics*, *163*(3), 1177–1191.
+
+Whitlock, M. C., & McCauley, D. E. (1999). *Indirect measures of gene flow and migration:* $F_{ST} \neq 1/(4Nm + 1)$. *Heredity, 82(2)*, 117–125.
 
 Wogan, G. O. U., Voelker, G., Jain, T., Kaliba, P., & Bowie, R. C. K. (2024). Niche dynamics modulate population connectivity between disjunct ranges of the Cape Robin-Chat (*Cossypha caffra*), supporting an aridlands species pump. *Frontiers of Biogeography*, *17*. [https://doi.org/10.21425/fob.17.132679](https://doi.org/10.21425/fob.17.132679)
 
