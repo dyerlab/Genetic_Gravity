@@ -295,6 +295,19 @@ Before adopting the source–sink gradient test and the model comparison (main t
 
 The common cause is that $\Delta_{i\rightarrow j}$ and $S$ carry node-level structure (degree and bandwidth) and a drift-generated, spatially smooth trend along the graph that no null built by exchanging parts of a single graph reproduces. Two things do reproduce it. Asking whether a directional description of the graph explains isolation better than a symmetric one (main text) sidesteps the problem entirely: both descriptions carry the same node-level structure, and only directional gene flow favors the directional one. Alternatively, a null that preserves the graph's own spectral structure rather than shuffling it away—Moran spectral randomization on the census's own Population Graph—reproduces the node-level smoothness directly: it brings the false-positive rate on $S$ from 24% under plain permutation down to 4–6% (main text), and does so more reliably than randomizing against the true landscape adjacency that generated the data (11%), making the Population Graph itself the better spatial null basis.
 
+### Recommendations for practice
+
+The simulations describe how the method behaves; they do not supply constants to carry into other systems. Each recommendation therefore says what to examine in one's own data.
+
+1. **Choose the bandwidth by the question.** Use $\gamma=\tfrac{1}{2}$ to infer direction (the source–sink test, the directional isolation comparison, pGD and the map) and $\gamma=1$ to describe a population's overall weight in the network.
+2. **Report how much of the index is degree.** Give the degree share at the chosen bandwidth. If it is large, as in sparse graphs, direction read from the edges is mostly topology; a sweep over $\gamma$ is a useful sensitivity analysis.
+3. **Check information content before reading direction.** Count the loci polymorphic within populations, and rebuild the graph from random subsets of loci to see where $|\Delta_{i\rightarrow j}|$ begins to inflate, rather than importing a threshold such as 4.5 loci.
+4. **Choose the test by the covariate, the drift regime and the question.** Use the source–sink test for a population-level covariate and to locate sources; use the directional isolation comparison for a pairwise separation or resistance matrix. Under strong drift, corroborate a directional isolation result with the source–sink test, and where both reject, check that they agree on direction.
+5. **Read direction at the population level,** from $S$ and the map, and treat individual arrows as leads.
+6. **Do not tune the bandwidth on the data being tested.**
+7. **Treat a single snapshot as one point in a sequence.** A non-significant result is not evidence of symmetry.
+8. **Map it.** Plot the gravity field (`plot(gravity_field(graph))`) at both bandwidths, and report the degree share with the map.
+
 # References
 
 Dyer, R. J., & Nason, J. D. (2004). Population graphs: The graph theoretic shape of genetic structure. *Molecular Ecology*, *13*, 1713–1727. [http://www.ncbi.nlm.nih.gov/pubmed/15189198](http://www.ncbi.nlm.nih.gov/pubmed/15189198)
