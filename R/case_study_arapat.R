@@ -78,7 +78,7 @@ test_expansion <- function( k ) {
         ss_half = source_sink_test( sub, x = dk, gamma = 0.5, nperm = 999 ),
         ss_one  = source_sink_test( sub, x = dk, gamma = 1, nperm = 999 ),
         fit_cgd = ibgd( sub, mode = "cgd", distance = sep, nperm = 999 ),
-        fit_pgd = ibgd( sub, mode = "pgd", distance = sep, forward = fwd, gamma = 0.5 ) )
+        fit_pgd = ibgd( sub, mode = "dcGD", distance = sep, forward = fwd, gamma = 0.5 ) )
 }
 results <- lapply( expansions, test_expansion )
 stopifnot( all( V( results$South$graph )$Latitude < refuge_lat ),

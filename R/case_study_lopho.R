@@ -67,7 +67,7 @@ ss_one  <- source_sink_test( graph, x = stage, gamma = 1, nperm = 999 )
 
 # Isolation by graph distance: symmetric (cGD) vs directional (pGD).
 fit_cgd <- ibgd( graph, mode = "cgd", distance = sep, nperm = 999 )
-fit_pgd <- ibgd( graph, mode = "pgd", distance = sep, forward = forward, gamma = 0.5 )
+fit_pgd <- ibgd( graph, mode = "dcGD", distance = sep, forward = forward, gamma = 0.5 )
 
 
 # Summary
@@ -98,7 +98,7 @@ field$edges |> filter( panel == "gamma = 1/2", from == "SenBas" | to == "SenBas"
 
 # Directional fit on the continental pairs alone (SenBas, then southward).
 fw_cont <- forward & outer( continent, continent, "&" )
-fit_pgd_cont <- ibgd( graph, mode = "pgd", distance = sep, forward = fw_cont, gamma = 0.5 )
+fit_pgd_cont <- ibgd( graph, mode = "dcGD", distance = sep, forward = fw_cont, gamma = 0.5 )
 fit_pgd_cont
 
 save( graph, stage, sep, forward, field, ss_half, ss_one, fit_cgd, fit_pgd, fit_pgd_cont,

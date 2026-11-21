@@ -19,7 +19,7 @@
 #   n_i            source_sink_scores(g, gamma, x)$n: edges with i upstream minus
 #                  edges with i downstream
 #   r(S, x) test   source_sink_test(g, x, gamma)
-#   pGD, Delta R^2 pgd(), ibgd(g, x, mode = "pgd", gamma)
+#   pGD, Delta R^2 dcgd(), ibgd(g, x, mode = "dcGD", gamma)
 #
 # Stored old-sign values: data/forward_scenarios.csv (mean_delta),
 # data/information_null.csv (mean_delta), data/isotropic_baseline.csv,
