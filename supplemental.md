@@ -7,7 +7,7 @@ Rodney J. Dyer
 These Supplementary Materials give the derivations, simulation details and full results summarized in the main text. Sections, figures and tables cited without "(main text)" are in this document; main-text items are cited as "(main text)". Terms follow the main text: a *lineage* is one of the 50 independent *burn-in* histories, each continued under every forward scenario; a *census* is the Population Graph built from one saved generation of a lineage; a *phase core* is the middle half of a lineage's *ascent*, *plateau* or *decay* phase; and the *informative horizon* marks the onset of *decay*. Unless stated otherwise, analyses use the degree-neutral bandwidth ($\gamma=\tfrac{1}{2}$).
 
 - S1. Notation
-- S2. The model: Markov properties, the asymmetry, the topological floor, the source–sink score, identities
+- S2. The model: Markov properties, the asymmetry, the topological floor, the source–sink score, identities, source–sink surfaces
 - S3. Simulations and phases: design, trend fitting, phase boundaries, information loss, the *Symmetric* baseline
 - S4. Directional signal under asymmetric migration
 - S5. Source–sink gradient test: details, calibration, detection, rejected nulls
@@ -113,6 +113,10 @@ The quantities above satisfy the following identities, each checked numerically 
 | The part of $\|E\|\bar{\Delta}$ reproduced by $S$ equals $\sum_i S_i n_i$ | $7\times10^{-16}$ |
 
 The shared-bandwidth identity shows how the direction of an edge arises when every population uses the same kernel scale: $w_{i\mid j}=K_{ij}/d_j$ and $w_{j\mid i}=K_{ij}/d_i$, so $i$ reads as the source for $j$ exactly when $d_i>d_j$, that is, when the kernel weights of $i$'s retained neighbors sum to more than $j$'s—because $i$'s neighbors are closer, more numerous, or both. Each edge's asymmetry is then $K_{ij}$ times the difference of the population values $-1/d_i$ and $-1/d_j$, so an ordering of the populations reproduces the asymmetries exactly once each edge is weighted by $K_{ij}$; the unweighted fit that defines $S$ reproduces most, but not all, of them. The telescoping identity follows from writing every edge with its upstream population first: summing $S_i-S_j$ over edges counts each $S_i$ once for every edge on which population $i$ is upstream and subtracts it once for every edge on which it is downstream.
+
+### S2.6 Source–sink surfaces
+
+In either graph or geographic space, the source–sink surface is a Gaussian kernel-weighted average of the populations' scores (a Nadaraya–Watson smoother) evaluated on a regular 140 × 140 grid spanning the populations, with a smoothing bandwidth of 1.2 times the median nearest-neighbor distance between populations in that space. Because $S$ is centered within each connected component, each grid cell is interpolated only from the populations of the component nearest to it, and cells farther than one bandwidth outside a component's convex hull are left empty. The smoother averages neighboring scores, so the surface at a population's location approximates, rather than reproduces, its $S_i$. The result is a continuous surface whose coordinates are either graph-layout or geographic, and in either case it can be treated as a raster for further analysis.
 
 ## S3. Simulations and phases
 
@@ -441,8 +445,6 @@ $Nm$ became unavailable before the Population Graph lost information. Under *Red
 Censuses at which $Nm$ was non-finite or negative on any pair were excluded from the paired series in main-text Figure 5: 4,692 of 10,000 *Redistributed* censuses (46.9%), 1,544 of 10,000 *Obstructed* (15.4%), and none under *Symmetric* migration. Under *Symmetric* and *Obstructed* migration the paired and all-censuses series of $w_{j\mid i}$ stay close together, consistent with the low, gradual loss of $Nm$ in those scenarios. Under *Redistributed* migration $Nm$ is undefined in 96% of replicates by generation 2999; the paired series, resting on that shrinking and increasingly unrepresentative subset, stays elevated and noisy late in the window, whereas the all-censuses series, the fairer measure of $w_{j\mid i}$'s own performance, declines to roughly 0.15–0.32 over the final 25 generations, comparable to $Nm$'s late-window level (0.29–0.36); over each *Redistributed* lineage's whole *decay* phase its median is 0.32. This decline falls after the informative horizon for nearly every lineage (median generation 2674) and reflects both estimators degrading together once lineages enter *decay*, not $w_{j\mid i}$ retaining an advantage. Root mean square error between each estimate and the truth was also computed but is not reported, because it is dominated by the 552 true-zero pairs and weakened as a magnitude measure by the per-matrix rescaling both estimates require.
 
 ## S10. Sampling intensity
-
-==[New section, 2026-11-22.]==
 
 ### S10.1 Design
 
