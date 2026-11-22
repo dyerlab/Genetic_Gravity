@@ -15,7 +15,8 @@ These Supplementary Materials give the derivations, simulation details and full 
 - S7. Specificity and agreement of the two tests
 - S8. Bandwidth: sensitivity and per-graph tuning
 - S9. Comparison with `divMigrate`
-- S10. Recommendations for practice
+- S10. Sampling intensity: power, false positives and design-specific calibration
+- S11. Recommendations for practice
 
 ## S1. Notation
 
@@ -439,18 +440,85 @@ $Nm$ became unavailable before the Population Graph lost information. Under *Red
 
 Censuses at which $Nm$ was non-finite or negative on any pair were excluded from the paired series in main-text Figure 5: 4,692 of 10,000 *Redistributed* censuses (46.9%), 1,544 of 10,000 *Obstructed* (15.4%), and none under *Symmetric* migration. Under *Symmetric* and *Obstructed* migration the paired and all-censuses series of $w_{j\mid i}$ stay close together, consistent with the low, gradual loss of $Nm$ in those scenarios. Under *Redistributed* migration $Nm$ is undefined in 96% of replicates by generation 2999; the paired series, resting on that shrinking and increasingly unrepresentative subset, stays elevated and noisy late in the window, whereas the all-censuses series, the fairer measure of $w_{j\mid i}$'s own performance, declines to roughly 0.15–0.32 over the final 25 generations, comparable to $Nm$'s late-window level (0.29–0.36); over each *Redistributed* lineage's whole *decay* phase its median is 0.32. This decline falls after the informative horizon for nearly every lineage (median generation 2674) and reflects both estimators degrading together once lineages enter *decay*, not $w_{j\mid i}$ retaining an advantage. Root mean square error between each estimate and the truth was also computed but is not reported, because it is dominated by the 552 true-zero pairs and weakened as a magnitude measure by the per-matrix rescaling both estimates require.
 
-## S10. Recommendations for practice
+## S10. Sampling intensity
+
+==[New section, 2026-11-22.]==
+
+### S10.1 Design
+
+Population Graphs were rebuilt from subsets of the simulated data, re-estimating each graph from the retained demes' genotypes rather than deleting nodes from the full graph. Censuses were drawn from all 50 lineages: six from the *Symmetric* forward phase and four from sym-low for false-positive rates, and four from each lineage's *plateau* phase core under *Redistributed* (46 lineages) and *Obstructed* (44 lineages) migration for power. Each census was rebuilt at K = 25, 21, 18, 15, 12, 10, 8 or 5 demes, one drawn from each of K contiguous blocks so that every draw spans the whole stepping stone, and with n = 100, 50, 30, 20 or 10 individuals per retained deme, three draws per combination. Two further slices kept K contiguous demes (K = 15, 10 and 8; n = 100 and 30) and reduced the panel to 10 or 8 polymorphic loci (n = 30; K = 25, 18, 12 and 8). In all, 128,871 graphs were built from 858 censuses. Both tests were applied exactly as in the main text at the degree-neutral bandwidth and $\alpha=0.05$, with intervals from a bootstrap over lineages. For the directional isolation comparison, a cutoff was set for each (K, n) combination as the 95th percentile of $\Delta R^2$ under *Symmetric* migration, floored at zero, and cross-fitted: lineages 1–25 and 26–50 were each judged by the cutoff estimated from the other half.
+
+### S10.2 Source–sink gradient test
+
+The number of populations set the power of the source–sink test (Figure S6, Table S13). With 30 individuals per population, power on the *plateau* fell below half of its full-graph value between 18 and 15 populations and was near zero at 8 or fewer. The number of individuals mattered much less once K was fixed: power peaked at 20–50 individuals per population and was slightly lower at 100, where graphs are denser. In a logistic model of rejection on degree share, $\log K$ and $\log n$, the number of populations dominated ($z=74$ against $-12$ for degree share and $-7$ for $\log n$). The test remained calibrated under *Symmetric* migration (at most 6% with 30 or more individuals per population; 7–10% with 10–20 individuals and 18 or more populations) and under strong drift (sym-low, 1–10%).
+
+![](media/fig-sampling-intensity-v3.png)
+
+**Figure S6.** Power and false-positive rates against the number of populations sampled. (A, B) *Plateau* power under *Redistributed* migration of the source–sink gradient test at $\alpha=0.05$ (A) and of the directional isolation comparison at the held-out, design-calibrated cutoff (B). (C, D) False-positive rates of the source–sink test (C) and of the uncalibrated rule $\Delta R^2>0$ (D) under *Symmetric* migration (solid) and strong drift (sym-low, dashed); the dotted line marks 5%. The number of populations is on a logarithmic axis. Lines are numbers of individuals per population; bands are 95% lineage-bootstrap intervals (shown for *Symmetric* only in C and D).
+
+### S10.3 Directional isolation and design-specific cutoffs
+
+The uncalibrated rule $\Delta R^2>0$ became anti-conservative as populations were removed (Table S13): with 30 individuals per population it fired in 5% of *Symmetric* graphs at 25 populations, 9% at 15, 14% at 10, 23% at 8 and 41% at 5. The 95th-percentile cutoff that restores a 5% rate rose correspondingly, from about zero at 21–25 populations to 0.07 at 10 and 0.27 at 5, and at small K it depended on n as well as K (at 12 populations, 0.02 with 10 individuals and 0.10 with 100). Judged on held-out lineages, a cutoff set for each (K, n) combination gave false-positive rates of 0.05 (0.03–0.06) in every *Symmetric* cell, whereas a cutoff set by K alone was conservative with 10 individuals per population (0.02–0.04) and slightly liberal with 100 (0.08–0.09 at 12–18 populations). At its calibrated cutoff, the directional isolation comparison kept 55–65% of its full-graph power at 10–12 populations, where the source–sink test kept 22–34%. Calibration under symmetric migration did not protect against strong drift: under sym-low, the calibrated rule fired in 7–13% of graphs with 30 individuals per population, against 8–46% for the uncalibrated rule. Cutoffs calibrated with 20 loci did not hold with 8: *Symmetric* false positives rose to 9–12%. The cutoffs here are specific to a one-dimensional stepping stone with 20 biallelic loci and should not be applied to other designs; Section S10.6 shows the calibration for an empirical design.
+
+**Table S13.** Performance of the two tests by the number of populations sampled (K), with 30 individuals per population and 20 loci, at the degree-neutral bandwidth. Source–sink: false-positive rate under *Symmetric* migration and *plateau* power. Directional isolation: false-positive rate of the uncalibrated rule $\Delta R^2>0$ under *Symmetric* migration; the calibrated cutoff (95th percentile of *Symmetric* $\Delta R^2$, mean of the two folds); *plateau* power at the held-out cutoff; and the false-positive rate under strong drift (sym-low) at that cutoff. Power is given as *Redistributed* / *Obstructed*. Lineage-bootstrap intervals are in the analysis output.
+
+| K | Source–sink FPR | Source–sink power | $\Delta R^2>0$ FPR | Cutoff | Calibrated power | Calibrated FPR, sym-low |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| 25 | 0.06 | 0.70 / 0.58 | 0.05 | 0.00 | 0.89 / 0.65 | 0.08 |
+| 21 | 0.05 | 0.61 / 0.46 | 0.06 | 0.00 | 0.84 / 0.59 | 0.10 |
+| 18 | 0.05 | 0.53 / 0.37 | 0.07 | 0.01 | 0.84 / 0.59 | 0.12 |
+| 15 | 0.04 | 0.37 / 0.31 | 0.09 | 0.03 | 0.68 / 0.47 | 0.11 |
+| 12 | 0.05 | 0.24 / 0.18 | 0.12 | 0.05 | 0.57 / 0.39 | 0.12 |
+| 10 | 0.03 | 0.19 / 0.13 | 0.14 | 0.07 | 0.53 / 0.38 | 0.13 |
+| 8 | 0.02 | 0.04 / 0.04 | 0.23 | 0.13 | 0.35 / 0.22 | 0.11 |
+| 5 | 0.01 | 0.02 / 0.02 | 0.41 | 0.27 | 0.18 / 0.16 | 0.07 |
+
+### S10.4 Individuals, fragmentation and degree share
+
+The number of individuals per population governed whether the graph held together. About half of the graphs were disconnected with 10 individuals per population (0.47–0.57), 12–23% with 20, 4–11% with 30 and at most 4% with 50 or more. Fragmentation tracked the expected number of heterozygotes per locus per population, $n H_S$: about 1.5 at 10 individuals, 3 at 20, 4.5 at 30 and 7.5 or more at 50, so that roughly five expected heterozygotes per locus per population is a useful guide. The degree share rose mainly as individuals were removed: its median stayed at or below 0.15 with 30 or more individuals at every K, but reached 0.46 at 10 populations and 0.77 at 5 with 10 individuals. The degree-neutral bandwidth remained neutral (median $|\text{cor}(S,S^0)|\le 0.13$ under *Symmetric* migration) only with about 30 or more individuals per population, rising to 0.17–0.23 with 20 and 0.26–0.62 with 10. A degree share above about 0.15, or a fragmented graph, therefore signals too few individuals per population. Where graphs fragmented, testing within the largest component was more conservative than testing the whole graph (*Symmetric* false positives 0.024 against 0.045) and slightly more powerful, supporting the within-component analysis used for the case study.
+
+### S10.5 Loci, spatial extent and descriptions
+
+With 30 individuals per population, reducing the panel from 20 to 10 and 8 polymorphic loci cut source–sink power under *Redistributed* migration from 0.70 to 0.56 and 0.49 at 25 populations, and from 0.53 to 0.35 and 0.29 at 18, while changing fragmentation and degree share little. In a model including both, the number of loci, not of individuals, governed power once K was fixed ($z=15$ for $\log L$, $-0.3$ for $\log n$): individuals buy the integrity of the graph, and loci buy power. Spatial extent mattered as well as number: at 10 populations and 30 individuals, a contiguous block spanning 7–14 demes had less power than a spread draw spanning 21–23 (source–sink 0.07 against 0.19; directional isolation 0.40 against 0.53, with a false-positive rate of 0.09 at the spread draw's cutoff), so sampling should span the whole hypothesized axis.
+
+Even where neither test could certify direction, the signs of the statistics carried information. Under asymmetric migration, $r(S,x)<0$ placed the sources upstream in 89–99% of graphs with 30 or more individuals per population at every K, and the slope ratio was below one in 93–100%; under *Symmetric* migration the same signs occurred in 36–43% and 32–55% of graphs. A single graph's sign is therefore weak evidence (a likelihood ratio of about 2.4), but consistency across lineages, loci subsets or related systems is strong: every asymmetric lineage's mean $r(S,x)$ was negative at every K, against 24–42% of *Symmetric* lineages.
+
+Differentiation in the simulations was high (median multilocus $F_{ST}$ 0.36 under *Symmetric* migration, 0.37 and 0.44 on the *Redistributed* and *Obstructed* *plateau*, 0.57 under sym-low), and within-population diversity low ($H_S$ per polymorphic locus 0.15–0.24), comparable to drifted, low-frequency SNP panels rather than to microsatellites. At $\Phi\approx0.41$, the allocation that minimizes the sampling variance of $\Phi$ for a fixed total number of individuals (Falconer, 1981) is four or five individuals per population, well below the roughly 30 at which the simulated graphs held together, the degree-neutral bandwidth stayed neutral and source–sink power peaked.
+
+### S10.6 Design-specific calibration for *Araptus attenuatus*
+
+The central *Araptus* component (14 sites; 5–10 beetles per site, mean 9; 8 loci with 2–9 alleles; $G_{ST}=0.14$, $H_S=0.34$) gave $\Delta R^2=0.196$ ($R^2_{cGD}=0.007$, $R^2_{dcGD}=0.203$, 182 ordered pairs). Its cutoff was calibrated in two ways (Table S14). First, as an illustration, the simulated stepping stone was subsampled to the *Araptus* design (14 spread demes, the observed per-site sample sizes in axis order, 8 polymorphic loci; 1,500 *Symmetric* graphs). Second, following the procedure recommended in the main text, 999 data sets were simulated for the design itself: the 14 sites, each site's number of genotyped beetles and the 8 loci with their alleles, starting from the pooled observed allele frequencies, under Wright–Fisher drift with symmetric migration through a balanced kernel $\exp(-d/s)$ on axis distance ($s$ the largest nearest-neighbor gap), with the migration rate tuned so that the simulated $G_{ST}$ matched the observed value, and with the observed separations and forward definition. Five sensitivity runs varied the effective size (50–200), the duration (200–1,000 generations) and the kernel (two-dimensional great-circle distance).
+
+Without calibration, $\Delta R^2>0$ arose in 38% of the design-matched null data sets (18% on the subsampled stepping stone). The observed 0.196 exceeded every calibrated cutoff (one-sided $p=0.004$–0.008), so the directional isolation comparison supports the southward expansion. The source–sink gradient test was non-significant against the design-matched null as well as the spectral null ($p=0.14$ and 0.44); the two nulls ask different questions, the first across symmetric data sets with this design and the second given this graph's smoothness, but they agree. Sampling diagnostics placed the component in the thinly sampled regime of Section S10.4: every site fell below five expected heterozygotes per locus (median 3.0, minimum 1.2), the degree share was 0.85 and $\text{cor}(S,S^0)$ 0.94. In this design, null values of $\Delta R^2$ above the cutoff also tended to have a slope ratio below one (84%), so the ratio's direction adds little here beyond the exceedance itself. On the subsampled stepping stone, the calibrated comparison had 0.43 *plateau* power under *Redistributed* migration and the source–sink test 0.21, so the source–sink test's non-rejection is consistent with its expected power.
+
+The generator was validated against the individual-based simulations by running it on the *Symmetric* model (25 demes, 0.025 per direction, 100 individuals, 20 biallelic loci, 300 replicates) and subsampling three designs: the *Araptus* design and 30 individuals at 25 and 12 populations. The null distributions of $\Delta R^2$ did not differ (Kolmogorov–Smirnov $p=0.51$–0.96); medians and 90th percentiles agreed closely, and every 95th percentile fell within the bootstrap interval of the individual-based value except at 25 populations, where both were at or below zero and the decision was unaffected.
+
+**Table S14.** Calibrated cutoffs for the directional isolation comparison in the central *Araptus attenuatus* component (observed $\Delta R^2=0.196$). Cutoff: 95th percentile of $\Delta R^2$ under symmetric migration. Fires: fraction of null data sets with $\Delta R^2>0$. $p$: one-sided.
+
+| Calibration | Null data sets | Fires | Cutoff | $p$ |
+| :-- | :-: | :-: | :-: | :-: |
+| Simulated stepping stone, subsampled to the design (illustrative) | 1,500 | 0.18 | 0.069 (0.056–0.084) | 0.005 |
+| Same, strong drift (sym-low) | 1,000 | 0.27 | 0.117 | 0.007 |
+| Design-matched null ($N_e=100$, 400 generations) | 999 | 0.38 | 0.100 | 0.008 |
+| $N_e=50$, 200 generations | 999 | 0.37 | 0.087 | 0.004 |
+| $N_e=200$, 800 generations | 999 | 0.34 | 0.096 | 0.004 |
+| 200 generations | 999 | 0.41 | 0.097 | 0.005 |
+| 1,000 generations | 999 | 0.40 | 0.117 | 0.007 |
+| Two-dimensional great-circle kernel | 999 | 0.46 | 0.094 | 0.005 |
+
+## S11. Recommendations for practice
 
 The simulations describe how the method behaves; they do not supply constants to carry into other systems. Each recommendation therefore says what to examine in one's own data.
 
 1. **Choose the bandwidth by the question.** Use $\gamma=\tfrac{1}{2}$ to infer direction (the source–sink test, the directional isolation comparison, dcGD and the source–sink surface) and $\gamma=1$ to describe a population's overall weight in the network.
-2. **Report how much of the index is degree.** Give the degree share at the chosen bandwidth. If it is large, as in sparse graphs, direction read from the edges is mostly topology; a sweep over $\gamma$ is a useful sensitivity analysis.
+2. **Report how much of the index is degree.** Give the degree share at the chosen bandwidth. A degree share above about 0.15, or a fragmented graph, signals too few individuals per population; test within components and expect the degree-neutral bandwidth to retain some degree signature (Section S10.4). A sweep over $\gamma$ is a useful sensitivity analysis.
 3. **Check information content before reading direction.** Count the loci polymorphic within populations, and rebuild the graph from random subsets of loci to see where $|\Delta_{i\rightarrow j}|$ begins to inflate, rather than importing a threshold such as 4.5 loci.
-4. **Choose the test by the covariate, the drift regime and the question.** Use the source–sink test for a population-level covariate and to locate sources; use the directional isolation comparison for a pairwise separation or resistance matrix. Under strong drift, corroborate a directional isolation result with the source–sink test, and where both reject, check that they agree on direction.
+4. **Choose the test by the covariate, the drift regime, the sampling and the question.** Use the source–sink test for a population-level covariate and to locate sources; use the directional isolation comparison for a pairwise separation or resistance matrix. With fewer than about 15 populations, rely primarily on the directional isolation comparison, judged against a cutoff calibrated for the study's own design by simulating symmetric migration (Sections S10.3, S10.6), never on $\Delta R^2>0$ alone. Under strong drift, corroborate a directional isolation result with the source–sink test, and where both reject, check that they agree on direction.
 5. **Read direction at the population level,** from $S$ and the source–sink surface, and treat individual arrows as leads.
 6. **Do not tune the bandwidth on the data being tested.**
-7. **Treat a single snapshot as one point in a sequence.** A non-significant result is not evidence of symmetry.
+7. **Treat a single snapshot as one point in a sequence.** A non-significant result is not evidence of symmetry. With fewer than about 10 populations, neither test can establish direction from one graph: report the sign of $r(S,x)$ and the slope ratio as descriptions, beside what symmetric migration gives for the same design, and seek replication (Section S10.5).
 8. **Plot it.** Draw the gravity-field plot at both bandwidths, and report the degree share with the plot.
+9. **Sample for the graph, not for $\Phi$.** Allocations that are optimal for estimating differentiation (about $1/\Phi$ individuals per population) are too thin for a Population Graph. Aim for roughly five or more expected heterozygotes per locus per population (about 30 individuals in the simulations), as many populations as possible spanning the whole hypothesized axis, and as many loci as possible (Section S10).
 
 # References
 
@@ -461,6 +529,8 @@ Dyer, R. J. (2007). The evolution of genetic topologies. *Theoretical Population
 Dyer, R. J., & Nason, J. D. (2004). Population graphs: The graph theoretic shape of genetic structure. *Molecular Ecology*, *13*, 1713–1727. [http://www.ncbi.nlm.nih.gov/pubmed/15189198](http://www.ncbi.nlm.nih.gov/pubmed/15189198)
 
 Dyer, R. J., Westfall, R. D., Sork, V. L., & Smouse, P. E. (2004). Two-generation analysis of pollen flow across a landscape V: A stepwise approach for extracting factors contributing to pollen structure. *Heredity*, *92*, 204–211.
+
+Falconer, D. S. (1981). *Introduction to quantitative genetics* (2nd ed.). Longman.
 
 Gower, J. C. (1966). Some distance properties of latent root and vector methods used in multivariate analysis. *Biometrika*, *53*, 325–338.
 
