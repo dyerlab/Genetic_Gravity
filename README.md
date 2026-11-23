@@ -2,7 +2,7 @@
 
 **Rodney J. Dyer** · School of Life Sciences and Sustainability, Virginia Commonwealth University
 
-📄 **[Read the manuscript](https://dyerlab.github.io/Genetic_Gravity/)** · [Supplementary Materials](https://dyerlab.github.io/Genetic_Gravity/supplemental.html)
+📄 **[Read the manuscript](https://dyerlab.github.io/Genetic_Gravity/)** · [Supplementary Materials](https://dyerlab.github.io/Genetic_Gravity/supplemental.html) · [gstudio Computer Note](https://dyerlab.github.io/Genetic_Gravity/computer_note/index.html)
 
 The site is rebuilt from `index.md` and `supplemental.md` on every push to `main`.
 

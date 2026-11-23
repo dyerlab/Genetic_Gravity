@@ -1,0 +1,145 @@
+gstudio 1.15.8 | igraph 1.6.0 | ggplot2 3.4.4 | R version 4.3.3 (2024-02-29) 
+
+arapat: 363 individuals, 39 sites, 8 loci (LTRS, WNT, EN, EF, ZMP, AML, ATPS, MP20)
+
+     Cape  Mainland Peninsula 
+       75        36       252 
+# A tibble: 3 x 5
+  Species   sites     n lat_min lat_max
+  <fct>     <int> <int>   <dbl>   <dbl>
+1 Cape         14    75    23.1    25.9
+2 Mainland      3    36    26.4    27.9
+3 Peninsula    34   252    23.1    29.3
+
+first genotype at LTRS: 01:01 | heterozygote? FALSE 
+missing genotypes per locus:
+LTRS  WNT   EN   EF  ZMP  AML ATPS MP20 
+   0   11    3    2   33   23    0    5 
+
+Table 2: multilocus diversity by lineage (means over 8 loci; Fis from the means)
+   Lineage Sites   N Polymorphic    A   Ae    He    Ho   Fis
+      Cape    14  75           7 2.62 1.39 0.235 0.112 0.522
+  Mainland     3  36           8 3.62 1.98 0.361 0.254 0.295
+ Peninsula    34 252           8 4.88 2.21 0.494 0.273 0.447
+
+Table 3: differentiation among the three lineages
+      Locus   Gst Gst_prime  Dest
+       LTRS 0.354     0.607 0.392
+        WNT 0.603     0.920 0.798
+         EN 0.182     0.342 0.195
+         EF 0.365     0.576 0.331
+        ZMP 0.496     0.650 0.305
+        AML 0.272     0.897 0.858
+       ATPS 0.586     0.959 0.902
+       MP20 0.236     0.830 0.777
+ Multilocus 0.384     0.650 0.426
+
+pairwise Gst between lineages
+           Cape Mainland Peninsula
+Cape         NA    0.296     0.361
+Mainland  0.296       NA     0.202
+Peninsula 0.361    0.202        NA
+
+multilocus Gst among lineages with 999 permutations: Gst = 0.384 , p = 0.001 
+multilocus Gst among peninsular sites: 0.417 
+
+Population Graph: 39 nodes, 71 edges, 4 components (sizes 25, 9, 3, 2), built in 0.13 s
+mixed-lineage sites: 157, 163, 164, 166, 73, 75, 77, 98, Aqu, Const, ESan, Mat 
+component membership by majority lineage:
+         Lineage
+Component Cape Mainland Peninsula
+        1    0        3         0
+        2    8        0        17
+        3    0        0         9
+        4    2        0         0
+mean degree 3.64 ; leaves 3 
+edges joining sites of different lineages: 4 of 71 
+
+          Cape-Cape      Cape-Peninsula   Mainland-Mainland Peninsula-Peninsula 
+                 13                   4                   3                  51 
+
+cGD: 741 site pairs, 340 connected (finite), Spearman rho(cGD, km) = 0.51
+
+Population Graph sampling diagnostics
+  39 strata, 363 individuals (per stratum 4-19, median 10); 8 loci (8 polymorphic; median 5 alleles)
+  Gst 0.449; mean Hs 0.327; median n*Hs per stratum 3.3 (min 0.0)
+  estimate: 56 rotated variables on 324 within-stratum df (0 constant within strata); 38 discriminant axes
+  graph: 71 edges, 4 component(s) (largest 25), mean degree 3.6, 3 leaves; degree share 0.38, cor(S, S0) 0.45
+  Falconer optimum for Phi at N = 363: 121 strata of 3 (optimal_sampling())
+
+  * 38 of 39 strata have fewer than 5 expected heterozygotes per locus (median n*Hs): within-stratum variance is poorly estimated
+  * the graph has 4 components: test within components
+  * degree share 0.38 at gamma = 0.5: the source-sink score is partly set by node degree
+  * 8 polymorphic loci: power of the source-sink test falls and the Delta R^2 > 0 rule becomes liberal; calibrate with popgraph_null()
+
+
+                        panel gamma degree_share cor_S_degree cor_S_S0
+       gamma = 1 (local mean)   1.0        0.801        0.673    0.861
+ gamma = 1/2 (degree-neutral)   0.5        0.378        0.498    0.453
+ gradient_share
+          0.973
+          0.963
+Gravity field: 39 populations, 71 edges, gamma = 0.5
+  degree share 0.378, cor(S, degree) 0.498, gradient share 0.963
+  strongest sources: 93 (0.536), 169 (0.525), 58 (0.511)
+  strongest sinks:   163 (-0.758), 75 (-0.655), 156 (-0.535)
+Gravity field: 39 populations, 71 edges, gamma = 1
+  degree share 0.801, cor(S, degree) 0.673, gradient share 0.973
+  strongest sources: 93 (0.252), SFr (0.235), 169 (0.234)
+  strongest sinks:   166 (-0.662), Const (-0.317), 163 (-0.303)
+edges whose sign differs between gamma = 1 and 1/2: 11 of 71
+Spearman rho between S at gamma = 1 and 1/2: 0.91
+cor(S, degree): gamma = 1 0.67; gamma = 1/2 0.50
+
+dcgd(): directed = TRUE, 142 arcs over 71 edges
+  from  to   weight
+1  101 102 4.078364
+2  101  32 3.272031
+3  102  32 3.772895
+4   12 161 1.983049
+
+to_sf(): sf/data.frame 
+$name
+[1] "character"
+
+$size
+[1] "matrix"
+
+$Lineage
+[1] "character"
+
+$geometry
+[1] "sfc_POINT"
+
+R version 4.3.3 (2024-02-29)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 24.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.12.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.12.0
+
+locale:
+[1] C
+
+time zone: America/New_York
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] ggplot2_3.4.4  igraph_1.6.0   dplyr_1.1.4    gstudio_1.15.8
+
+loaded via a namespace (and not attached):
+ [1] gtable_0.3.4       compiler_4.3.3     tidyselect_1.2.0   Rcpp_1.0.12       
+ [5] tidyr_1.3.1        textshaping_0.3.7  systemfonts_1.0.5  scales_1.3.0      
+ [9] R6_2.5.1           labeling_0.4.3     generics_0.1.3     isoband_0.2.7     
+[13] classInt_0.4-10    sf_1.0-15          MASS_7.3-60.0.1    tibble_3.2.1      
+[17] units_0.8-5        munsell_0.5.0      DBI_1.2.2          pillar_1.9.0      
+[21] rlang_1.1.3        utf8_1.2.4         viridisLite_0.4.2  cli_3.6.2         
+[25] withr_2.5.0        magrittr_2.0.3     class_7.3-22       grid_4.3.3        
+[29] lifecycle_1.0.4    vctrs_0.6.5        KernSmooth_2.23-22 proxy_0.4-27      
+[33] glue_1.7.0         farver_2.1.1       ragg_1.2.7         fansi_1.0.5       
+[37] e1071_1.7-14       colorspace_2.1-0   purrr_1.0.2        tools_4.3.3       
+[41] pkgconfig_2.0.3   

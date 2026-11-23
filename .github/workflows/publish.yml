@@ -1,5 +1,16 @@
 name: Build and deploy manuscript site
 
+# Builds the site in this workflow, not with
+# dyerlab/manuscript-theme/.github/workflows/render.yml, so that pages in
+# subfolders keep their path.  The theme's renderer names each page after
+# its file's base name, which would send computer_note/index.md to the
+# site's index.html and overwrite the manuscript.
+#
+# Site layout:
+#   index.html, supplemental.html, media/        <- top-level *.md, media/
+#   computer_note/index.html, computer_note/media/ <- computer_note/
+# The template and CSS still come from manuscript-theme at the pinned ref.
+
 on:
   push:
     branches: [main]
@@ -7,6 +18,9 @@ on:
       - "*.md"
       - "*.meta.yml"
       - "media/**"
+      - "computer_note/*.md"
+      - "computer_note/*.meta.yml"
+      - "computer_note/media/**"
       - ".github/workflows/publish.yml"
   workflow_dispatch: {}
 
@@ -15,8 +29,104 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  THEME_REF: v1          # manuscript-theme tag used for template and CSS
+  PANDOC_VERSION: "3.8.3"
+
 jobs:
-  site:
-    uses: dyerlab/manuscript-theme/.github/workflows/render.yml@v1
-    with:
-      markdown_files: "index.md supplemental.md"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout manuscript
+        uses: actions/checkout@v5
+
+      - name: Checkout shared theme
+        uses: actions/checkout@v5
+        with:
+          repository: dyerlab/manuscript-theme
+          ref: ${{ env.THEME_REF }}
+          path: _theme
+
+      - name: Set up pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+        with:
+          pandoc-version: ${{ env.PANDOC_VERSION }}
+
+      - name: Render site
+        shell: bash
+        run: |
+          set -euo pipefail
+          THEME="_theme/.github/actions/render-site"
+          OUT="_site"
+
+          # render <src.md> <out.html> <relative path from the page to the site root>
+          render() {
+            local src="$1" out="$2" root="$3"
+            local meta="${src%.md}.meta.yml"
+            local meta_args=()
+            if [ -f "$meta" ]; then
+              meta_args=(--metadata-file="$meta")
+            else
+              echo "::notice::No $meta found for $src - rendering without extra metadata."
+            fi
+            mkdir -p "$(dirname "$out")"
+            echo "Rendering $src -> $out"
+            pandoc "$src" \
+              -f markdown-yaml_metadata_block \
+              --standalone \
+              --toc --toc-depth=2 \
+              --mathjax \
+              --template="$THEME/templates/template.html5" \
+              "${meta_args[@]}" \
+              --css="${root}media/theme.css" \
+              --css="${root}media/skylighting-solarized-theme.css" \
+              --output="$out"
+          }
+
+          # Shared CSS and the manuscript's figures at the site root.
+          mkdir -p "$OUT/media"
+          if [ -d media ]; then cp -r media/. "$OUT/media/"; fi
+          cp "$THEME/theme/"*.css "$OUT/media/"
+
+          # Manuscript and supplement: same output as before.
+          render index.md        "$OUT/index.html"        ""
+          render supplemental.md "$OUT/supplemental.html" ""
+
+          # Computer Note in its own folder, with its own figures; it uses
+          # the root CSS one level up.
+          if [ -f computer_note/index.md ]; then
+            mkdir -p "$OUT/computer_note/media"
+            if [ -d computer_note/media ]; then
+              cp -r computer_note/media/. "$OUT/computer_note/media/"
+            fi
+            render computer_note/index.md "$OUT/computer_note/index.html" "../"
+          fi
+
+          # Fail the build if a page is missing.
+          for f in index.html supplemental.html; do
+            test -s "$OUT/$f" || { echo "::error::$f was not built"; exit 1; }
+          done
+          if [ -f computer_note/index.md ]; then
+            test -s "$OUT/computer_note/index.html" || { echo "::error::computer_note/index.html was not built"; exit 1; }
+          fi
+          find "$OUT" -name '*.html' | sort
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
