@@ -62,6 +62,10 @@ plot(gravity_field(gravity))
 
 `make` builds `pdf/index.pdf` and `pdf/supplemental.pdf` with pandoc and XeLaTeX (`make index`, `make supplement`, `make clean`).
 
+## Reproducing the analyses
+
+`R/README.md` lists the script behind every figure and table, and the order in which to run them. Every figure and table can be rebuilt from the cached results in `data/` and `data/derived/` with [gstudio](https://github.com/dyerlab/gstudio) ≥ 1.16.0. Recomputing those cached results needs the simulated Population Graphs and the simulator, which are not in this repository ==[deposit location to be added]==; set `GG_SIM_DIR` to a local copy. The *Araptus attenuatus* case study runs from the package data set `arapat` alone.
+
 ## Repository layout
 
 | Path | Contents |
@@ -69,8 +73,10 @@ plot(gravity_field(gravity))
 | `index.md` | Main manuscript |
 | `supplemental.md` | Supplementary Materials |
 | `*.meta.yml` | Title and author metadata for the site build |
-| `media/` | Figures |
-| `R/` | Simulation and analysis scripts |
+| `media/` | The figures used in the manuscript and supplement |
+| `R/` | Analysis code: `simulation/`, `analysis/`, `case_study/`, `figures/`, `common/` and `legacy/` (see `R/README.md`) |
+| `data/` | Per-census summaries extracted from the simulations, and the case-study results |
+| `data/derived/` | Cached results read by the figure and table scripts (only these files are tracked) |
+| `computer_note/` | The gstudio Computer Note: manuscript, script, data and figures |
 | `Makefile`, `pdf/` | PDF build (pandoc filter and preamble) and built PDFs |
-| `data/` | Simulation output and empirical data (`data/derived` is not tracked) |
 | `.github/workflows/publish.yml` | Builds and deploys the manuscript site |

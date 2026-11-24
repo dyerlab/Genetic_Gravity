@@ -15,7 +15,7 @@ These Supplementary Materials give the derivations, simulation details and full 
 - S7. Specificity and agreement of the two tests
 - S8. Bandwidth: sensitivity and per-graph tuning
 - S9. Comparison with `divMigrate`
-- S10. Sampling intensity: power, false positives and design-specific calibration
+- S10. Sampling intensity: power, false positives and design-specific calibration; checks on the *Araptus attenuatus* case study
 - S11. Recommendations for practice
 
 ## S1. Notation
@@ -477,13 +477,13 @@ The uncalibrated rule $\Delta R^2>0$ became anti-conservative as populations wer
 
 ### S10.4 Individuals, fragmentation and degree share
 
-The number of individuals per population governed whether the graph held together. About half of the graphs were disconnected with 10 individuals per population (0.47–0.57), 12–23% with 20, 4–11% with 30 and at most 4% with 50 or more. Fragmentation tracked the expected number of heterozygotes per locus per population, $n H_S$: about 1.5 at 10 individuals, 3 at 20, 4.5 at 30 and 7.5 or more at 50, so that roughly five expected heterozygotes per locus per population is a useful guide. The degree share rose mainly as individuals were removed: its median stayed at or below 0.15 with 30 or more individuals at every K, but reached 0.46 at 10 populations and 0.77 at 5 with 10 individuals. The degree-neutral bandwidth remained neutral (median $|\text{cor}(S,S^0)|\le 0.13$ under *Symmetric* migration) only with about 30 or more individuals per population, rising to 0.17–0.23 with 20 and 0.26–0.62 with 10. A degree share above about 0.15, or a fragmented graph, therefore signals too few individuals per population. Where graphs fragmented, testing within the largest component was more conservative than testing the whole graph (*Symmetric* false positives 0.024 against 0.045) and slightly more powerful, supporting the within-component analysis used for the case study.
+The number of individuals per population governed whether the graph held together. About half of the graphs were disconnected with 10 individuals per population (0.47–0.57), 12–23% with 20, 4–11% with 30 and at most 4% with 50 or more. Fragmentation tracked the expected number of heterozygotes per locus per population, $n H_S$: about 1.5 at 10 individuals, 3 at 20, 4.5 at 30 and 7.5 or more at 50, so that roughly five expected heterozygotes per locus per population is a useful guide. The degree share rose mainly as individuals were removed: its median stayed at or below 0.15 with 30 or more individuals at every K, but reached 0.46 at 10 populations and 0.77 at 5 with 10 individuals. The degree-neutral bandwidth remained neutral (median $|\text{cor}(S,S^0)|\le 0.13$ under *Symmetric* migration) only with about 30 or more individuals per population, rising to 0.17–0.23 with 20 and 0.26–0.62 with 10. ==In the simulations, a degree share above about 0.15, or a fragmented graph, signalled too few individuals per population; in empirical data, the observed value is best compared with a design-matched null, which separates thin sampling from degree structure that symmetric exchange does not produce (Section S10.8).== Where graphs fragmented, testing within the largest component was more conservative than testing the whole graph (*Symmetric* false positives 0.024 against 0.045) and slightly more powerful, supporting the within-component analysis used for the case study.
 
 ### S10.5 Loci, spatial extent and descriptions
 
 With 30 individuals per population, reducing the panel from 20 to 10 and 8 polymorphic loci cut source–sink power under *Redistributed* migration from 0.70 to 0.56 and 0.49 at 25 populations, and from 0.53 to 0.35 and 0.29 at 18, while changing fragmentation and degree share little. In a model including both, the number of loci, not of individuals, governed power once K was fixed ($z=15$ for $\log L$, $-0.3$ for $\log n$): individuals buy the integrity of the graph, and loci buy power. Spatial extent mattered as well as number: at 10 populations and 30 individuals, a contiguous block spanning 7–14 demes had less power than a spread draw spanning 21–23 (source–sink 0.07 against 0.19; directional isolation 0.40 against 0.53, with a false-positive rate of 0.09 at the spread draw's cutoff), so sampling should span the whole hypothesized axis.
 
-Even where neither test could certify direction, the signs of the statistics carried information. Under asymmetric migration, $r(S,x)<0$ placed the sources upstream in 89–99% of graphs with 30 or more individuals per population at every K, and the slope ratio was below one in 93–100%; under *Symmetric* migration the same signs occurred in 36–43% and 32–55% of graphs. A single graph's sign is therefore weak evidence (a likelihood ratio of about 2.4), but consistency across lineages, loci subsets or related systems is strong: every asymmetric lineage's mean $r(S,x)$ was negative at every K, against 24–42% of *Symmetric* lineages.
+Even where neither test could certify direction, the signs of the statistics carried information. Under asymmetric migration, $r(S,x)<0$ placed the sources upstream in 89–99% of graphs with 30 or more individuals per population at every K, and the slope ratio was below one in 93–100%; under *Symmetric* migration the same signs occurred in 36–43% and 32–55% of graphs. ==The sign from any one data set== is therefore weak evidence (a likelihood ratio of about 2.4), but consistency across lineages, loci subsets or related systems is strong: every asymmetric lineage's mean $r(S,x)$ was negative at every K, against 24–42% of *Symmetric* lineages.
 
 Differentiation in the simulations was high (median multilocus $F_{ST}$ 0.36 under *Symmetric* migration, 0.37 and 0.44 on the *Redistributed* and *Obstructed* *plateau*, 0.57 under sym-low), and within-population diversity low ($H_S$ per polymorphic locus 0.15–0.24), comparable to drifted, low-frequency SNP panels rather than to microsatellites. At $\Phi\approx0.41$, the allocation that minimizes the sampling variance of $\Phi$ for a fixed total number of individuals (Falconer, 1981) is four or five individuals per population, well below the roughly 30 at which the simulated graphs held together, the degree-neutral bandwidth stayed neutral and source–sink power peaked.
 
@@ -508,18 +508,195 @@ The generator was validated against the individual-based simulations by running 
 | 1,000 generations | 999 | 0.40 | 0.117 | 0.007 |
 | Two-dimensional great-circle kernel | 999 | 0.46 | 0.094 | 0.005 |
 
+### S10.7 Bandwidth sensitivity for *Araptus attenuatus*
+
+==The case study used the degree-neutral bandwidth ($\gamma=\tfrac{1}{2}$), which is fixed from the symmetric simulations rather than estimated from the data. To check that its conclusions did not depend on that choice, every quantity was recomputed for both tested components over the grid of multipliers used in Section S8.1 ($\gamma=0.25$ to 2 in steps of $\sqrt{2}$, and $\gamma=\infty$), with the spectral null (999 randomizations) for $r(S,d)$ (Table S15). The directional isolation comparison at the local mean was recalibrated against 999 design-matched data sets simulated as in Section S10.6 (Table S16); the migration rate tuned slightly differently ($m=0.0215$ against 0.0209; null $G_{ST}$ 0.134 against 0.135), so these null data sets are not identical to those of the $\gamma=\tfrac{1}{2}$ run.==
+
+==The conclusions held at every bandwidth. In the central component the sources lay near the refuge ($r(S,d)<0$) at every multiplier, although the gradient test never rejected; in the northern component there was no directional signal at any multiplier. The central component could not be made degree-neutral: its degree share was at least 0.70 even at $\gamma=0.25$. The per-graph rule of Section S8.2, the multiplier at which $S$ is uncorrelated with the degree-only score $S^0$, had no solution on either component when searched down to $\gamma\approx0.06$ (the smallest correlations reached were 0.83 and 0.61), so on sparse empirical graphs there may be no value to tune to. Finally, $\Delta R^2$ is meaningful only against a cutoff calibrated at the same multiplier. The observed $\Delta R^2$ fell as $\gamma$ increased, but the null cutoff fell faster, so at the local mean the result was more significant than at the degree-neutral bandwidth ($p=0.001$ against 0.008). Comparing the observed 0.086 with the $\gamma=\tfrac{1}{2}$ cutoff of 0.100 would wrongly suggest it was not significant.==
+
+**Table S15.** Bandwidth sensitivity of the *Araptus attenuatus* case study. Degree share: $R^2$ of $\Delta_{i\rightarrow j}$ on the topological floor $\Delta^0_{i\rightarrow j}$; $S^0=-1/k_i$, the degree-only score; $p$ for $r(S,d)$ from the spectral null (999 randomizations); $\Delta R^2$: dcGD against cGD on $|d_i-d_j|$, uncalibrated; slope ratio $b_{fwd}/b_{rev}$, forward meaning away from the refuge.
+
+| Component | $\gamma$ | Degree share | $\text{cor}(S,k)$ | $\text{cor}(S,S^0)$ | $r(S,d)$ | $p$ | $\Delta R^2$ | $b_{fwd}/b_{rev}$ |
+| :-- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Central (14 sites) | 0.25 | 0.70 | 0.80 | 0.89 | −0.47 | 0.50 | 0.216 | −0.73 |
+| | 0.35 | 0.76 | 0.80 | 0.91 | −0.52 | 0.43 | 0.222 | −0.69 |
+| | 0.5 | 0.85 | 0.83 | 0.94 | −0.55 | 0.43 | 0.196 | −0.63 |
+| | 0.71 | 0.94 | 0.86 | 0.97 | −0.49 | 0.48 | 0.141 | −0.58 |
+| | 1 | 0.98 | 0.87 | 0.99 | −0.51 | 0.35 | 0.086 | −0.45 |
+| | 1.41 | 0.99 | 0.88 | 1.00 | −0.46 | 0.39 | 0.056 | −0.34 |
+| | 2 | 1.00 | 0.88 | 1.00 | −0.46 | 0.33 | 0.042 | −0.26 |
+| | $\infty$ | 1.00 | 0.88 | 1.00 | −0.41 | 0.43 | 0.029 | −0.19 |
+| Northern (9 sites) | 0.25 | 0.20 | 0.56 | 0.67 | 0.08 | 0.84 | −0.175 | 1.47 |
+| | 0.35 | 0.24 | 0.59 | 0.69 | 0.10 | 0.83 | −0.172 | 1.06 |
+| | 0.5 | 0.36 | 0.64 | 0.75 | 0.10 | 0.78 | −0.110 | 0.89 |
+| | 0.71 | 0.58 | 0.74 | 0.83 | 0.10 | 0.75 | −0.060 | 0.94 |
+| | 1 | 0.81 | 0.84 | 0.92 | 0.28 | 0.37 | −0.040 | 0.99 |
+| | 1.41 | 0.94 | 0.91 | 0.97 | 0.40 | 0.22 | −0.032 | 1.02 |
+| | 2 | 0.98 | 0.94 | 0.99 | 0.40 | 0.21 | −0.028 | 1.03 |
+| | $\infty$ | 1.00 | 0.97 | 1.00 | 0.36 | 0.33 | −0.026 | 1.05 |
+
+**Table S16.** Design-matched calibration of the directional isolation comparison in the central component at the degree-neutral bandwidth and the local mean (999 null data sets each, $N_e=100$, 400 generations).
+
+| | $\gamma=\tfrac{1}{2}$ (main text) | $\gamma=1$ |
+| :-- | :-: | :-: |
+| Observed $\Delta R^2$ | 0.196 | 0.086 |
+| Calibrated cutoff (95th percentile) | 0.100 | 0.0085 |
+| One-sided $p$ | 0.008 | 0.001 |
+| Null data sets with $\Delta R^2>0$ | 38% | 10.5% |
+| Fragmented null graphs | 14% | 16% |
+| $r(S,d)$, design-matched null $p$ | 0.139 | 0.126 |
+
+### S10.8 Information content, consistency across loci and degree structure for *Araptus attenuatus*
+
+==*Information content.* Every site in both tested components fell below about five expected heterozygotes per locus on average (mean $nH_S$ 1.3–4.4 in the central and 1.8–3.3 in the northern component), and 4–8 of the 8 loci were polymorphic within each site (Table S17).==
+
+==*Consistency across loci.* The Population Graph was rebuilt for the whole clade with each locus, and each pair of loci, omitted, and every statistic was recomputed on the sites of the original components (Tables S18–S19). Omitting a locus often joined one or both two-site components to the central component; statistics were computed on the original 14 sites. In the central component, the sources lay near the refuge in all 36 subsets ($r(S,d)$ from −0.74 to −0.11), the forward slope was the lower in every subset, and the directional isolation comparison exceeded its own design-matched cutoff in each of the eight single-locus omissions ($p=0.001$–0.037; Table S20). Cutoffs depend on the panel, as they do on the bandwidth (Section S10.7), so each reduced panel was recalibrated rather than judged against the 8-locus cutoff. Omitting a locus did not inflate the asymmetries (mean $|\Delta|$ 0.71–1.03 times its 8-locus value), and no single locus carried the result. In the northern component, $\Delta R^2$ was negative in all 36 subsets, and the sign of $r(S,d)$ varied with the loci retained; one omission gave a significant positive gradient (sources far from the refuge, $p=0.020$) that did not recur among the pairs and is best read as instability in a nine-site graph.==
+
+==*Northern calibration.* A design-matched null for the northern component, tuned to its own differentiation ($G_{ST}=0.196$), gave a cutoff of 0.130; the observed $\Delta R^2$ ($-0.110$) was well within it ($p=0.96$), the gradient was not significant ($p=0.83$), and the observed degree share (0.36) was typical of the design (47th percentile). Under the null, $r(S,d)<0$ in 48% of data sets and $b_{fwd}/b_{rev}<1$ in 65%, so the signs from a component this small carry little information on their own.==
+
+==*Degree structure of the central component.* The central component's degree share (0.85) exceeded 99.7% of its design-matched null, and its scores tracked the degree-only score more closely than in 99.8% of null graphs ($\text{cor}(S,S^0)=0.94$ against a null median of 0.50). Its variance in degree exceeded that of every one of 999 null graphs: the graph is nearly a star centred on the sites at the refuge (SFr and 161, with 93 and the long-linked southern site 164 as secondary hubs), and the three strongest sinks are leaves. This is the reverse of the simulated pattern, in which directional flow left the true sources sparsely connected (Section S8.2), so the hub structure here is not the degree signature of directional flow seen in the simulations. Thin sampling alone therefore did not account for the dominance of degree. Nor did differences in diversity. Within-site diversity declined away from the refuge (Table S17), so the null was repeated with effective sizes that declined with distance from the refuge, tuned to reproduce the observed decline in $H_S$, and again with effective sizes fitted site by site ($r=0.95$ between observed and simulated $H_S$). Neither reproduced the degree structure (degree share at the 99.4th and 99.9th percentiles), and degree was unrelated to diversity in the data and in every null (Spearman $\rho=0.12$). Sample size, local site density and a two-dimensional migration kernel did not account for it either. Directional isolation remained significant under each null ($\Delta R^2=0.196$; cutoffs 0.084–0.098; $p=0.002$–0.005; Table S21). The concentration of edges on the sites at the refuge is therefore not produced by symmetric exchange among sites of differing diversity. One possible reading, not tested here, is that several sites derive directly from refuge-area stock. Whatever its cause, in this component the ordering of the source–sink scores largely reflects which sites are hubs, and the calibrated directional isolation comparison is the informative test. The northern component showed no such excess under any of the three nulls (degree share at the 47th–50th percentile).==
+
+==Cutoffs estimated from 999 null data sets carry Monte Carlo error: bootstrapping the default central null gives a 95% interval of 0.082–0.114 for its cutoff, which is why regenerated nulls give slightly different values (0.084–0.098) from the 0.100 reported in Section S10.6. No conclusion depends on the difference.==
+
+**Table S17.** Information content per site in the two tested components of *Araptus attenuatus*, ordered by distance from the refuge $d$. $n$: genotyped beetles; polymorphic loci: of 8, within the site; alleles per locus and $H_S$ (unbiased within-site heterozygosity): means across the 8 loci; $nH_S$: expected heterozygotes per locus, mean across loci.
+
+| Component | Site | Latitude | $d$ (km) | $n$ | Polymorphic loci | Alleles per locus | $H_S$ | $nH_S$ |
+| :-- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Central | SFr | 27.4 | 7 | 9 | 6 | 2.25 | 0.31 | 2.8 |
+|  | 160 | 27.4 | 25 | 10 | 7 | 2.75 | 0.40 | 4.0 |
+|  | 161 | 27.0 | 36 | 10 | 5 | 2.38 | 0.32 | 3.2 |
+|  | 12 | 27.2 | 39 | 10 | 6 | 2.50 | 0.37 | 3.7 |
+|  | 162 | 27.2 | 51 | 10 | 8 | 2.50 | 0.36 | 3.5 |
+|  | 93 | 26.9 | 94 | 10 | 6 | 2.25 | 0.37 | 3.6 |
+|  | 165 | 26.2 | 140 | 10 | 7 | 2.50 | 0.44 | 4.4 |
+|  | 166 | 25.9 | 189 | 8 | 6 | 2.25 | 0.33 | 2.6 |
+|  | 169 | 26.2 | 198 | 10 | 6 | 2.25 | 0.40 | 4.0 |
+|  | 64 | 25.6 | 257 | 5 | 4 | 1.62 | 0.26 | 1.3 |
+|  | 51 | 25.3 | 267 | 7 | 5 | 2.00 | 0.26 | 1.8 |
+|  | 168 | 25.6 | 268 | 10 | 6 | 2.12 | 0.35 | 3.5 |
+|  | 164 | 24.7 | 327 | 8 | 6 | 1.88 | 0.32 | 2.6 |
+|  | 77 | 24.9 | 359 | 9 | 5 | 1.88 | 0.24 | 2.2 |
+| Northern | 159 | 27.5 | 27 | 9 | 7 | 2.50 | 0.34 | 3.1 |
+|  | 89 | 28.0 | 80 | 10 | 6 | 2.38 | 0.31 | 3.1 |
+|  | 171 | 28.2 | 86 | 10 | 7 | 2.25 | 0.32 | 3.2 |
+|  | 173 | 28.4 | 87 | 10 | 7 | 2.38 | 0.33 | 3.3 |
+|  | 175 | 28.7 | 149 | 7 | 5 | 1.88 | 0.29 | 2.0 |
+|  | 177 | 28.7 | 169 | 10 | 5 | 2.12 | 0.31 | 3.1 |
+|  | 84 | 29.0 | 181 | 9 | 7 | 2.38 | 0.28 | 2.4 |
+|  | 9 | 29.0 | 200 | 9 | 5 | 2.00 | 0.20 | 1.8 |
+|  | 88 | 29.3 | 247 | 10 | 6 | 2.12 | 0.28 | 2.6 |
+
+**Table S18.** Leave-one-locus-out rebuilds (degree-neutral bandwidth). Statistics are computed on the original component's sites; an asterisk marks rebuilds in which the central component gained sites from the two-site components. Spectral $p$: two-sided, 999 randomizations; $\Delta R^2$ uncalibrated (see Table S20).
+
+| Component | Locus omitted | $\Delta R^2$ | $b_{fwd}/b_{rev}$ | $r(S,d)$ | Spectral $p$ | Degree share | Mean $\lvert\Delta\rvert$ |
+| :-- | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Central | none | 0.196 | −0.63 | −0.55 | 0.44 | 0.85 | 0.369 |
+|  | LTRS* | 0.169 | −0.43 | −0.31 | 0.27 | 0.74 | 0.323 |
+|  | WNT* | 0.150 | −0.70 | −0.23 | 0.59 | 0.76 | 0.274 |
+|  | EN | 0.188 | −0.58 | −0.49 | 0.29 | 0.87 | 0.326 |
+|  | EF* | 0.149 | −0.10 | −0.38 | 0.22 | 0.84 | 0.379 |
+|  | ZMP* | 0.137 | −1.16 | −0.54 | 0.032 | 0.72 | 0.262 |
+|  | AML* | 0.299 | −0.28 | −0.67 | 0.052 | 0.43 | 0.276 |
+|  | ATPS* | 0.186 | −0.42 | −0.28 | 0.31 | 0.79 | 0.359 |
+|  | MP20* | 0.120 | −0.52 | −0.38 | 0.19 | 0.74 | 0.264 |
+| Northern | none | −0.110 | 0.89 | 0.10 | 0.79 | 0.36 | 0.227 |
+|  | LTRS | −0.110 | 0.89 | 0.10 | 0.78 | 0.35 | 0.228 |
+|  | WNT | −0.177 | 0.74 | 0.08 | 0.80 | 0.00 | 0.218 |
+|  | EN | −0.054 | 1.27 | 0.62 | 0.020 | 0.61 | 0.244 |
+|  | EF | −0.110 | 0.89 | 0.10 | 0.81 | 0.36 | 0.227 |
+|  | ZMP | −0.185 | 1.35 | −0.17 | 0.69 | 0.07 | 0.302 |
+|  | AML | −0.109 | 1.06 | 0.42 | 0.43 | 0.36 | 0.228 |
+|  | ATPS* | −0.142 | 0.90 | −0.27 | 0.63 | 0.06 | 0.211 |
+|  | MP20 | −0.086 | 0.85 | 0.08 | 0.79 | 0.34 | 0.206 |
+
+**Table S19.** Leave-two-loci-out rebuilds (all 28 pairs; descriptive): percentage of subsets with each sign, and ranges.
+
+| Component | Subsets | $r(S,d)<0$ | $b_{fwd}/b_{rev}<1$ | $\Delta R^2>0$ | $\Delta R^2$ range | $r(S,d)$ range |
+| :-- | :-: | :-: | :-: | :-: | :-: | :-: |
+| Central | 28 | 100% | 100% | 100% | 0.021 to 0.288 | −0.74 to −0.11 |
+| Northern | 28 | 32% | 50% | 0% | −0.314 to −0.040 | −0.47 to 0.68 |
+
+**Table S20.** Design-matched calibration of the directional isolation comparison in the central component for each leave-one-locus-out panel (999 null data sets each, $N_e=100$, 400 generations). †: the null $G_{ST}$ missed its target by more than 20%, so that cutoff is approximate (probably slightly conservative).
+
+| Locus omitted | $\Delta R^2$ | Cutoff (all / connected) | One-sided $p$ | Null $\Delta R^2>0$ | Fragmented null graphs | Target / null $G_{ST}$ | Design-null $p$, $r(S,d)$ |
+| :-- | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| none (8 loci) | 0.196 | 0.100 / 0.100 | 0.008 | 38% | 14% | 0.140 / 0.135 | 0.14 |
+| LTRS | 0.169 | 0.084 / 0.086 | 0.006 | 36% | 14% | 0.137 / 0.140 | 0.44 |
+| WNT | 0.150 | 0.085 / 0.086 | 0.009 | 33% | 14% | 0.144 / 0.165 | 0.56 |
+| EN | 0.188 | 0.082 / 0.083 | 0.005 | 33% | 14% | 0.141 / 0.138 | 0.22 |
+| EF | 0.149 | 0.098 / 0.095 | 0.013 | 33% | 14% | 0.137 / 0.137 | 0.32 |
+| ZMP | 0.137 | 0.112 / 0.116 | 0.033 | 38% | 15% | 0.129 / 0.161 † | 0.17 |
+| AML | 0.299 | 0.101 / 0.101 | 0.001 | 37% | 11% | 0.160 / 0.165 | 0.054 |
+| ATPS | 0.186 | 0.097 / 0.101 | 0.006 | 36% | 17% | 0.140 / 0.149 | 0.50 |
+| MP20 | 0.120 | 0.108 / 0.108 | 0.037 | 36% | 11% | 0.131 / 0.132 | 0.34 |
+
+**Table S21.** Symmetric nulls with and without differences in diversity among sites (999 data sets each; migration tuned to the observed $G_{ST}$, mean $N_e=100$). Equal $N_e$: as in Section S10.6, regenerated; $N_e$ declining with distance: $N_e$ an exponential function of distance from the refuge, tuned to the observed slope of $H_S$ on $d$; $N_e$ fitted per site: tuned to each site's observed $H_S$. (A) central component; (B) northern component.
+
+(A)
+
+| Central component (observed) | Equal $N_e$ | $N_e$ declining with distance | $N_e$ fitted per site |
+| :-- | :-: | :-: | :-: |
+| Fragmented null graphs | 17% | 19% | 17% |
+| $\Delta R^2$ cutoff, 95% (all / connected) | 0.088 / 0.093 | 0.098 / 0.101 | 0.084 / 0.084 |
+| Observed $\Delta R^2$ 0.196: one-sided $p$ | 0.005 | 0.004 | 0.002 |
+| $r(S,d)$ = −0.55: design-null $p$ | 0.17 | 0.15 | 0.15 |
+| Null data sets with $r(S,d)$ < 0 | 51% | 57% | 48% |
+| Null data sets with $b_{fwd}/b_{rev}$ < 1 | 55% | 60% | 56% |
+| Degree share: null median (5–95%) | 0.33 (0.01–0.74) | 0.32 (0.01–0.70) | 0.28 (0.01–0.65) |
+| Percentile of the observed degree share (0.85) | 99.2nd | 99.4th | 99.9th |
+| $\text{cor}(S,S^0)$: null median (5–95%) | 0.48 (−0.17 to 0.84) | 0.48 (−0.16 to 0.84) | 0.43 (−0.24 to 0.81) |
+| Percentile of the observed $\text{cor}(S,S^0)$ (0.94) | 99.8th | 99.9th | 99.9th |
+| Variance of degree: percentile of observed 2.53 | 100th | 100th | 100th |
+
+(B)
+
+| Northern component (observed) | Equal $N_e$ | $N_e$ declining with distance | $N_e$ fitted per site |
+| :-- | :-: | :-: | :-: |
+| Pearson $r$, observed vs null $H_S$ | 0.13 | 0.75 | 0.996 |
+| $m$ | 0.0092 | 0.0113 | 0.0111 |
+| Fragmented null graphs | 33% | 35% | 35% |
+| $\Delta R^2$ cutoff (all) | 0.121 | 0.135 | 0.127 |
+| Observed $\Delta R^2$ −0.110: one-sided $p$ | 0.95 | 0.96 | 0.95 |
+| $r(S,d)$ = 0.10: design-null $p$ | 0.85 | 0.85 | 0.83 |
+| Percentile of the observed degree share (0.36) | 48th | 50th | 47th |
+| Percentile of the observed $\text{cor}(S,S^0)$ (0.75) | 83rd | 83rd | 80th |
+| Percentile of the observed variance of degree | 25th | 28th | 26th |
+
+
+### S10.9 Summary of checks on the case study
+
+==The *Araptus attenuatus* data were chosen because they are a demanding test: eight loci, about nine beetles per site and components of 9 and 14 sites, analyzed against hypotheses set in advance by Garrick et al. (2013). Table S22 lists the concerns such a data set raises, the check made for each, and where it is reported. Every significance statement for the case study rests on nulls simulated with the study's own sites, sample sizes, loci and alleles, so, unlike the conclusions drawn from the simulations, it does not depend on the stepping-stone geometry or the biallelic loci of the main simulations. Cutoffs estimated from 999 null data sets carry Monte Carlo error (Section S10.8); no conclusion depends on it.==
+
+**Table S22.** Concerns raised by the case study and how each was addressed.
+
+| Concern | Check | Result | Where |
+| :-- | :-- | :-- | :-- |
+| ΔR² > 0 is not calibrated in a 14-site graph | Cutoff from 999 design-matched symmetric data sets | ΔR² = 0.196 against cutoff 0.100, p = 0.008; uncalibrated rule fired in 38% of nulls | S10.6, Table S14 |
+| The calibration depends on the null's settings | Ne 50–200, 200–1,000 generations, two-dimensional great-circle kernel | Cutoffs 0.087–0.117, p = 0.004–0.008 | S10.6, Table S14 |
+| The generator does not reproduce the simulations | Generator run on the *Symmetric* model and compared with the individual-based simulations | Null distributions of ΔR² did not differ (Kolmogorov–Smirnov p = 0.51–0.96) for three designs, including the *Araptus* design | S10.6 |
+| The result depends on the bandwidth | γ from 0.25 to ∞; ΔR² recalibrated at the local mean | Sources near the refuge at every γ; p = 0.001 at γ = 1 against its own cutoff | S10.7, Tables S15–S16 |
+| Eight loci are too few; one locus drives the result | All 8 single-locus and 28 two-locus omissions; each single-locus panel recalibrated | Central: same direction in all 36 subsets, significant in all 8 recalibrated panels (p = 0.001–0.037) | S10.8, Tables S18–S20 |
+| Too few individuals per site | Expected heterozygotes per locus per site | All 23 sites below about five on average | S10.8, Table S17; S10.4 |
+| A diversity gradient alone, without directional gene flow, produces the result | Symmetric nulls with Ne declining from the refuge, and with Ne fitted to each site's H_S | ΔR² significant under each (p = 0.002–0.005) | S10.8, Table S21 |
+| The source–sink scores are an artifact of degree | Degree share and cor(S, S⁰) against design-matched nulls | Central graph is a star centred on the refuge (degree share above 99% of nulls), so S largely restates hubs; the directional comparison is the informative test | S10.8, Table S21 |
+| The degree structure is a thin-sampling artifact | The same nulls | No: thin sampling produced a median degree share of about 0.3 | S10.8, Table S21 |
+| Analysis within components rather than the whole graph | Simulated fragmented graphs, within the largest component against the whole graph | Within-component testing was more conservative (false positives 0.024 against 0.045) | S10.4 |
+| The northern absence of direction is evidence of symmetry | Design-matched northern null; power at nine sites | ΔR² p = 0.96, gradient p = 0.83; power low at nine sites, so the absence is weak evidence | S10.2, S10.8, Table S21 |
+| Signs alone are read as direction | Sign frequencies under the design-matched nulls | r(S,d) < 0 in 48–58% and b_fwd/b_rev < 1 in 55–65% of null data sets | S10.8 |
+| The position of the refugium was assumed | Taken from Garrick et al. (2013), who identified it from diverging diversity trends; compared with the graph's own partition | The central and northern components meet at the hypothesized refugium (27.4–27.5°N), an independent indication of its general location; its exact position is not critical to the hypotheses tested | Main text; Figure 6 |
+
 ## S11. Recommendations for practice
 
 The simulations describe how the method behaves; they do not supply constants to carry into other systems. Each recommendation therefore says what to examine in one's own data.
 
 1. **Choose the bandwidth by the question.** Use $\gamma=\tfrac{1}{2}$ to infer direction (the source–sink test, the directional isolation comparison, dcGD and the source–sink surface) and $\gamma=1$ to describe a population's overall weight in the network.
-2. **Report how much of the index is degree.** Give the degree share at the chosen bandwidth. A degree share above about 0.15, or a fragmented graph, signals too few individuals per population; test within components and expect the degree-neutral bandwidth to retain some degree signature (Section S10.4). A sweep over $\gamma$ is a useful sensitivity analysis.
+2. **Report how much of the index is degree.** Give the degree share at the chosen bandwidth. ==A large degree share, or a fragmented graph, means the scores largely reflect degree: compare the observed value with a design-matched null, which separates thin sampling (typical of the null) from degree structure that symmetric exchange does not produce (above the null, as in Section S10.8);== test within components and expect the degree-neutral bandwidth to retain some degree signature (Section S10.4). A sweep over $\gamma$ is a useful sensitivity analysis==, provided $\Delta R^2$ is judged at each multiplier against a cutoff calibrated at that multiplier (Section S10.7)==.
 3. **Check information content before reading direction.** Count the loci polymorphic within populations, and rebuild the graph from random subsets of loci to see where $|\Delta_{i\rightarrow j}|$ begins to inflate, rather than importing a threshold such as 4.5 loci.
 4. **Choose the test by the covariate, the drift regime, the sampling and the question.** Use the source–sink test for a population-level covariate and to locate sources; use the directional isolation comparison for a pairwise separation or resistance matrix. With fewer than about 15 populations, rely primarily on the directional isolation comparison, judged against a cutoff calibrated for the study's own design by simulating symmetric migration (Sections S10.3, S10.6), never on $\Delta R^2>0$ alone. Under strong drift, corroborate a directional isolation result with the source–sink test, and where both reject, check that they agree on direction.
 5. **Read direction at the population level,** from $S$ and the source–sink surface, and treat individual arrows as leads.
 6. **Do not tune the bandwidth on the data being tested.**
-7. **Treat a single snapshot as one point in a sequence.** A non-significant result is not evidence of symmetry. With fewer than about 10 populations, neither test can establish direction from one graph: report the sign of $r(S,x)$ and the slope ratio as descriptions, beside what symmetric migration gives for the same design, and seek replication (Section S10.5).
-8. **Plot it.** Draw the gravity-field plot at both bandwidths, and report the degree share with the plot.
+7. **Treat a single snapshot as one point in a sequence.** A non-significant result is not evidence of symmetry. With fewer than about 10 populations, neither test can ==reliably== establish direction: report the sign of $r(S,x)$ and the slope ratio as descriptions, beside what symmetric migration gives for the same design, and seek replication (Section S10.5).
+8. **Plot it.** ==Draw the gravity-field plot at the bandwidth used for testing, report the degree share with it, and show how the conclusions change across a sweep of $\gamma$ (as in Section S10.7).==
 9. **Sample for the graph, not for $\Phi$.** Allocations that are optimal for estimating differentiation (about $1/\Phi$ individuals per population) are too thin for a Population Graph. Aim for roughly five or more expected heterozygotes per locus per population (about 30 individuals in the simulations), as many populations as possible spanning the whole hypothesized axis, and as many loci as possible (Section S10).
 
 # References

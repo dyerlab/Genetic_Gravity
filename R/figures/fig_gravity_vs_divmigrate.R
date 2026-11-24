@@ -1,0 +1,59 @@
+# gravity_w_vs_divmigrate_3x3_v3.R
+# Phase strips use the heterozygosity-gradient reorganization boundary (2026-09-29); earlier file = gain-based boundary.
+# 2026-10-01: strips use the phase policy (unflagged lineages held in ascent; lineage_phases.R phase_policy_R_gen).
+# v3 = v2 plus the phase-share strip (R/common/lineage_phases.R) -> media/fig-gravity-w-vs-divmigrate-3x3-v5.png
+# 2026-11-21: v7 labels the Isotropic scenario "Symmetric" to match the manuscript; data unchanged.
+# 2026-11-21: v8 drops the RMSE row (rows: Spearman rho, replicates retained).
+# Fig_DivMigrateTruth, transposed-truth version (local/node_potential_reanalysis.md, Task 3a):
+# w_{j|i} (W[i, j], j's weight in i's neighbourhood) is compared with m_{j->i}, the
+# transposed truth, because gene flow j -> i raises it; divMigrate's relative Nm
+# (row = source) is compared with m_{i->j} as before. Same layout as
+# gravity_w_vs_divmigrate_3x3.R (which drew the m_{i->j} comparison, kept as
+# media/fig-gravity-w-vs-divmigrate-3x3.png).
+# Input: data/derived/node_potential_reanalysis.rda (rean$truth$d, from
+# R/legacy/node_potential_reanalysis.R). Output: media/fig-gravity-w-vs-divmigrate-3x3-v2.png
+# Run from the manuscript repo root.
+
+suppressPackageStartupMessages({ library(ggplot2); library(dplyr); library(tidyr); library(patchwork) })
+source("R/common/lineage_phases.R")
+TAG <- Sys.getenv("GG_TAG"); SFX <- if (nzchar(TAG)) paste0("_", TAG) else ""   # GG_TAG=g05: gamma = 1/2 inputs (R/analysis/half_bandwidth_results.R), next figure version
+t3 <- if (nzchar(TAG)) readRDS(sprintf("data/derived/truth%s.rds", SFX)) else {
+  e <- new.env(); load("data/derived/node_potential_reanalysis.rda", envir = e); e$rean$truth$d }
+key <- c("Replicate", "Treatment", "Generation")
+d <- bind_rows(
+  t3 |> filter(Exclusion == "") |> transmute(across(all_of(key)), rho_all = w_rho_tr, rmse_all = w_rmse_tr,
+                                            Series = "Genetic gravity w_ij"),
+  t3 |> filter(Exclusion == "") |> transmute(across(all_of(key)), rho_all = nm_rho_run, rmse_all = nm_rmse_run,
+                                            Series = "divMigrate Nm"),
+  t3 |> transmute(across(all_of(key)), rho_all = w_rho_tr, rmse_all = w_rmse_tr,
+                  Series = "Genetic gravity w_ij, all censuses")) |>
+  mutate(Treatment = factor(sub("^Isotropic$", "Symmetric", Treatment), c("Symmetric", "Redistributed", "Obstructed")),
+         Series = factor(Series, c("Genetic gravity w_ij", "divMigrate Nm", "Genetic gravity w_ij, all censuses")))
+mets <- c("rho_all")
+lab <- c(rho_all = "Spearman’s ρ")
+med <- d |> pivot_longer(all_of(mets), names_to = "metric", values_to = "value") |>
+  mutate(metric = factor(metric, names(lab), lab)) |>
+  group_by(Treatment, Series, metric, Generation) |> summarise(value = median(value), .groups = "drop")
+present <- d |> filter(Series != "Genetic gravity w_ij") |>
+  group_by(Treatment, Series, Generation) |> summarise(value = 100 * n_distinct(Replicate) / 50, .groups = "drop") |>
+  mutate(metric = factor("Replicates (%)", levels = c(lab, "Replicates (%)")))
+med <- bind_rows(med |> mutate(metric = factor(as.character(metric), levels = levels(present$metric))), present)
+p <- ggplot(med, aes(Generation, value, colour = Series, linetype = Series, linewidth = Series)) + geom_line() +
+  scale_colour_manual(values = c("Genetic gravity w_ij" = "firebrick", "divMigrate Nm" = "steelblue",
+                                 "Genetic gravity w_ij, all censuses" = "firebrick")) +
+  scale_linetype_manual(values = c("Genetic gravity w_ij" = "solid", "divMigrate Nm" = "solid",
+                                   "Genetic gravity w_ij, all censuses" = "22")) +
+  scale_linewidth_manual(values = c("Genetic gravity w_ij" = 0.65, "divMigrate Nm" = 0.65,
+                                    "Genetic gravity w_ij, all censuses" = 0.35)) +
+  facet_grid(metric ~ Treatment, scales = "free_y") +
+  labs(y = NULL, colour = NULL, linetype = NULL, linewidth = NULL) +
+  scale_x_continuous(limits = c(2000, 3000), breaks = seq(2000, 2750, 250), expand = c(0, 0)) +
+  theme_minimal(base_size = 11) + theme(legend.position = "top", axis.text.x = element_blank(),
+                                        panel.spacing.x = unit(1, "lines")) + labs(x = NULL)
+xs <- scale_x_continuous(limits = c(2000, 3000), breaks = seq(2000, 2750, 250), expand = c(0, 0))
+strip <- lp_strip(c("Symmetric", "Redistributed", "Obstructed"), xs, facet = "col") +
+  labs(x = "Generation") + theme(panel.spacing.x = unit(1, "lines"))
+p <- p / strip + plot_layout(heights = c(5, 0.9))
+FIG <- if (nzchar(TAG)) "media/fig-gravity-w-vs-divmigrate-3x3-v8.png" else "media/fig-gravity-w-vs-divmigrate-3x3-v5.png"
+ggsave(FIG, p, width = 10, height = 6.4, dpi = 150, bg = "white")
+cat("Saved", FIG, "\n")

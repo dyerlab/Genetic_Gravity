@@ -1,4 +1,4 @@
-#' Computer Note (Heredity): worked example with the Araptus attenuatus data
+#' Computer Note (Heredity, gstudio 1.16): worked example with the Araptus attenuatus data
 #' distributed with gstudio as `arapat` (Garrick et al. 2013).
 #'
 #' Every number, table and figure in the note's worked example comes from this
@@ -129,10 +129,35 @@ cat("edges joining sites of different lineages:",
 print(table(apply(lin_e, 1, function(z) paste(sort(z), collapse = "-"))))
 
 coords <- strata_coordinates(arapat)
+
+# Base map: a Natural Earth land outline when rnaturalearth and
+# rnaturalearthdata are installed (install.packages() both once), as in the
+# Visualization chapter of the documentation; otherwise the graphs are drawn
+# on plain longitude-latitude axes.  Needs gstudio >= 1.15.8 and ggplot2 >= 3.5.
+base <- NULL
+if (requireNamespace("rnaturalearth", quietly = TRUE) &&
+    requireNamespace("rnaturalearthdata", quietly = TRUE)) {
+  land <- rnaturalearth::ne_countries(
+    country = c("Mexico", "United States of America"),
+    scale = "medium", returnclass = "sf")
+  base <- ggplot() +
+    geom_sf(data = land, fill = "grey92", colour = "grey55", linewidth = 0.3) +
+    coord_sf(xlim = c(-117.5, -108.5), ylim = c(22.5, 32.5), expand = FALSE) +
+    labs(x = NULL, y = NULL) +
+    theme_minimal(base_size = 11) +
+    theme(panel.background = element_rect(fill = "aliceblue", colour = NA))
+}
+cat("\nbase map:", if (is.null(base)) "none (rnaturalearth not installed)"
+    else "Natural Earth land outline", "\n")
+plain_axes <- function(p) {
+  if (!is.null(base)) return(p)
+  p + labs(x = "Longitude", y = "Latitude") + theme_minimal(base_size = 11)
+}
+
 p1 <- plot(graph, layout = coords, node_fill = "Lineage",
-           node_labels = "none") +
-  labs(x = "Longitude", y = "Latitude", fill = "Lineage") +
-  theme_minimal(base_size = 11)
+           node_labels = "none", base = base) |>
+  plain_axes() +
+  labs(fill = "Lineage")
 ggsave("media/fig1-popgraph-arapat.png", p1, width = 6, height = 6.5,
        dpi = 300, bg = "white")
 
@@ -181,9 +206,8 @@ cat(sprintf("cor(S, degree): gamma = 1 %.2f; gamma = 1/2 %.2f\n",
             with(filter(nodes, panel == unique(nodes$panel)[1]), cor(S, degree)),
             with(filter(nodes, panel == unique(nodes$panel)[2]), cor(S, degree))))
 
-p2 <- plot(field, layout = coords, node_labels = "none") +
-  labs(x = "Longitude", y = "Latitude") +
-  theme_minimal(base_size = 10)
+p2 <- plot(field, layout = coords, node_labels = "none", base = base) |>
+  plain_axes()
 ggsave("media/fig2-gravity-field-arapat.png", p2, width = 9, height = 5.5,
        dpi = 300, bg = "white")
 
